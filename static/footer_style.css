@@ -28,8 +28,7 @@ body {
 	position: relative;
 }
 
-$header_height: 50px;
-$footer_height: 50px;
+
 
 #page {
   display: grid;
@@ -40,4 +39,14 @@ $footer_height: 50px;
     'main'
     'footer';
   grid-template-rows: $header_height auto $footer_height
+}
+
+.parent {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  height: 100%;
+}
+.child {
+  width: 33%;
 }
