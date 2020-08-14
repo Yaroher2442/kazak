@@ -1,61 +1,41 @@
-CREATE TABLE `Affairs` (
-  `t_id` TEXT NULL  DEFAULT NULL,
-  `u_id` TEXT NULL DEFAULT NULL,
-  `Client` TEXT NULL DEFAULT NULL,
-  `Type` TEXT NULL DEFAULT NULL,
-  `Practice` TEXT NULL DEFAULT NULL,
-  `Project_Manager` TEXT NULL DEFAULT NULL,
-  `Lawyers` TEXT NULL DEFAULT NULL,
-  `Agreement` TEXT NULL DEFAULT NULL,
-  `Invoice` TEXT NULL DEFAULT NULL,
-  `Came_from` TEXT NULL DEFAULT NULL,
-  `Comment` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`t_id`)
-);
-
 CREATE TABLE `Litigation` (
-  `id` TEXT NULL  DEFAULT NULL,
   `t_id` TEXT NULL DEFAULT NULL,
   `Case_number` TEXT NULL DEFAULT NULL,
   `Tribunal` TEXT NULL DEFAULT NULL,
   ` Judge` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`t_id`)
 );
 
 CREATE TABLE `Bankruptcy` (
-  `id` TEXT NULL  DEFAULT NULL,
   `t_id` TEXT NULL DEFAULT NULL,
   ` Bankruptcy_case_number` TEXT NULL DEFAULT NULL,
   ` Arbitration_manager` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`t_id`)
 );
 
 
 CREATE TABLE `Pre_trial_settlement` (
-  `id` TEXT NULL  DEFAULT NULL,
   `t_id` TEXT NULL DEFAULT NULL,
   `Case_number` TEXT NULL DEFAULT NULL,
   `Agency` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`t_id`)
 );
 
     
 CREATE TABLE `Enforcement_proceedings` (
-  `id` TEXT NULL  DEFAULT NULL,
   `t_id` TEXT NULL DEFAULT NULL,
   ` Executive_case_number` TEXT NULL DEFAULT NULL,
   `Amount` TEXT NULL DEFAULT NULL,
   `FSSP` TEXT NULL DEFAULT NULL,
   `Bailiff` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`t_id`)
 );
     
 CREATE TABLE `Non_judicial` (
-  `id` TEXT NULL  DEFAULT NULL,
   `t_id` TEXT NULL DEFAULT NULL,
   `Nature_of_work` TEXT NULL DEFAULT NULL,
   `Term` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`t_id`)
 );
     
 CREATE TABLE `Сourts` (
