@@ -70,7 +70,7 @@ class API(object):
 			print(request.cookies.get('user_id'))
 			get_db()
 			db=Database(g._database)
-			d_table = db.
+			d_table = [[1,1,1,1,1,1,1,]]
 			return render_template("sud_dela_admin.html",
 				data=d_table)
 #----------------------------------------------------------------------
