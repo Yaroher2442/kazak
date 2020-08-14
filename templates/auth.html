@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="/static/icon.png">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <title>Вход</title>
+    </head>
+    <body>
+        <div class="container mt-5">
+          <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h3 class="display-4">Вход</h3 >
+            <form action="/login" method="post">
+              <p><br></p>
+              <p>Введите логин:</p>
+              <input type="text" name="email" id="email" size=30>
+              <p><br></p>
+              <p>Введите пароль:</p>
+              <input type="password" name="password" id="password" size=30>
+              <p><br></p>
+              <p style="display: none; color: red" id = "error">error_here</p>
+                <script>
+                  if (document.getElementById("error").textContent != "error_here") {
+                    document.getElementById("error").style.display = "block";
+                  }
+                </script>
+              <input type="submit" class="btn btn-success" value="Войти">    
+              </form>
+          </div> 
+        </div>
+        <footer class="container pt-4 my-md-5 pt-md-5 border-top">
+            <div class="row">
+              <div class="col-12 col-md">
+                <img class="mb-2" src="/static/logo.jpg" alt="" width="130">
+              </div>
+              <div class="col-12 col-md">
+                <ul class="list-unstyled text-small">
+                  <small class="d-block mb-3 text-muted">Информация, находящаяся в базе, является собственностью<br>Адвокатского бюро «Казаков и Партнёры». © 2020</small>
+                </ul>
+              </div>
+              <!--div class="col-12 col-md">
+                <ul class="list-unstyled text-small">
+                </ul>
+              </div>
+              <div class="col-6 col-md">
+                <ul class="list-unstyled text-small">
+                </ul>
+              </div-->
+            </div>
+          </footer>
+    </body>
+</html>
