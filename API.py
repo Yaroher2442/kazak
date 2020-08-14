@@ -70,6 +70,38 @@ class API(object):
 			print(request.cookies.get('user_id'))
 			return render_template("sud_dela_admin.html")
 
+	@flask_app.route('/bank_dela', methods=['GET', 'POST'])
+	def sud_dela():
+		if request.cookies.get('user_id') == None:
+			return redirect('/login')
+		else:
+			print(request.cookies.get('user_id'))
+			return render_template("bank_dela_admin.html")
+
+	@flask_app.route('/pre_sud', methods=['GET', 'POST'])
+	def sud_dela():
+		if request.cookies.get('user_id') == None:
+			return redirect('/login')
+		else:
+			print(request.cookies.get('user_id'))
+			return render_template("pre_sud_admin.html")
+
+	@flask_app.route('/employees', methods=['GET', 'POST'])
+	def sud_dela():
+		if request.cookies.get('user_id') == None:
+			return redirect('/login')
+		else:
+			print(request.cookies.get('user_id'))
+			return render_template("employees.html")
+
+	@flask_app.route('/none_sud', methods=['GET', 'POST'])
+	def sud_dela():
+		if request.cookies.get('user_id') == None:
+			return redirect('/login')
+		else:
+			print(request.cookies.get('user_id'))
+			return render_template("none_sud_admin.html")
+
 	@flask_app.route('/login' , methods=['GET' , 'POST'])
 	def login():
 		if request.method == 'POST':     
