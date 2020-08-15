@@ -79,11 +79,11 @@ class Database(object):
         except Error as e:
             print(e)
 
-    def get_table_data(self,table_name,we):
+    def get_join_table(self,join_table):
         try:
             conn=self.connect
             c = conn.cursor()
-            res=c.execute("SELECT * From users WHERE email=?",(email,))  
+            res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id".format(join_table))  
             results = c.fetchall()
             if results==[]:
                 return False
@@ -120,7 +120,7 @@ def main():
     # 		,'АСГМ'
     # 		,'Васичикин	'
     # 		]))
-
+    print(db.get_join_table('Litigation'))
     # print(db.find_user('qwe'))
 if __name__ == '__main__':
     main()
