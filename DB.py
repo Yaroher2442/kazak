@@ -90,7 +90,9 @@ class Database(object):
             else:
                 dela_list=[]
                 for i in results:
-                    dela_list.append(list(i[2:7])+list(i[12:])+list(i[7:11]))
+                    l_list=[results.index(i)+1]+list(i[2:7])+list(i[12:])+list(i[7:11])
+                    l_list.pop(2)
+                    dela_list.append(l_list)
                 return dela_list
         except Error as e:
             print(e)
