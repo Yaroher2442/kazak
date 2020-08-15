@@ -28,15 +28,15 @@
 		<form class="parent" action="/#" method="post">
 			<h5>Добавить нового клиента</h5>
 			<div class="group">
-				<input class="child" type="text" name="cl_name" placeholder="Клиент" size="22">
-				<input class="child" type="text" name="cl_name" placeholder="Практика" size="22">
+				<input class="child" type="text" name="cl_name" placeholder="Клиент" size="21">
+				<input class="child" type="text" name="cl_name" placeholder="Практика" size="21">
 				<select class="child" size="1" lengh="25">
 					<option disabled>Руководитель проекта</option>
 					{% for item in urists %}
 						<option value="{{ data }}">{{ item }}</option>
 					{% endfor %}
 				</select >	
-				<select class="child" multiple size="1" lengh="25">
+				<select class="child" lengh="25">
 					<option disabled>Юристы</option>
 					{% for item in urists %}
 						<option value="{{ data }}">{{ item }}</option>
@@ -44,19 +44,19 @@
 				</select>						
 			</div>
 			<div class="group">
-				<input class="child" type="text" name="cl_name" placeholder="Номер дела" size="22">
-				<input class="child" type="text" name="cl_name" placeholder="Суд" size="22">
-				<input class="child" type="text" name="cl_name" placeholder="Судья" size="22">
-				<input class="child" type="text" name="cl_name" placeholder="Комментарий" size="22">
+				<input class="child" type="text" name="cl_name" placeholder="Номер дела" size="21">
+				<input class="child" type="text" name="cl_name" placeholder="Суд" size="21">
+				<input class="child" type="text" name="cl_name" placeholder="Судья" size="21">
+				<input class="child" type="text" name="cl_name" placeholder="Комментарий" size="21">
 			</div>
 			<div class="group">
 				<div>
 					<p>Файл соглашения (PDF):</p>
-					<input class="child" type="file" name="file_sogl" placeholder="Соглашение" size="22">
+					<input class="child" type="file" name="file_sogl" placeholder="Соглашение" >
 				</div>
 				<div>
 					<p>Файл счёта (PDF):</p>
-					<input class="child" type="file" name="file_chot" placeholder="Cчёт" size="22">
+					<input class="child" type="file" name="file_chot" placeholder="Cчёт">
 				</div>
 				<input class="child btn btn-success" type="submit" value="Добавить">
 			</div>	  
