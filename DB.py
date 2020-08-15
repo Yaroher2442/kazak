@@ -48,6 +48,18 @@ class Database(object):
                 return results
         except Error as e:
             print(e)
+    def find_user_by_id(self,u_id):
+        try:
+            conn=self.connect
+            c = conn.cursor()
+            res=c.execute("SELECT alevel,name,surname,lastname From users WHERE id=?",(u_id,))  
+            results = c.fetchall()
+            if results==[]:
+                return False
+            else:
+                return list(results[0])
+        except Error as e:
+            print(e)
 
     def insert_tables(self,table_name,data):
         try:
@@ -79,16 +91,21 @@ class Database(object):
         except Error as e:
             print(e)
 
-    def get_table_data(self,table_name,we):
+    def get_join_table(self,join_table):
         try:
             conn=self.connect
             c = conn.cursor()
-            res=c.execute("SELECT * From users WHERE email=?",(email,))  
+            res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id".format(join_table))  
             results = c.fetchall()
             if results==[]:
                 return False
             else:
-                return results
+                dela_list=[]
+                for i in results:
+                    l_list=[results.index(i)+1]+list(i[2:7])+list(i[12:])+list(i[7:11])
+                    l_list.pop(2)
+                    dela_list.append(l_list)
+                return dela_list
         except Error as e:
             print(e)
 
@@ -104,11 +121,11 @@ def main():
     # db.create_table(sql)
     # print(uuid.uuid4())
 
-    db.insert_tables('Affairs',
-    	tuple([str(uuid.uuid4()),'user_id','Петров','Судебное дело'
-    					,'Антимонопольное право','М.А. Девятирикова','Е.А. Норенко'
-    					,'Соглашение.pdf','Счёт.pdf'
-    					,'сайт','Подготовлен отзыв - 12.08.2020']))
+    # db.insert_tables('Affairs',
+    # 	tuple([str(uuid.uuid4()),'user_id','Петров','Судебное дело'
+    # 					,'Антимонопольное право','М.А. Девятирикова','Е.А. Норенко'
+    # 					,'Соглашение.pdf','Счёт.pdf'
+    # 					,'сайт','Подготовлен отзыв - 12.08.2020']))
 
 
     '''SELECT * FROM Affairs as a
@@ -120,7 +137,11 @@ def main():
     # 		,'АСГМ'
     # 		,'Васичикин	'
     # 		]))
-
+    # data=db.get_join_table('Litigation')
+    # print(data)
+    print(db.find_user_by_id('4d4ce653-f2ff-489a-b7ba-143e2f36c3f9'))
+    # print(data)
+    
     # print(db.find_user('qwe'))
 if __name__ == '__main__':
     main()
