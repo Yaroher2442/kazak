@@ -88,7 +88,10 @@ class Database(object):
             if results==[]:
                 return False
             else:
-                return results
+                dela_list=[]
+                for i in results:
+                    dela_list.append(list(i[2:7])+list(i[12:])+list(i[7:11]))
+                return dela_list
         except Error as e:
             print(e)
 
@@ -120,7 +123,10 @@ def main():
     # 		,'АСГМ'
     # 		,'Васичикин	'
     # 		]))
-    print(db.get_join_table('Litigation'))
+    data=db.get_join_table('Litigation')
+    print(data)
+    # print(data)
+    
     # print(db.find_user('qwe'))
 if __name__ == '__main__':
     main()
