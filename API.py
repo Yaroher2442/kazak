@@ -68,11 +68,17 @@ class API(object):
 			return redirect('/login')
 		else:
 			print(request.cookies.get('user_id'))
+			user=request.cookies.get('user_id')
 			get_db()
 			db=Database(g._database)
+			user_info=db.find_user_by_id(user)
+			role=user_info[0]
+			name=' '.join(user_info[1:])
 			d_table = db.get_join_table('Litigation')
 			return render_template("sud_dela_admin.html",
-				data=d_table)
+				data=d_table,
+				role=role,
+				name=name)
 #----------------------------------------------------------------------
 	@flask_app.route('/bank_dela', methods=['GET', 'POST'])
 	def bank_dela():
