@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="shortcut icon" href="/static/icon.png">
-        <link rel="stylesheet" href="static/bootstrap.css">
-        <link rel="stylesheet" href="static/normalize.css">
-        <link rel="stylesheet" href="static/style.css">
-        <title>{% block Title %}{% endblock %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body class='root'>
-        {% block Header %}{% endblock %}
-        <main class="container">
-          {% block Body %}{% endblock %}
-        </main>
-        <footer class="container pt-4 my-md-5 pt-md-5 border-top">
-            <div class="row">
-              <div class="col-12 col-md">
-                <img class="mb-2" src="/static/logo.jpg" alt="" width="130">
-              </div>
-              <div class="col-12 col-md">
-                <ul class="list-unstyled text-small">
-                  <small class="d-block mb-3 text-muted">Информация, находящаяся в базе, является собственностью<br>Адвокатского бюро «Казаков и Партнёры». © 2020</small>
-                </ul>
-              </div>
-              <!--div class="col-12 col-md">
-                <ul class="list-unstyled text-small">
-                </ul>
-              </div>
-              <div class="col-6 col-md">
-                <ul class="list-unstyled text-small">
-                </ul>
-              </div-->
-            </div>
-          </footer>        
-    </body>
+  <head>
+    <link rel="shortcut icon" href="static/icon.png">
+    <link rel="stylesheet" href="static/normalize.css">
+    <link rel="stylesheet" href="static/semantic.css">
+    <link rel="stylesheet" href="static/bootstrap.css">
+    <link rel="stylesheet" href="static/style.css">
+    <title>{% block Title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body class='root'>
+    {% block Header %}{% endblock %}
+    <main class="px-5 py-3">
+      {% block Body %}{% endblock %}
+    </main>
+    <footer class="container pt-4 my-md-5 pt-md-5 border-top">
+      <div class="row">
+        <div class="col-12 col-md">
+          <img class="mb-2" src="/static/logo.jpg" alt="" width="130">
+        </div>
+        <div class="col-12 col-md">
+          <ul class="list-unstyled text-small">
+            <small class="d-block mb-3 text-muted">Информация, находящаяся в базе, является собственностью<br>Адвокатского бюро «Казаков и Партнёры». © 2020</small>
+          </ul>
+        </div>
+        <!--div class="col-12 col-md">
+          <ul class="list-unstyled text-small">
+          </ul>
+        </div>
+        <div class="col-6 col-md">
+          <ul class="list-unstyled text-small">
+          </ul>
+        </div-->
+      </div>
+    </footer> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../static/semantic.js"></script>
+    <script src="../static/index.js"></script>
+  </body>
 </html>

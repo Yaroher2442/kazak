@@ -15,14 +15,14 @@
 	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
-.parent {
-	padding: 15px 30px;
-}
-
-.child:not(:last-child) {
-	margin-right: 5px;
-}
-
-.group:not(:last-child) {
-	margin-bottom: 10px;
+#file + label {
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
