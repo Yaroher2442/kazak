@@ -14,15 +14,3 @@
 	align-items: center;
 	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
-
-.parent {
-	padding: 15px 30px;
-}
-
-.child:not(:last-child) {
-	margin-right: 5px;
-}
-
-.group:not(:last-child) {
-	margin-bottom: 10px;
-}

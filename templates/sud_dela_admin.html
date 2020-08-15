@@ -22,49 +22,35 @@
     </header>
 {% endblock %}
 
-
 {% block Body %}
 	<h3 id="headline">Судебные дела</h3>
-		<form class="parent" action="/#" method="post">
-			<h5>Добавить нового клиента</h5>
-			<div class="group">
-				<input class="child" type="text" name="cl_name" placeholder="Клиент" size="21">
-				<input class="child" type="text" name="cl_name" placeholder="Практика" size="21">
-				<select class="child" size="1" lengh="25">
-					<option disabled>Руководитель проекта</option>
-					{% for item in urists %}
-						<option value="{{ item }}">{{ item }}</option>
+		<form class="py-3 px-5" action="/#" method="post">
+			<h5 class='py-2'>Добавить нового клиента</h5>
+			<div class="form-group mx-5">
+				<input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Тип дела" size="25">
+				<input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Практика" size="25">
+				<select id='multi-select' name='lawyers' class="ui fluid dropdown mb-2" multiple>
+					<option value=''>Юристы</option>
+					{% for item in data %}
+						<option value="{{ data }}">{{ data }}</option>
 					{% endfor %}
-				</select >	
-				<select class="child" lengh="25">
-					<option disabled>Юристы</option>
-					{% for item in urists %}
-						<option value="{{ item }}">{{ item }}</option>
-					{% endfor %}
-				</select>						
-			</div>
-			<div class="group">
-				<input class="child" type="text" name="cl_name" placeholder="Номер дела" size="21">
-				<input class="child" type="text" name="cl_name" placeholder="Суд" size="21">
-				<input class="child" type="text" name="cl_name" placeholder="Судья" size="21">
-				<input class="child" type="text" name="cl_name" placeholder="Комментарий" size="21">
-			</div>
-			<div class="group">
-				<div>
-					<p>Файл соглашения (PDF):</p>
-					<input class="child" type="file" name="file_sogl" placeholder="Соглашение" >
+				</select>
+				<input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Номер дела" size="25">
+				<input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Суд" size="25">
+				<input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Судья" size="25">
+				<div class="custom-file mb-2">
+					<input class="custom-file-input" id='file1' type="file" name="file1" size="25">
+					<label class='custom-file-label' for="file1">Выбрать файл Cоглашения (PDF)...</label>
 				</div>
-				<div>
-					<p>Файл счёта (PDF):</p>
-					<input class="child" type="file" name="file_chot" placeholder="Cчёт">
+				<div class="custom-file">
+					<input class="custom-file-input" id='file2' type="file" name="file2" size="25">
+					<label class='custom-file-label' for="file2">Выбрать файл Счёта (PDF)...</label>
 				</div>
-				<input class="child btn btn-success" type="submit" value="Добавить">
-			</div>	  
+			</div>
 		</form>
-	  
-		<form class="parent" action="/#" method="post">	
-			<input type="text" name="cl_name" placeholder="Клиент" size="30">
-			<input type="text" name="prac" placeholder="Практика" size="30">
+	  <form class="form-inline py-3 px-5" action="/#" method="post">	
+			<input class='form-control mr-2' type="text" name="cl_name" placeholder="Клиент" size="30">
+			<input class='form-control mr-2' type="text" name="prac" placeholder="Практика" size="30">
 			<input type="submit" class="btn btn-success" value="Найти">
 	  </form>	
   <div class="table-responsive-vertical shadow-z-1">
