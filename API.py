@@ -78,7 +78,8 @@ class API(object):
 			return render_template("sud_dela_admin.html",
 				data=d_table,
 				role=role,
-				name=name)
+				name=name,
+				urists=[1,1,1])
 #----------------------------------------------------------------------
 	@flask_app.route('/bank_dela', methods=['GET', 'POST'])
 	def bank_dela():
