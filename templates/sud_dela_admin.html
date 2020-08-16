@@ -8,12 +8,12 @@
     <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
 				<div class="w-30 d-flex align-items-center">
 					<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
-					<h6 class="my-0 pr-4 font-weight-normal">Админ </h6>
-					<h6 class="my-0 font-weight-normal">Иванов Иван Иваонович </h6>
+					<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
+					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 				</div>
         <nav class="my-2 nav-grid">
           <a class="btn btn-secondary" role="button">Судебные дела</a>
-          <a class="p-2 text-dark" href="#">Банкротные дела</a>
+          <a class="p-2 text-dark" href="/bankr_dela">Банкротные дела</a>
           <a class="p-2 text-dark" href="#">Досудебное производство</a>
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="p-2 text-dark" href="#">Несудебные дела</a>
@@ -24,54 +24,20 @@
 
 
 {% block Body %}
-	<h3 id="headline">Судебные дела</h3>
-		<form class="parent" action="/#" method="post">
-			<h5>Добавить нового клиента</h5>
-			<div class="group">
-				<input class="child" type="text" name="cl_name" placeholder="Клиент" size="21">
-				<input class="child" type="text" name="cl_name" placeholder="Практика" size="21">
-				<select class="child" size="1" lengh="25">
-					<option disabled>Руководитель проекта</option>
-					{% for item in urists %}
-						<option value="{{ data }}">{{ item }}</option>
-					{% endfor %}
-				</select >	
-				<select class="child" lengh="25">
-					<option disabled>Юристы</option>
-					{% for item in urists %}
-						<option value="{{ data }}">{{ item }}</option>
-					{% endfor %}
-				</select>						
-			</div>
-			<div class="group">
-				<input class="child" type="text" name="cl_name" placeholder="Номер дела" size="21">
-				<input class="child" type="text" name="cl_name" placeholder="Суд" size="21">
-				<input class="child" type="text" name="cl_name" placeholder="Судья" size="21">
-				<input class="child" type="text" name="cl_name" placeholder="Комментарий" size="21">
-			</div>
-			<div class="group">
-				<div>
-					<p>Файл соглашения (PDF):</p>
-					<input class="child" type="file" name="file_sogl" placeholder="Соглашение" >
-				</div>
-				<div>
-					<p>Файл счёта (PDF):</p>
-					<input class="child" type="file" name="file_chot" placeholder="Cчёт">
-				</div>
-				<input class="child btn btn-success" type="submit" value="Добавить">
-			</div>	  
-		</form>
-	  
+	<div class="container">
+		<h3 id="headline">Судебные дела</h3>
+	<a style="margin-left: 10px; margin-top: 10px;" href="/sud_dela_admin/add"><h5>Добавить судебное дело</h5></a>
 		<form class="parent" action="/#" method="post">	
-			<input type="text" name="cl_name" placeholder="Клиент" size="30">
-			<input type="text" name="prac" placeholder="Практика" size="30">
+			<input type="text" name="cl_name" placeholder="Клиент" size="30" style="margin-right: 10px;">
+			<input type="text" name="prac" placeholder="Практика" size="30" style="margin-right: 10px;">
 			<input type="submit" class="btn btn-success" value="Найти">
-	  </form>	
+	  </form>
+	</div>
   <div class="table-responsive-vertical shadow-z-1">
 	<table id="table" class="table table-hover table-mc-light-blue">
 	  <thead>
 	  	<tr>
-	  	  <th>№</th>
+		  <th>№</th>
 	  	  <th>Клиент</th>
 	  	  <th>Практика</th>
 	  	  <th>Руководитель проекта</th>
@@ -89,7 +55,7 @@
 	  	{% for line in data %}
 	  	  <tr>
 	  	  	{% for item in line %}
-	  	  	  <td>&#160;{{ item }}&#160;</td>
+	  	  	  <td>{{ item }}</td>
 	  	  	{% endfor %}
 	  	  </tr>
 	  	{% endfor %}

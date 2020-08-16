@@ -1,0 +1,63 @@
+{% extends 'base_admin.html' %}
+
+{% block Title %}
+	Банкротные дела
+{% endblock %}
+
+{% block Header %}
+<header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <div class="w-30 d-flex align-items-center">
+    <h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
+    <h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
+    <h6 class="my-0 font-weight-normal">{{ name }}</h6>
+  </div>
+  <nav class="my-2 nav-grid">
+    <a class="p-2 text-dark" href="/sud_dela_admin">Судебные дела</a>
+    <a class="btn btn-secondary" role="button">Банкротные дела</a>
+    <a class="p-2 text-dark" href="#">Досудебное производство</a>
+    <a class="p-2 text-dark" href="#">Исполнительное производство</a>
+    <a class="p-2 text-dark" href="#">Несудебные дела</a>
+    <a class="p-2 text-dark" href="#">Сотрудники</a>
+  </nav>
+</header>
+{% endblock %}
+
+{% block Body %}
+  <div class="container">
+    <h3 id="headline">Банкротные дела</h3>
+    <a style="margin-left: 10px; margin-top: 10px;" href="/bankr_dela/add"><h5>Добавить банкротное дело</h5></a>
+    <form class="parent" action="/#" method="post">	
+      <input type="text" name="cl_name" placeholder="Клиент" size="30" style="margin-right: 10px;">
+      <input type="text" name="prac" placeholder="Практика" size="30" style="margin-right: 10px;">
+      <input type="submit" class="btn btn-success" value="Найти">
+    </form>
+  </div>
+  <div class="table-responsive-vertical shadow-z-1">
+    <table id="table" class="table table-hover table-mc-light-blue">
+      <thead>
+        <tr>
+          <th>№</th>
+          <th>Клиент</th>
+          <th>Практика</th>
+          <th>Руководитель проекта</th>
+          <th>Юристы</th>
+          <th>Номер банкротного дела</th>
+          <th>Арбитражный управляющий</th>
+          <th>Соглашение</th>
+          <th>Счёт</th>
+          <th>Откуда пришёл клиент</th>
+          <th>Комментарий</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for line in data %}
+          <tr>
+            {% for item in line %}
+              <td>{{ item }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>  
+{% endblock %}
