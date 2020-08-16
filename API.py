@@ -49,8 +49,10 @@ class API(object):
 	def log():
 		if request.method == 'GET':
 			get_db()
-			print(g._database)
-			return render_template('auth.html')
+			if request.cookies.get('user_id') == None:
+				return render_template('auth.html')
+			else:
+				return redirect('/sud_dela')
 		else:
 			return abort(401)
 
@@ -61,6 +63,14 @@ class API(object):
 		else:
 			print(request.cookies.get('user_id'))
 			return render_template("index_admin.html")
+
+
+	@flask_app.route('/add_delo', methods=['GET', 'POST'])
+	def add_delo():
+		if request.method == 'POST':
+			pass
+		else:
+			return render_template("add_delo.html")
 #---------------------------------------------------------------------
 	@flask_app.route('/sud_dela', methods=['GET', 'POST'])
 	def sud_dela():
@@ -78,7 +88,8 @@ class API(object):
 			return render_template("sud_dela_admin.html",
 				data=d_table,
 				role=role,
-				name=name)
+				name=name,
+				urists=[1,2,3])
 #----------------------------------------------------------------------
 	@flask_app.route('/bank_dela', methods=['GET', 'POST'])
 	def bank_dela():
