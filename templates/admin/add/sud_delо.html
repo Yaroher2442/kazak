@@ -27,7 +27,12 @@
         <h5 class='p-2'>Добавить новое судебное дело</h5>
         <div class="form-group mx-5">
             <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Клиент" size="25">
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Практика" size="25">
+            <input class='form-control mr-2' type="text" list='practice' name="prac" placeholder="Практика" size="30" style="margin-bottom: 8px;">
+			<datalist id='practice'>
+				{% for item in practice %}
+					<option value="{{ item }}">{{ item }}</option>
+				{% endfor %}
+			</datalist>
             <select id='multi-select' name='lawyers' class="ui fluid dropdown mb-2" multiple>
                 <option value=''>Юристы</option>
                 {% for item in urists %}
