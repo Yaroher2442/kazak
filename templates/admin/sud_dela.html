@@ -65,14 +65,12 @@
 			{% for item in line %}
 			  {% if loop.index == 9 %}
 			  <td bgcolor="{{ colors[index] }}">{{ item }}</td>
-			  {% endif %}
-	  	  	  <td>{{ item }}</td>
-	  	  	{% endfor %}
+			  {% else %}
+                <td>{{ item }}</td>
+              {% endif %}
+            {% endfor %}
 	  	  </tr>
 	  	{% endfor %}
 	  </tbody>
 	</table>
 {% endblock %}
-
-
-
