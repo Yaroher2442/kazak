@@ -12,13 +12,13 @@
 					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 				</div>
         <nav class="my-2 nav-grid">
-          <a class="btn btn-secondary" role="button">Судебные дела</a>
+          <a class="p-2 text-dark" href="#">Судебные дела</a>
           <a class="p-2 text-dark" href="#">Банкротные дела</a>
           <a class="p-2 text-dark" href="#">Досудебное производство</a>
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="p-2 text-dark" href="#">Несудебные дела</a>
           <a class="p-2 text-dark" href="#">Сотрудники</a>
-          <a class="p-2 text-dark" href="#">Добавить нового клиента</a>
+          <a class="btn btn-secondary" role="button">Добавить нового клиента</a>
         </nav>
     </header>
 {% endblock %}
@@ -28,8 +28,9 @@
         <h5 class='p-2'>Добавить нового клиента</h5>
         <div class="form-group mx-5">
             <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Клиент" size="25">
-            <select class="ui fluid dropdown mb-2" >
-                {% for item in types%}
+            <select id='select' name='delo_type' class="ui fluid dropdown mb-2">
+                <option value=''>Тип дела</option>
+                {% for item in types %}
                     <option value="{{ item }}">{{ item }}</option>
                 {% endfor %}
             </select>
