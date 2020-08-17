@@ -61,8 +61,13 @@
       <tbody>
         {% for line in data %}
           <tr>
+            {% set index = loop.index %}
             {% for item in line %}
-              <td>{{ item }}</td>
+              {% if loop.index == 8 %}
+                <td bgcolor="{{ colors[index] }}">{{ item }}</td>
+              {% else %}
+                <td>{{ item }}</td>
+              {% endif %}
             {% endfor %}
           </tr>
         {% endfor %}
