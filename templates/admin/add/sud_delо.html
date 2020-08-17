@@ -1,7 +1,7 @@
-{% extends 'base_admin.html' %}
+{% extends 'admin/base.html' %}
 
 {% block Title %}
-    Добавить нового клиента
+    Новое судебное дело
 {% endblock %}
 
 {% block Header %}
@@ -12,28 +12,27 @@
 					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 				</div>
         <nav class="my-2 nav-grid">
-          <a class="btn btn-secondary" role="button">Судебные дела</a>
+            <a class="btn btn-secondary" role="button">Судебные дела</a>
           <a class="p-2 text-dark" href="#">Банкротные дела</a>
           <a class="p-2 text-dark" href="#">Досудебное производство</a>
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="p-2 text-dark" href="#">Несудебные дела</a>
           <a class="p-2 text-dark" href="#">Сотрудники</a>
-          <a class="p-2 text-dark" href="#">Добавить нового клиента</a>
         </nav>
     </header>
 {% endblock %}
 
 {% block Body %}
-    <form class="py-3 px-5" action="/add_delo" method="post" enctype="multipart/form-data">
-        <h5 class='p-2'>Добавить нового клиента</h5>
+    <form class="py-3 px-5" action="/add_delo" method="post">
+        <h5 class='p-2'>Добавить новое судебное дело</h5>
         <div class="form-group mx-5">
             <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Клиент" size="25">
-            <select class="ui fluid dropdown mb-2" >
-                {% for item in types%}
-                    <option value="{{ item }}">{{ item }}</option>
-                {% endfor %}
-            </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Практика" size="25">
+            <input class='form-control mr-2' type="text" list='practice' name="prac" placeholder="Практика" size="30" style="margin-bottom: 8px;">
+			<datalist id='practice'>
+				{% for item in practice %}
+					<option value="{{ item }}">{{ item }}</option>
+				{% endfor %}
+			</datalist>
             <select id='multi-select' name='lawyers' class="ui fluid dropdown mb-2" multiple>
                 <option value=''>Юристы</option>
                 {% for item in urists %}
@@ -47,11 +46,16 @@
                 <input class="custom-file-input" id='file1' type="file" name="file1" size="25">
                 <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
             </div>
-            <div class="custom-file mb-2">
+            <div class="custom-file mb-2" style="margin-bottom: 15px;">
                 <input class="custom-file-input" id='file2' type="file" name="file2" size="25">
                 <label class='custom-file-label' for="file2">Счёт (PDF)...</label>
+                <p style="margin-top: 10px;">
+                    <input type="radio" name="status" value="#008000"> Оплачен &nbsp;
+                    <input type="radio" name="status" value="#FFFF00"> Внесена предоплата &nbsp;
+                    <input type="radio" name="status" value="#FF0000"> Не оплачен &nbsp;
+                </p>
             </div>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Откуда пришёл клиент" size="25">
+            <input style="margin-top: 15px;" class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Откуда пришёл клиент" size="25">
             <input class="d-block mb-3 w-100 form-control" type="text" name="cl_name" placeholder="Комментарий" size="25">
             <button class='btn btn-success' type="submit">Добавить</button>
         </div>

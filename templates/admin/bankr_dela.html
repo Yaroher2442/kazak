@@ -18,20 +18,29 @@
     <a class="p-2 text-dark" href="#">Исполнительное производство</a>
     <a class="p-2 text-dark" href="#">Несудебные дела</a>
     <a class="p-2 text-dark" href="#">Сотрудники</a>
+    <a class="p-2 text-dark" href="#">Добавить нового клиента</a>
   </nav>
 </header>
 {% endblock %}
 
 {% block Body %}
-  <div class="container">
-    <h3 id="headline">Банкротные дела</h3>
-    <a style="margin-left: 10px; margin-top: 10px;" href="/bankr_dela/add"><h5>Добавить банкротное дело</h5></a>
-    <form class="parent" action="/#" method="post">	
-      <input type="text" name="cl_name" placeholder="Клиент" size="30" style="margin-right: 10px;">
-      <input type="text" name="prac" placeholder="Практика" size="30" style="margin-right: 10px;">
-      <input type="submit" class="btn btn-success" value="Найти">
-    </form>
-  </div>
+  <h3 id="headline">Банкротные дела</h3>
+  <a style="margin-bottom: 10px; margin-top: 10px;" href="#">Добавить новое банкротное дело</a>
+  <form class="form-inline py-3 px-5" action="/#" method="post">	
+    <input class='form-control mr-2' type="search" list='client' name="cl_name" placeholder="Клиент" size="30">
+    <datalist id='client'>
+      {% for item in serch_clients %}
+        <option value="{{ item }}">{{ item }}</option>
+      {% endfor %}
+    </datalist>
+    <input class='form-control mr-2' type="search" list='practice' name="prac" placeholder="Практика" size="30">
+    <datalist id='practice'>
+      {% for item in serch_practice %}
+        <option value="{{ item }}">{{ item }}</option>
+      {% endfor %}
+    </datalist>
+    <input type="submit" class="btn btn-success" value="Найти">
+  </form>
   <div class="table-responsive-vertical shadow-z-1">
     <table id="table" class="table table-hover table-mc-light-blue">
       <thead>
