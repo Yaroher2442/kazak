@@ -65,19 +65,32 @@ class API(object):
 			return render_template("index_admin.html")
 
 
+#---------------------------------------------------------------------
 	@flask_app.route('/add_delo', methods=['GET', 'POST'])
 	def add_delo():
 		if request.method == 'POST':
 			pass
 		else:
-			return render_template("add_delo.html")
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
+			else:
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+				return render_template("add_delо_admin.html",
+					types=[1,2,3],
+					role=role,
+					name=name,
+					urists=[1,2,3])
 #---------------------------------------------------------------------
 	@flask_app.route('/sud_dela', methods=['GET', 'POST'])
 	def sud_dela():
 		if request.cookies.get('user_id') == None:
 			return redirect('/login')
 		else:
-			print(request.cookies.get('user_id'))
 			user=request.cookies.get('user_id')
 			get_db()
 			db=Database(g._database)
@@ -98,7 +111,7 @@ class API(object):
 		else:
 			print(request.cookies.get('user_id'))
 			return render_template("bank_dela_admin.html")
-
+#---------------------------------------------------------------------
 	@flask_app.route('/pre_sud', methods=['GET', 'POST'])
 	def pre_sud():
 		if request.cookies.get('user_id') == None:
@@ -106,7 +119,7 @@ class API(object):
 		else:
 			print(request.cookies.get('user_id'))
 			return render_template("pre_sud_admin.html")
-
+#---------------------------------------------------------------------
 	@flask_app.route('/none_sud', methods=['GET', 'POST'])
 	def none_sud():
 		if request.cookies.get('user_id') == None:
@@ -114,7 +127,7 @@ class API(object):
 		else:
 			print(request.cookies.get('user_id'))
 			return render_template("none_sud_admin.html")
-	
+#---------------------------------------------------------------------	
 	@flask_app.route('/employees', methods=['GET', 'POST'])
 	def employees():
 		if request.cookies.get('user_id') == None:
@@ -122,7 +135,7 @@ class API(object):
 		else:
 			print(request.cookies.get('user_id'))
 			return render_template("employees.html")
-
+#---------------------------------------------------------------------
 	@flask_app.route('/login' , methods=['GET' , 'POST'])
 	def login():
 		if request.method == 'POST':     
