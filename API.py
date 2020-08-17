@@ -26,8 +26,9 @@ def get_db():
 
 flask_app = Flask(__name__)
 flask_app.secret_key = os.urandom(24)
-flask_app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(),'U_files')
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+flask_app.config['UPLOAD_FOLDER_AGREE'] = os.path.join(os.getcwd(),'U_files','agreement')
+flask_app.config['UPLOAD_FOLDER_PAY'] = os.path.join(os.getcwd(),'U_files','payment')
+ALLOWED_EXTENSIONS = {'pdf','jpg','jpeg'}
 
 @flask_app.teardown_appcontext
 def teardown_db(exception):
@@ -69,22 +70,30 @@ class API(object):
 			return redirect('/login')
 		else:
 			return render_template("index_admin.html")
-
-
 #---------------------------------------------------------------------
-	@flask_app.route('/add_delo', methods=['GET', 'POST'])
-	def add_delo():
+	@flask_app.route('/add_sud_delo', methods=['GET', 'POST'])
+	def add_sud_delo():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
-			file = request.files["file1"]
-			print(file)
-			if file and allowed_file(file.filename):
-				filename = secure_filename(file.filename)
-				file.save(os.path.join(flask_app.config['UPLOAD_FOLDER'], filename))
-				return redirect('/add_delo')
-			else: 
-				return redirect('/add_delo')
-			return redirect('/add_delo')
+			file_agree = request.files["file1"]
+			file_pay = request.files["file2"]
+			if file_agree or file_pay :
+				if file_agree and allowed_file(file_agree.filename):
+					filename = secure_filename(file_agree.filename)
+					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER_AGREE'], filename))
+				else: 
+					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файла соглашения')
+				if file_pay and allowed_file(file_pay.filename):
+					filename = secure_filename(file_pay.filename)
+					file_pay.save(os.path.join(flask_app.config['UPLOAD_FOLDER_PAY'], filename))
+				else: 
+					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файла счёта')
+				print(request.form.to_dict(flat=False))
+				#######
+				return redirect('/add_sud_delo')
+			else:
+				return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Не загружены файлы')
+			
 		else:
 			if request.cookies.get('user_id') == None:
 				return redirect('/login')
@@ -95,11 +104,24 @@ class API(object):
 				user_info=db.find_user_by_id(user)
 				role=user_info[0]
 				name=' '.join(user_info[1:])
-				return render_template("add_delо_admin.html",
-					types=[1,2,3],
+				return render_template('admin/add/add_sud_delo.html',
 					role=role,
 					name=name,
 					urists=[1,2,3])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #---------------------------------------------------------------------
 	@flask_app.route('/sud_dela', methods=['GET', 'POST'])
 	def sud_dela():
