@@ -10,6 +10,8 @@ from flask import Flask , request , abort , redirect , Response ,url_for ,render
 import sqlite3
 from flask import g
 
+from werkzeug.utils import secure_filename
+
 from bs4 import BeautifulSoup
 
 from DB import Database
@@ -24,7 +26,8 @@ def get_db():
 
 flask_app = Flask(__name__)
 flask_app.secret_key = os.urandom(24)
-
+flask_app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(),'U_files')
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 @flask_app.teardown_appcontext
 def teardown_db(exception):
@@ -39,6 +42,10 @@ def html_error_replacer(file_name,error):
 		err_tag =soup.find(id='error')
 		err_tag.string = error
 		return render_template_string(soup.prettify())
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 class API(object):
 	def __init__(self, arg):
@@ -61,7 +68,6 @@ class API(object):
 		if request.cookies.get('user_id') == None:
 			return redirect('/login')
 		else:
-			print(request.cookies.get('user_id'))
 			return render_template("index_admin.html")
 
 
@@ -69,7 +75,16 @@ class API(object):
 	@flask_app.route('/add_delo', methods=['GET', 'POST'])
 	def add_delo():
 		if request.method == 'POST':
-			pass
+			# image = request.files.get('file1')
+			file = request.files["file1"]
+			print(file)
+			if file and allowed_file(file.filename):
+				filename = secure_filename(file.filename)
+				file.save(os.path.join(flask_app.config['UPLOAD_FOLDER'], filename))
+				return redirect('/add_delo')
+			else: 
+				return redirect('/add_delo')
+			return redirect('/add_delo')
 		else:
 			if request.cookies.get('user_id') == None:
 				return redirect('/login')

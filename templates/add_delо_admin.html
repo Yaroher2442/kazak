@@ -24,7 +24,7 @@
 {% endblock %}
 
 {% block Body %}
-    <form class="py-3 px-5" action="/add_delo" method="post">
+    <form class="py-3 px-5" action="/add_delo" method="post" enctype="multipart/form-data">
         <h5 class='p-2'>Добавить нового клиента</h5>
         <div class="form-group mx-5">
             <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Клиент" size="25">
