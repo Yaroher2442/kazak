@@ -32,7 +32,13 @@
 				{% for item in practice %}
 					<option value="{{ item }}">{{ item }}</option>
 				{% endfor %}
-			</datalist>
+            </datalist>
+            <input class='form-control mr-2' type="text" list='urists' name="manager" placeholder="Руководитель проекта" style="margin-bottom: 8px;">
+            <datalist id='urists'>
+				{% for item in urists %}
+					<option value="{{ item }}">{{ item }}</option>
+				{% endfor %}
+            </datalist>
             <select id='multi-select' name='lawyers' class="ui fluid dropdown mb-2" multiple>
                 <option value=''>Юристы</option>
                 {% for item in urists %}
