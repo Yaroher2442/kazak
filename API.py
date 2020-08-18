@@ -16,6 +16,8 @@ from bs4 import BeautifulSoup
 
 from DB import Database
 
+from pprint import pprint
+
 DATAFILE=os.path.join(os.getcwd(),'db','data_file.db')
 def get_db():
     db = getattr(g, '_database', None)
@@ -75,19 +77,19 @@ class API(object):
 		if request.method == 'POST':
 			# image = request.files.get('file1')
 			file_agree = request.files["Agreement"]
-			file_pay = request.files["Payment"]
-			if file_agree or file_pay :
+			file_invoice = request.files["Invoice"]
+			if file_agree or file_invoice :
 				if file_agree and allowed_file(file_agree.filename):
 					filename = secure_filename(file_agree.filename)
 					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER_AGREE'], filename))
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файла соглашения')
-				if file_pay and allowed_file(file_pay.filename):
-					filename = secure_filename(file_pay.filename)
-					file_pay.save(os.path.join(flask_app.config['UPLOAD_FOLDER_PAY'], filename))
+				if file_invoice and allowed_file(file_invoice.filename):
+					filename = secure_filename(file_invoice.filename)
+					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER_PAY'], filename))
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файла счёта')
-				print(request.form.to_dict(flat=False))
+				pprint(request.form.to_dict(flat=False))
 				#######pytho
 				return redirect('/add_sud_delo')
 			else:

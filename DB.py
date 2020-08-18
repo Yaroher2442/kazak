@@ -66,7 +66,7 @@ class Database(object):
             conn=self.connect
             c = conn.cursor()
             if table_name == 'Affairs':
-            	c.execute("INSERT INTO Affairs VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+            	c.execute("INSERT INTO Affairs VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
                     ,data)
             if table_name == 'Bankruptcy':
             	c.execute("INSERT INTO Bankruptcy VALUES (?,?,?)"

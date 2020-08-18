@@ -27,71 +27,71 @@
     <form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
         <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое судебное дело</h5>
         <div class="form-group mx-5">
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Клиент" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
             <div class="row">
                 <p style="margin-left: 20px;">Практика:</p>
                 <div class="col-6 col-md">
                   <ul class="list-unstyled text-small">
-                    <li><input type="checkbox" name="prac" value="Энергетическое право"> Энергетическое право</li>
-                    <li><input type="checkbox" name="prac" value="Банкротство"> Банкротство</li>
-                    <li><input type="checkbox" name="prac" value="Налоговое право"> Налоговое право</li>
-                    <li><input type="checkbox" name="prac" value="Административное право"> Административное право</li>
-                    <li><input type="checkbox" name="prac" value="Корпоративное право"> Корпоративное право</li>
-                    <li><input type="checkbox" name="prac" value="Уголовное право"> Уголовное право</li>
-                    <li><input type="checkbox" name="prac" value="Недвижимость, инфестиции и строительство"> Недвижимость, инфестиции и строительство</li>
-                    <li><input type="checkbox" name="prac" value="Земельное право"> Земельное право</li>
+                    <li><input type="checkbox" name="Pratice" value="Энергетическое право"> Энергетическое право</li>
+                    <li><input type="checkbox" name="Pratice" value="Банкротство"> Банкротство</li>
+                    <li><input type="checkbox" name="Pratice" value="Налоговое право"> Налоговое право</li>
+                    <li><input type="checkbox" name="Pratice" value="Административное право"> Административное право</li>
+                    <li><input type="checkbox" name="Pratice" value="Корпоративное право"> Корпоративное право</li>
+                    <li><input type="checkbox" name="Pratice" value="Уголовное право"> Уголовное право</li>
+                    <li><input type="checkbox" name="Pratice" value="Недвижимость, инфестиции и строительство"> Недвижимость, инфестиции и строительство</li>
+                    <li><input type="checkbox" name="Pratice" value="Земельное право"> Земельное право</li>
                   </ul>
                 </div>
                 <div class="col-6 col-md">
                   <ul class="list-unstyled text-small">
-                    <li><input type="checkbox" name="prac" value="Таможенное право"> Таможенное право</li>
-                    <li><input type="checkbox" name="prac" value="Вексельное право. Ценные бумаги"> Вексельное право. Ценные бумаги</li>
-                    <li><input type="checkbox" name="prac" value="Семейное и наследственное право"> Семейное и наследственное право</li>
-                    <li><input type="checkbox" name="prac" value="Регистрация прав и субъектов права"> Регистрация прав и субъектов права</li>
-                    <li><input type="checkbox" name="prac" value="Трудовое право"> Трудовое право</li>
-                    <li><input type="checkbox" name="prac" value="Жилищное право"> Жилищное право</li>
-                    <li><input type="checkbox" name="prac" value="Интеллектуальное право"> Интеллектуальное право</li>
-                    <li><input type="checkbox" name="prac" value="Спортивное право"> Спортивное право</li>
+                    <li><input type="checkbox" name="Pratice" value="Таможенное право"> Таможенное право</li>
+                    <li><input type="checkbox" name="Pratice" value="Вексельное право. Ценные бумаги"> Вексельное право. Ценные бумаги</li>
+                    <li><input type="checkbox" name="Pratice" value="Семейное и наследственное право"> Семейное и наследственное право</li>
+                    <li><input type="checkbox" name="Pratice" value="Регистрация прав и субъектов права"> Регистрация прав и субъектов права</li>
+                    <li><input type="checkbox" name="Pratice" value="Трудовое право"> Трудовое право</li>
+                    <li><input type="checkbox" name="Pratice" value="Жилищное право"> Жилищное право</li>
+                    <li><input type="checkbox" name="Pratice" value="Интеллектуальное право"> Интеллектуальное право</li>
+                    <li><input type="checkbox" name="Pratice" value="Спортивное право"> Спортивное право</li>
                   </ul>
                 </div>
             </div>
-            <input class='form-control mr-2' type="text" list='urists' name="manager" placeholder="Руководитель проекта" style="margin-bottom: 8px;" required>
+            <input class='form-control mr-2' type="text" list='urists' name="Project_Manager" placeholder="Руководитель проекта" style="margin-bottom: 8px;" required>
             <datalist id='urists'>
 				{% for item in urists %}
 					<option value="{{ item }}">{{ item }}</option>
 				{% endfor %}
             </datalist>
-            <select id='multi-select' name='lawyers' class="ui fluid dropdown mb-2" multiple required>
+            <select id='multi-select' name='Lawyers' class="ui fluid dropdown mb-2" multiple required>
                 <option value=''>Юристы</option>
                 {% for item in urists %}
                     <option value="{{ item }}">{{ item }}</option>
                 {% endfor %}
             </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Номер дела" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Суд" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Судья" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Case_number" placeholder="Номер дела" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Tribunal" placeholder="Суд" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Judge" placeholder="Судья" required>
             <div class="custom-file mb-2">
-                <input class="custom-file-input" id='file1' type="file" name="file1" required >
+                <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
                 <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
             </div>
             <div class="custom-file mb-2" style="margin-bottom: 15px;">
-                <input class="custom-file-input" id='file2' type="file" name="file2" required >
+                <input class="custom-file-input" id='file2' type="file" name="Invoice" required >
                 <label class='custom-file-label' for="file2">Счёт (PDF)...</label>
             </div>
                 <p style="margin-top: 10px;">
-                    <input type="radio" name="status" value="#008000" required> Оплачен &nbsp;
-                    <input type="radio" name="status" value="#FFFF00"> Внесена предоплата &nbsp;
-                    <input type="radio" name="status" value="#FF0000"> Не оплачен &nbsp;
+                    <input type="radio" name="Invoice_status" value="#008000" required> Оплачен &nbsp;
+                    <input type="radio" name="Invoice_status" value="#FFFF00"> Внесена предоплата &nbsp;
+                    <input type="radio" name="Invoice_status" value="#FF0000"> Не оплачен &nbsp;
                 </p>
             </p>
             <p>Откуда пришёл клиент: &nbsp;
-                <input type="radio" name="source" value="Сайт" required> Сайт &nbsp;
-                <input type="radio" name="source" value="По телефону"> По телефону &nbsp;
-                <input type="radio" name="source" value="По рекомендации"> По рекомендации &nbsp;
-                <input type="radio" name="source" value="От сотрудника"> От сотрудника &nbsp;
-                <input type="radio" name="source" value="Другое"> Другое &nbsp;
+                <input type="radio" name="Came_from" value="Сайт" required> Сайт &nbsp;
+                <input type="radio" name="Came_from" value="По телефону"> По телефону &nbsp;
+                <input type="radio" name="Came_from" value="По рекомендации"> По рекомендации &nbsp;
+                <input type="radio" name="Came_from" value="От сотрудника"> От сотрудника &nbsp;
+                <input type="radio" name="Came_from" value="Другое"> Другое &nbsp;
             </p>
-            <input class="d-block mb-3 w-100 form-control" type="text" name="cl_name" placeholder="Комментарий" required>
+            <input class="d-block mb-3 w-100 form-control" type="text" name="Comment" placeholder="Комментарий" required>
             <label style="display: none; color: red" id = "error">error_here</label>
             <script>
                 if (document.getElementById("error").textContent != "error_here") {
