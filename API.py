@@ -36,7 +36,6 @@ def teardown_db(exception):
     if db is not None:
         db.close()
 
-
 def html_error_replacer(file_name,error):
 		old_html_str=''
 		soup = BeautifulSoup(open(os.path.join(os.getcwd(),'templates', file_name), 'r' , encoding= 'utf-8'), "lxml")
@@ -75,8 +74,8 @@ class API(object):
 	def add_sud_delo():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
-			file_agree = request.files["file1"]
-			file_pay = request.files["file2"]
+			file_agree = request.files["Agreement"]
+			file_pay = request.files["Payment"]
 			if file_agree or file_pay :
 				if file_agree and allowed_file(file_agree.filename):
 					filename = secure_filename(file_agree.filename)
@@ -89,7 +88,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файла счёта')
 				print(request.form.to_dict(flat=False))
-				#######
+				#######pytho
 				return redirect('/add_sud_delo')
 			else:
 				return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Не загружены файлы')

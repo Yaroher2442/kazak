@@ -27,34 +27,34 @@
     <form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
         <h5 class='p-2'>Добавить новое судебное дело</h5>
         <div class="form-group mx-5">
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Клиент" size="25" required>
-            <input class='form-control mr-2' type="text" list='practice' name="prac" placeholder="Практика" size="30" style="margin-bottom: 8px;" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" size="25" required>
+            <input class='form-control mr-2' type="text" list='practice' name="Practice" placeholder="Практика" size="30" style="margin-bottom: 8px;" required>
 			<datalist id='practice'>
 				{% for item in practice %}
 					<option value="{{ item }}">{{ item }}</option>
 				{% endfor %}
             </datalist>
-            <input class='form-control mr-2' type="text" list='urists' name="manager" placeholder="Руководитель проекта" style="margin-bottom: 8px;" required>
+            <input class='form-control mr-2' type="text" list='urists' name="Project_manager" placeholder="Руководитель проекта" style="margin-bottom: 8px;" required>
             <datalist id='urists'>
 				{% for item in urists %}
 					<option value="{{ item }}">{{ item }}</option>
 				{% endfor %}
             </datalist>
-            <select id='multi-select' name='lawyers' class="ui fluid dropdown mb-2" multiple required>
+            <select id='multi-select' name='Lawyers' class="ui fluid dropdown mb-2" multiple required>
                 <option value=''>Юристы</option>
                 {% for item in urists %}
                     <option value="{{ item }}">{{ item }}</option>
                 {% endfor %}
             </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Номер дела" size="25" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Суд" size="25" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Судья" size="25" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Case_number" placeholder="Номер дела" size="25" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Tribunal" placeholder="Суд" size="25" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Judge" placeholder="Судья" size="25" required>
             <div class="custom-file mb-2">
-                <input class="custom-file-input" id='file1' type="file" name="file1" size="25" required >
+                <input class="custom-file-input" id='file1' type="file" name="Agreement" size="25" required >
                 <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
             </div>
             <div class="custom-file mb-2" style="margin-bottom: 15px;">
-                <input class="custom-file-input" id='file2' type="file" name="file2" size="25" required >
+                <input class="custom-file-input" id='file2' type="file" name="Payment" size="25" required >
                 <label class='custom-file-label' for="file2">Счёт (PDF)...</label>
             </div>
                 <p style="margin-top: 10px;">
@@ -62,8 +62,8 @@
                     <input type="radio" name="status" value="#FFFF00"> Внесена предоплата &nbsp;
                     <input type="radio" name="status" value="#FF0000"> Не оплачен &nbsp;
                 </p>
-            <input style="margin-top: 15px;" class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Откуда пришёл клиент" size="25" required>
-            <input class="d-block mb-3 w-100 form-control" type="text" name="cl_name" placeholder="Комментарий" size="25" required>
+            <input style="margin-top: 15px;" class="d-block mb-2 w-100 form-control" type="text" name="Came_from" placeholder="Откуда пришёл клиент" size="25" required>
+            <input class="d-block mb-3 w-100 form-control" type="text" name="Comment" placeholder="Комментарий" size="25" required>
             <label style="display: none; color: red" id = "error">error_here</label>
             <script>
                 if (document.getElementById("error").textContent != "error_here") {
