@@ -115,7 +115,7 @@ class API(object):
 					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
 				adding_dict=request.form.to_dict(flat=False)
-				print(adding_dict)
+				pprint(adding_dict)
 				list_to_Affairs=[]
 				for margin in tables_sets('Affairs'):
 					if margin == 't_id':
@@ -134,15 +134,17 @@ class API(object):
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					else:
 						list_to_Affairs.append(adding_dict[margin][0])
-				pprint(list_to_Affairs)
 				db.insert_tables('Affairs',tuple(list_to_Affairs))
 
 				list_to_Litigation=[]
 				for margin in tables_sets('Litigation'):
+					print(margin)
 					if margin == 't_id':
 						list_to_Litigation.append(new_t_id)
+					else:
+						list_to_Litigation.append(adding_dict[margin][0])
 				pprint(list_to_Litigation)
-				# db.insert_tables('Litigation',tuple(list_to_Litigation))
+				db.insert_tables('Litigation',tuple(list_to_Litigation))
 
 				return redirect('/sud_dela')
 			else:
@@ -178,15 +180,28 @@ class API(object):
 			role=user_info[0]
 			name=' '.join(user_info[1:])
 			d_table = db.get_join_table('Litigation')
-			colors=[]
-			for i in d_table:
-				colors.append(i.pop(-1))
-			return render_template("admin/sud_dela.html",
+			if d_table != False:
+				colors=[]
+				for i in d_table:
+					colors.append(i.pop(-1))
+				for item in d_table:
+					buf=item[2]
+					item[2]=';\n'.join(json.loads(buf))
+				return render_template("admin/sud_dela.html",
 				data=d_table,
 				role=role,
 				name=name,
 				urists=[1,2,3],
 				colors=colors)
+			else:
+				return render_template("admin/sud_dela.html",
+				data=[],
+				role=role,
+				name=name,
+				urists=[1,2,3],
+				colors=[])
+			
+
 #----------------------------------------------------------------------
 	@flask_app.route('/bank_dela', methods=['GET', 'POST'])
 	def bank_dela():
