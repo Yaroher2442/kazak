@@ -47,8 +47,9 @@ def html_error_replacer(file_name,error):
 
 def success_replacer(file_name,success):
 		soup = BeautifulSoup(open(os.path.join(os.getcwd(),'templates', file_name), 'r' , encoding= 'utf-8'), "lxml")
-		err_tag =soup.find('label',id='success_here')
-		err_tag.string = success
+		success_tag =soup.find('p',id='success_here')
+		success_tag.string = success
+		pprint(soup)
 		return render_template_string(soup.prettify())
 
 def allowed_file(filename):
