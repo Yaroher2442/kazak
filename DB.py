@@ -102,7 +102,6 @@ class Database(object):
             else:
                 dela_list=[]
                 for i in results:
-                    print(i)
                     l_list=[results.index(i)+1]+list(i[2:7])+list(i[13:])+list(i[7:12])
                     l_list.pop(2)
                     dela_list.append(l_list)

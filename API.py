@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os, copy, sys, time, uuid ,hashlib
+import os, copy, sys, time, uuid ,hashlib 
 import json
 import hashlib, requests, json
 import urllib.request
@@ -28,8 +28,9 @@ def get_db():
 
 flask_app = Flask(__name__)
 flask_app.secret_key = os.urandom(24)
-flask_app.config['UPLOAD_FOLDER_AGREE'] = os.path.join(os.getcwd(),'U_files','agreement')
-flask_app.config['UPLOAD_FOLDER_PAY'] = os.path.join(os.getcwd(),'U_files','payment')
+flask_app.config['UPLOAD_FOLDER']=os.path.join(os.getcwd(),'U_files')
+# flask_app.config['UPLOAD_FOLDER_AGREE'] = os.path.join(os.getcwd(),'U_files','agreement')
+# flask_app.config['UPLOAD_FOLDER_PAY'] = os.path.join(os.getcwd(),'U_files','payment')
 ALLOWED_EXTENSIONS = {'pdf','jpg','jpeg'}
 
 @flask_app.teardown_appcontext
@@ -39,16 +40,31 @@ def teardown_db(exception):
         db.close()
 
 def html_error_replacer(file_name,error):
-		old_html_str=''
 		soup = BeautifulSoup(open(os.path.join(os.getcwd(),'templates', file_name), 'r' , encoding= 'utf-8'), "lxml")
-		err_tag =soup.find(id='error')
+		err_tag =soup.find('label',id='error')
 		err_tag.string = error
+		return render_template_string(soup.prettify())
+
+def success_replacer(file_name,success):
+		soup = BeautifulSoup(open(os.path.join(os.getcwd(),'templates', file_name), 'r' , encoding= 'utf-8'), "lxml")
+		err_tag =soup.find('label',id='success_here')
+		err_tag.string = success
 		return render_template_string(soup.prettify())
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
+def tables_sets(table_name):
+	tables={
+	'Affairs':['t_id','u_id','Client','Type','Practice','Project_Manager','Lawyers','Agreement','Invoice','Came_from','Comment','Invoice_status'],
+	'Litigation':['t_id','Case_number','Tribunal','Judge'],
+	'Bankruptcy':[],
+	'Pre_trial_settlement':[],
+	'Enforcement_proceedings':[],
+	'Non_judicial':[],
+	'Сourts':[]
+	}
+	return tables[table_name]
 class API(object):
 	def __init__(self, arg):
 		super(API, self).__init__()
@@ -76,26 +92,62 @@ class API(object):
 	def add_sud_delo():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
+			new_t_id=str(uuid.uuid4())
+			get_db()
+			db=Database(g._database)
+
 			file_agree = request.files["Agreement"]
 			file_invoice = request.files["Invoice"]
-			if file_agree or file_invoice :
-				if file_agree and allowed_file(file_agree.filename):
-					filename = secure_filename(file_agree.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER_AGREE'], filename))
+			if file_agree and file_invoice :					
+				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					else:
+						return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Такие файлы уже существуют')
+					file_agree_filename = secure_filename(file_agree.filename)
+					file_invoice_filename = secure_filename(file_invoice.filename)
+					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
-					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файла соглашения')
-				if file_invoice and allowed_file(file_invoice.filename):
-					filename = secure_filename(file_invoice.filename)
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER_PAY'], filename))
-				else: 
-					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файла счёта')
-				pprint(request.form.to_dict(flat=False))
-				#######pytho
-				return redirect('/add_sud_delo')
+					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
+
+				adding_dict=request.form.to_dict(flat=False)
+				print(adding_dict)
+				list_to_Affairs=[]
+				for margin in tables_sets('Affairs'):
+					if margin == 't_id':
+						list_to_Affairs.append(new_t_id)
+					elif margin == 'u_id':
+						list_to_Affairs.append(request.cookies.get('user_id'))
+					elif margin == 'Type':
+						list_to_Affairs.append('Судебное дело')
+					elif margin == 'Agreement':
+						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],request.cookies.get('user_id'),'Agreement',file_agree_filename))
+					elif margin == 'Invoice':
+						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],request.cookies.get('user_id'),'Invoice',file_invoice_filename))
+					elif margin == 'Practice':
+						list_to_Affairs.append(json.dumps(adding_dict[margin]))
+					elif margin == 'Lawyers':
+						list_to_Affairs.append(json.dumps(adding_dict[margin]))
+					else:
+						list_to_Affairs.append(adding_dict[margin][0])
+				pprint(list_to_Affairs)
+				db.insert_tables('Affairs',tuple(list_to_Affairs))
+
+				list_to_Litigation=[]
+				for margin in tables_sets('Litigation'):
+					if margin == 't_id':
+						list_to_Litigation.append(new_t_id)
+				pprint(list_to_Litigation)
+				# db.insert_tables('Litigation',tuple(list_to_Litigation))
+
+				return success_replacer(os.path.join('admin','add','add_sud_delo.html'),'Готово!')
 			else:
 				return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Не загружены файлы')
-			
-		else:
+
+		if request.method == 'GET':
 			if request.cookies.get('user_id') == None:
 				return redirect('/login')
 			else:
@@ -109,17 +161,6 @@ class API(object):
 					role=role,
 					name=name,
 					urists=[1,2,3])
-
-
-
-
-
-
-
-
-
-
-
 
 
 

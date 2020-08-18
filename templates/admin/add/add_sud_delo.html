@@ -32,26 +32,26 @@
                 <p style="margin-left: 20px;">Практика:</p>
                 <div class="col-6 col-md">
                   <ul class="list-unstyled text-small">
-                    <li><input type="checkbox" name="Pratice" value="Энергетическое право"> Энергетическое право</li>
-                    <li><input type="checkbox" name="Pratice" value="Банкротство"> Банкротство</li>
-                    <li><input type="checkbox" name="Pratice" value="Налоговое право"> Налоговое право</li>
-                    <li><input type="checkbox" name="Pratice" value="Административное право"> Административное право</li>
-                    <li><input type="checkbox" name="Pratice" value="Корпоративное право"> Корпоративное право</li>
-                    <li><input type="checkbox" name="Pratice" value="Уголовное право"> Уголовное право</li>
-                    <li><input type="checkbox" name="Pratice" value="Недвижимость, инфестиции и строительство"> Недвижимость, инфестиции и строительство</li>
-                    <li><input type="checkbox" name="Pratice" value="Земельное право"> Земельное право</li>
+                    <li><input type="checkbox" name="Practice" value="Энергетическое право"> Энергетическое право</li>
+                    <li><input type="checkbox" name="Practice" value="Банкротство"> Банкротство</li>
+                    <li><input type="checkbox" name="Practice" value="Налоговое право"> Налоговое право</li>
+                    <li><input type="checkbox" name="Practice" value="Административное право"> Административное право</li>
+                    <li><input type="checkbox" name="Practice" value="Корпоративное право"> Корпоративное право</li>
+                    <li><input type="checkbox" name="Practice" value="Уголовное право"> Уголовное право</li>
+                    <li><input type="checkbox" name="Practice" value="Недвижимость, инфестиции и строительство"> Недвижимость, инфестиции и строительство</li>
+                    <li><input type="checkbox" name="Practice" value="Земельное право"> Земельное право</li>
                   </ul>
                 </div>
                 <div class="col-6 col-md">
                   <ul class="list-unstyled text-small">
-                    <li><input type="checkbox" name="Pratice" value="Таможенное право"> Таможенное право</li>
-                    <li><input type="checkbox" name="Pratice" value="Вексельное право. Ценные бумаги"> Вексельное право. Ценные бумаги</li>
-                    <li><input type="checkbox" name="Pratice" value="Семейное и наследственное право"> Семейное и наследственное право</li>
-                    <li><input type="checkbox" name="Pratice" value="Регистрация прав и субъектов права"> Регистрация прав и субъектов права</li>
-                    <li><input type="checkbox" name="Pratice" value="Трудовое право"> Трудовое право</li>
-                    <li><input type="checkbox" name="Pratice" value="Жилищное право"> Жилищное право</li>
-                    <li><input type="checkbox" name="Pratice" value="Интеллектуальное право"> Интеллектуальное право</li>
-                    <li><input type="checkbox" name="Pratice" value="Спортивное право"> Спортивное право</li>
+                    <li><input type="checkbox" name="Practice" value="Таможенное право"> Таможенное право</li>
+                    <li><input type="checkbox" name="Practice" value="Вексельное право. Ценные бумаги"> Вексельное право. Ценные бумаги</li>
+                    <li><input type="checkbox" name="Practice" value="Семейное и наследственное право"> Семейное и наследственное право</li>
+                    <li><input type="checkbox" name="Practice" value="Регистрация прав и субъектов права"> Регистрация прав и субъектов права</li>
+                    <li><input type="checkbox" name="Practice" value="Трудовое право"> Трудовое право</li>
+                    <li><input type="checkbox" name="Practice" value="Жилищное право"> Жилищное право</li>
+                    <li><input type="checkbox" name="Practice" value="Интеллектуальное право"> Интеллектуальное право</li>
+                    <li><input type="checkbox" name="Practice" value="Спортивное право"> Спортивное право</li>
                   </ul>
                 </div>
             </div>
@@ -99,6 +99,12 @@
                 }
             </script>
             <button class='btn btn-success' type="submit">Добавить</button>
+            <label style="display: none; color: green" id = "success_here">success_here</label>
+            <script>
+                if (document.getElementById("success_here").textContent != "success_here") {
+                    document.getElementById("success_here").style.display = "flex";
+                }
+            </script>
         </div>
     </form>
 {% endblock %}

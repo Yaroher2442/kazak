@@ -2,14 +2,14 @@ CREATE TABLE `Litigation` (
   `t_id` TEXT NULL DEFAULT NULL,
   `Case_number` TEXT NULL DEFAULT NULL,
   `Tribunal` TEXT NULL DEFAULT NULL,
-  ` Judge` TEXT NULL DEFAULT NULL,
+  `Judge` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`)
 );
 
 CREATE TABLE `Bankruptcy` (
   `t_id` TEXT NULL DEFAULT NULL,
-  ` Bankruptcy_case_number` TEXT NULL DEFAULT NULL,
-  ` Arbitration_manager` TEXT NULL DEFAULT NULL,
+  `Bankruptcy_case_number` TEXT NULL DEFAULT NULL,
+  `Arbitration_manager` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`)
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE `Pre_trial_settlement` (
     
 CREATE TABLE `Enforcement_proceedings` (
   `t_id` TEXT NULL DEFAULT NULL,
-  ` Executive_case_number` TEXT NULL DEFAULT NULL,
+  `Executive_case_number` TEXT NULL DEFAULT NULL,
   `Amount` TEXT NULL DEFAULT NULL,
   `FSSP` TEXT NULL DEFAULT NULL,
   `Bailiff` TEXT NULL DEFAULT NULL,
