@@ -24,7 +24,7 @@
 
 {% block Body %}
 	<h3 id="headline">Судебные дела</h3>
-	<a style="margin-bottom: 10px; margin-top: 10px;" href="#">Добавить новое судебное дело</a>
+	<a style="margin-bottom: 10px; margin-top: 10px;" href="/add_sud_delo">Добавить новое судебное дело</a>
 	  <form class="form-inline py-3 px-5" action="/#" method="post">	
 			<input class='form-control mr-2' type="search" list='client' name="cl_name" placeholder="Клиент" size="30">
 			<datalist id='client'>
@@ -76,8 +76,8 @@
 	  	  <tr>
 			{% set index = loop.index %}
 			{% for item in line %}
-			  {% if loop.index == 9 %}
-			  <td bgcolor="{{ colors[index] }}">{{ item }}</td>
+			  {% if loop.index == 10 %}
+			  <td bgcolor="{{ colors[index-1] }}">{{ item }}</td>
 			  {% else %}
                 <td>{{ item }}</td>
               {% endif %}

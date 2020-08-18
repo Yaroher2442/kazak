@@ -136,11 +136,15 @@ class API(object):
 			role=user_info[0]
 			name=' '.join(user_info[1:])
 			d_table = db.get_join_table('Litigation')
-			return render_template("sud_dela_admin.html",
+			colors=[]
+			for i in d_table:
+				colors.append(i.pop(-1))
+			return render_template("admin/sud_dela.html",
 				data=d_table,
 				role=role,
 				name=name,
-				urists=[1,2,3])
+				urists=[1,2,3],
+				colors=colors)
 #----------------------------------------------------------------------
 	@flask_app.route('/bank_dela', methods=['GET', 'POST'])
 	def bank_dela():
