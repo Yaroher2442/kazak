@@ -66,7 +66,7 @@ class Database(object):
             conn=self.connect
             c = conn.cursor()
             if table_name == 'Affairs':
-            	c.execute("INSERT INTO Affairs VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+            	c.execute("INSERT INTO Affairs VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
                     ,data)
             if table_name == 'Bankruptcy':
             	c.execute("INSERT INTO Bankruptcy VALUES (?,?,?)"
@@ -102,7 +102,7 @@ class Database(object):
             else:
                 dela_list=[]
                 for i in results:
-                    l_list=[results.index(i)+1]+list(i[2:7])+list(i[12:])+list(i[7:11])
+                    l_list=[results.index(i)+1]+list(i[2:7])+list(i[13:])+list(i[7:12])
                     l_list.pop(2)
                     dela_list.append(l_list)
                 return dela_list
@@ -137,9 +137,9 @@ def main():
     # 		,'АСГМ'
     # 		,'Васичикин	'
     # 		]))
-    # data=db.get_join_table('Litigation')
-    # print(data)
-    print(db.find_user_by_id('4d4ce653-f2ff-489a-b7ba-143e2f36c3f9'))
+    data=db.get_join_table('Litigation')
+    print(data[0])
+    # print(db.find_user_by_id('4d4ce653-f2ff-489a-b7ba-143e2f36c3f9'))
     # print(data)
     
     # print(db.find_user('qwe'))
