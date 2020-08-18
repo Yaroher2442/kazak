@@ -144,7 +144,7 @@ class API(object):
 				pprint(list_to_Litigation)
 				# db.insert_tables('Litigation',tuple(list_to_Litigation))
 
-				return success_replacer(os.path.join('admin','add','add_sud_delo.html'),'Готово!')
+				return redirect('/sud_dela')
 			else:
 				return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Не загружены файлы')
 
