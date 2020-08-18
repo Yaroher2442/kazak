@@ -14,7 +14,7 @@
         <nav class="my-2 nav-grid">
           <a class="p-2 text-dark" href="#">Судебные дела</a>
           <a class="btn btn-secondary" role="button">Банкротные дела</a>
-          <a class="p-2 text-dark" href="#">Досудебное производство</a>
+          <a class="p-2 text-dark" href="#">Досудебное урегулирование</a>
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="p-2 text-dark" href="#">Несудебные дела</a>
           <a class="p-2 text-dark" href="#">Сотрудники</a>
@@ -24,16 +24,37 @@
 
 {% block Body %}
     <form class="py-3 px-5" action="/add_delo" method="post">
-        <h5 class='p-2'>Добавить новое банкротное дело</h5>
+        <h5 class='p-2'style="margin-bottom: 25px;">Добавить новое банкротное дело</h5>
         <div class="form-group mx-5">
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Клиент" size="25">
-            <input class='form-control mr-2' type="text" list='practice' name="prac" placeholder="Практика" size="30" style="margin-bottom: 8px;">
-			<datalist id='practice'>
-				{% for item in practice %}
-					<option value="{{ item }}">{{ item }}</option>
-				{% endfor %}
-            </datalist>
-            <input class='form-control mr-2' type="text" list='urists' name="manager" placeholder="Руководитель проекта" style="margin-bottom: 8px;">
+            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Клиент" required>
+            <div class="row">
+                <p style="margin-left: 20px;">Практика:</p>
+                <div class="col-6 col-md">
+                  <ul class="list-unstyled text-small">
+                    <li><input type="checkbox" name="prac" value="Энергетическое право"> Энергетическое право</li>
+                    <li><input type="checkbox" name="prac" value="Банкротство"> Банкротство</li>
+                    <li><input type="checkbox" name="prac" value="Налоговое право"> Налоговое право</li>
+                    <li><input type="checkbox" name="prac" value="Административное право"> Административное право</li>
+                    <li><input type="checkbox" name="prac" value="Корпоративное право"> Корпоративное право</li>
+                    <li><input type="checkbox" name="prac" value="Уголовное право"> Уголовное право</li>
+                    <li><input type="checkbox" name="prac" value="Недвижимость, инфестиции и строительство"> Недвижимость, инфестиции и строительство</li>
+                    <li><input type="checkbox" name="prac" value="Земельное право"> Земельное право</li>
+                  </ul>
+                </div>
+                <div class="col-6 col-md">
+                  <ul class="list-unstyled text-small">
+                    <li><input type="checkbox" name="prac" value="Таможенное право"> Таможенное право</li>
+                    <li><input type="checkbox" name="prac" value="Вексельное право. Ценные бумаги"> Вексельное право. Ценные бумаги</li>
+                    <li><input type="checkbox" name="prac" value="Семейное и наследственное право"> Семейное и наследственное право</li>
+                    <li><input type="checkbox" name="prac" value="Регистрация прав и субъектов права"> Регистрация прав и субъектов права</li>
+                    <li><input type="checkbox" name="prac" value="Трудовое право"> Трудовое право</li>
+                    <li><input type="checkbox" name="prac" value="Жилищное право"> Жилищное право</li>
+                    <li><input type="checkbox" name="prac" value="Интеллектуальное право"> Интеллектуальное право</li>
+                    <li><input type="checkbox" name="prac" value="Спортивное право"> Спортивное право</li>
+                  </ul>
+                </div>
+            </div>    
+            <input class='form-control mr-2' type="text" list='urists' name="manager" placeholder="Руководитель проекта" style="margin-bottom: 8px;" required>
             <datalist id='urists'>
 				{% for item in urists %}
 					<option value="{{ item }}">{{ item }}</option>
@@ -45,23 +66,30 @@
                     <option value="{{ item }}">{{ item }}</option>
                 {% endfor %}
             </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="num" placeholder="Номер дела" size="25">
-            <input class="d-block mb-2 w-100 form-control" type="text" name="arb_name" placeholder="Арбитражный управляющий" size="25">
+            <input class="d-block mb-2 w-100 form-control" type="text" name="num" placeholder="Номер дела" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="arb_name" placeholder="Арбитражный управляющий" required>
             <div class="custom-file mb-2">
-                <input class="custom-file-input" id='file1' type="file" name="file1" size="25">
+                <input class="custom-file-input" id='file1' type="file" name="file1" required>
                 <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
             </div>
             <div class="custom-file mb-2" style="margin-bottom: 15px;">
-                <input class="custom-file-input" id='file2' type="file" name="file2" size="25">
+                <input class="custom-file-input" id='file2' type="file" name="file2" required>
                 <label class='custom-file-label' for="file2">Счёт (PDF)...</label>
-                <p style="margin-top: 10px;">
-                    <input type="radio" name="status" value="#008000"> Оплачен &nbsp;
-                    <input type="radio" name="status" value="#FFFF00"> Внесена предоплата &nbsp;
-                    <input type="radio" name="status" value="#FF0000"> Не оплачен &nbsp;
-                </p>
             </div>
-            <input style="margin-top: 15px;" class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Откуда пришёл клиент" size="25">
-            <input class="d-block mb-3 w-100 form-control" type="text" name="cl_name" placeholder="Комментарий" size="25">
+            <p style="margin-top: 10px;">
+                <input type="radio" name="status" value="#008000" required> Оплачен &nbsp;
+                <input type="radio" name="status" value="#FFFF00"> Внесена предоплата &nbsp;
+                <input type="radio" name="status" value="#FF0000"> Не оплачен &nbsp;
+            </p>
+            <p>Откуда пришёл клиент: &nbsp;
+                <input type="radio" name="source" value="Сайт" required> Сайт &nbsp;
+                <input type="radio" name="source" value="По телефону"> По телефону &nbsp;
+                <input type="radio" name="source" value="По рекомендации"> По рекомендации &nbsp;
+                <input type="radio" name="source" value="От сотрудника"> От сотрудника &nbsp;
+                <input type="radio" name="source" value="Другое"> Другое &nbsp;
+            </p>
+            <input style="margin-top: 15px;" class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Откуда пришёл клиент" required>
+            <input class="d-block mb-3 w-100 form-control" type="text" name="cl_name" placeholder="Комментарий" required>
             <button class='btn btn-success' type="submit">Добавить</button>
         </div>
     </form>
