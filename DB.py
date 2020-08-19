@@ -102,14 +102,34 @@ class Database(object):
             else:
                 dela_list=[]
                 for i in results:
-                    l_list=[results.index(i)+1]+list(i[2:7])+list(i[13:])+list(i[7:12])
+                    l_list=[results.index(i)+1]+[i[0]]+list(i[2:7])+list(i[13:])+list(i[7:12])
                     l_list.pop(2)
                     dela_list.append(l_list)
                 return dela_list
         except Error as e:
             print(e)
 
-
+    def delite_data(self,table_name,t_id):
+        try:
+            conn=self.connect
+            c = conn.cursor()
+            res=c.execute("""DELETE FROM {} WHERE t_id = ?""".format(table_name),(t_id,)) 
+            conn.commit()
+            print('Success_dell')
+            return 'Success'
+        except Error as e:
+            print(e)
+    def change_invoice_status(self,t_id,status):
+        try:
+            conn=self.connect
+            c = conn.cursor()
+            res=c.execute("""UPDATE Affairs SET Invoice_status = ? WHERE t_id = ?""", (status,t_id,)) 
+            conn.commit()
+            print('Success_change_invoice_status')
+            return 'Success_change_invoice_status'
+        except Error as e:
+            print(e)
+            
 def main():
     db=Database('123')
     db.create_connection()
@@ -137,10 +157,13 @@ def main():
     # 		,'АСГМ'
     # 		,'Васичикин	'
     # 		]))
-    data=db.get_join_table('Litigation')
-    print(data[0])
+    # data=db.get_join_table('Litigation')
+    # print(data[0])
     # print(db.find_user_by_id('4d4ce653-f2ff-489a-b7ba-143e2f36c3f9'))
     # print(data)
+
+    # db.delite_data('Litigation','49428310-dd33-4dc9-81f5-ab7a54a83374')
+    db.change_invoice_status('50920196-4170-4ea9-b4e7-d2d3ba90ac0f','#008000')
     
     # print(db.find_user('qwe'))
 if __name__ == '__main__':
