@@ -1,2 +1,1 @@
-$('#multi-select').dropdown()
-$('#select').dropdown()
+$('.multi-select').dropdown()

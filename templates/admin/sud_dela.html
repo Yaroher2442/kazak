@@ -11,7 +11,7 @@
 					<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
 					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 				</div>
-        <nav class="my-2 nav-grid">
+        <nav class="my-2 nav-grid header-link">
           <a class="btn btn-secondary" role="button" href="/sud_dela">Судебные дела</a>
           <a class="p-2 text-dark" href="#">Банкротные дела</a>
           <a class="p-2 text-dark" href="#">Досудебное урегулирование</a>
@@ -26,37 +26,37 @@
 	<h3 id="headline">Судебные дела</h3>
 	<a style="margin-bottom: 10px; margin-top: 10px;" href="/add_sud_delo">Добавить новое судебное дело</a>
 	  <form class="form-inline py-3 px-5" action="/#" method="post">	
-			<input class='form-control mr-2' type="search" list='client' name="cl_name" placeholder="Клиент" size="30">
+			<input class='form-control mr-2' type="search" list='client' name="Client" placeholder="Клиент" style="margin-bottom: 7px; height: 37px;" size="24">
 			<datalist id='client'>
 				{% for item in serch_clients %}
 					<option value="{{ item }}">{{ item }}</option>
 				{% endfor %}
 			</datalist>
-			<input class='form-control mr-2' type="search" list='practice' name="prac" placeholder="Практика" size="30">
-			<datalist id='practice'>
-				<option value="Энергетическое право">Энергетическое право</option>
-				<option value="Банкротство">Банкротство</option>
-				<option value="Налоговое право">Налоговое право</option>
-				<option value="Административное право">Административное право</option>
-				<option value="Корпоративное право">Корпоративное право</option>
-				<option value="Уголовное право">Уголовное право</option>
-				<option value="Недвижимость, инвестиции и строительство">Недвижимость, инвестиции и строительство</option>
-				<option value="Земельное право">Земельное право</option>
-				<option value="Таможенное право">Таможенное право</option>
-				<option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
-				<option value="Семейное и наследственное право">Семейное и наследственное право</option>
-				<option value="Регистрация прав и субъектов права">Регистрация прав и субъектов права</option>
-				<option value="Трудовое право">Трудовое право</option>
-				<option value="Жилищное право">Жилищное право</option>
-				<option value="Интеллектуальное право">Интеллектуальное право</option>
-				<option value="Спортивное право">Спортивное право</option>
-			</datalist>
-			<input type="submit" class="btn btn-success" value="Найти">
+			<select name="Practice" class="multi-select dropdown mb-2" style="width: 60px" multiple required>
+                <option value="">Практика</option>
+                <option value="Энергетическое право">Энергетическое право</option>
+                <option value="Банкротство">Банкротство</option>
+                <option value="Налоговое право">Налоговое право</option>
+                <option value="Административное право">Административное право</option>
+                <option value="Корпоративное право">Корпоративное право</option>
+                <option value="Уголовное право">Уголовное право</option>
+                <option value="Недвижимость, инфестиции и строительство">Недвижимость, инфестиции и строительство</option>
+                <option value="Земельное право">Земельное право</option>
+                <option value="Таможенное право">Таможенное право</option>
+                <option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
+                <option value="Семейное и наследственное право">Семейное и наследственное право</option>
+                <option value="Регистрация прав и субъектов права">Регистрация прав и субъектов права</option>
+                <option value="Трудовое право">Трудовое право</option>
+                <option value="Жилищное право">Жилищное право</option>
+                <option value="Интеллектуальное право">Интеллектуальное право</option>
+                <option value="Спортивное право">Спортивное право</option>
+			</select>
+			<input type="submit" class="btn btn-success" style="margin-bottom: 7px; margin-left: 7px; height: 37px" value="Найти">
 		</form>	
   <div class="table-responsive-vertical shadow-z-1">
 	<table id="table" class="table table-hover table-mc-light-blue" style='white-space: pre-wrap'>
 	  <thead>
-	  	<tr>
+	  	<tr class="header-link">
 		  <th>№</th>
 	  	  <th>Клиент</th>
 	  	  <th>Практика</th>
@@ -73,27 +73,26 @@
 	  	</tr>
 	  </thead>
 	  <tbody>
-	  	{% for line in data %}
-	  	  <tr>
+		{% for line in data %}
+		  <tr>
 			{% set index = loop.index %}
 			{% for item in line %}
-				{% if loop.index == 9 %}
-				<td><a href= {{item}}>Соглашение.pdf</a></td>
-				{% elif loop.index == 10 %}
-				<td><a href={{item}} style="background-color:{{ colors[index-1] }}">Счёт.pdf</a></td>
-				{% elif loop.index == 13 %}
-				<td>
-					<button class="btn btn-success" style="background-color: green;display: flex; margin-bottom: : -60px; margin-top: -30px;  margin-right: -30px;" onclick="document.location='change_invoice_status/sud_dela/{{item}}'">Оплачено
-            	</button>
-
-					<button class="btn btn-danger" style="color: black;display: flex;" onclick="document.location='delite_element/sud_dela/{{item}}'">Удалить
-            	</button>
-				{% else %}
-                	<td>{{ item }}</td>
-              	{% endif %}
-            {% endfor %}
-	  	  </tr>
+			  {% if loop.index == 9 %}
+				<td><a href="{{ item }}">Соглашение.pdf</a></td>
+			  {% elif loop.index == 10 %}
+				<td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
+			  {% elif loop.index == 13 %}
+			    <td><div style="display: flex; margin-top: -30px">
+			      <button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/sud_dela/{{ item }}'">Оплачено</button>
+				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/sud_dela/{{ item }}'">Удалить</button>
+			    </div></td>
+			  {% else %}
+				<td>{{ item }}</td>
+			  {% endif %}
+			{% endfor %}
+		  </tr>
 	  	{% endfor %}
-	  </tbody>
-	</table>
+  </tbody>
+</table>
+</div>
 {% endblock %}

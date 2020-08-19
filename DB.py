@@ -103,7 +103,7 @@ class Database(object):
                 dela_list=[]
                 for i in results:
                     l_list=[results.index(i)+1]+[i[0]]+list(i[2:7])+list(i[13:])+list(i[7:12])
-                    l_list.pop(2)
+                    l_list.pop(3)
                     dela_list.append(l_list)
                 return dela_list
         except Error as e:
