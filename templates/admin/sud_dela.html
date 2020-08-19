@@ -83,10 +83,10 @@
 				<td><a href={{item}} style="background-color:{{ colors[index-1] }}">Счёт.pdf</a></td>
 				{% elif loop.index == 13 %}
 				<td>
-					<button class="btn btn-success" style="background-color: green" onclick="document.location='change_invoice_status/sud_dela/{{item}}'">Оплачено
+					<button class="btn btn-success" style="background-color: green;display: flex; margin-bottom: : -60px; margin-top: -30px;  margin-right: -30px;" onclick="document.location='change_invoice_status/sud_dela/{{item}}'">Оплачено
             	</button>
 
-					<button class="btn btn-success" style="background-color: red ;color: black" onclick="document.location='delite_element/sud_dela/{{item}}'">Удалить
+					<button class="btn btn-danger" style="color: black;display: flex;" onclick="document.location='delite_element/sud_dela/{{item}}'">Удалить
             	</button>
 				{% else %}
                 	<td>{{ item }}</td>
