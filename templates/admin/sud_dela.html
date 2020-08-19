@@ -12,7 +12,7 @@
 					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 				</div>
         <nav class="my-2 nav-grid">
-          <a class="btn btn-secondary" role="button">Судебные дела</a>
+          <a class="btn btn-secondary" role="button" href="/sud_dela">Судебные дела</a>
           <a class="p-2 text-dark" href="#">Банкротные дела</a>
           <a class="p-2 text-dark" href="#">Досудебное урегулирование</a>
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
@@ -40,7 +40,7 @@
 				<option value="Административное право">Административное право</option>
 				<option value="Корпоративное право">Корпоративное право</option>
 				<option value="Уголовное право">Уголовное право</option>
-				<option value="Недвижимость, инфестиции и строительство">Недвижимость, инфестиции и строительство</option>
+				<option value="Недвижимость, инвестиции и строительство">Недвижимость, инвестиции и строительство</option>
 				<option value="Земельное право">Земельное право</option>
 				<option value="Таможенное право">Таможенное право</option>
 				<option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
@@ -69,6 +69,7 @@
 	  	  <th>Счёт</th>
 	  	  <th>Откуда пришёл клиент</th>
 	  	  <th>Комментарий</th>
+	  	  <th>Действия</th>
 	  	</tr>
 	  </thead>
 	  <tbody>
@@ -76,11 +77,20 @@
 	  	  <tr>
 			{% set index = loop.index %}
 			{% for item in line %}
-			  {% if loop.index == 10 %}
-			  <td bgcolor="{{ colors[index-1] }}">{{ item }}</td>
-			  {% else %}
-                <td>{{ item }}</td>
-              {% endif %}
+				{% if loop.index == 9 %}
+				<td><a href= {{item}}>Соглашение.pdf</a></td>
+				{% elif loop.index == 10 %}
+				<td><a href={{item}} style="background-color:{{ colors[index-1] }}">Счёт.pdf</a></td>
+				{% elif loop.index == 13 %}
+				<td>
+					<button class="btn btn-success" style="background-color: green;display: flex; margin-bottom: : -60px; margin-top: -30px;  margin-right: -30px;" onclick="document.location='change_invoice_status/sud_dela/{{item}}'">Оплачено
+            	</button>
+
+					<button class="btn btn-danger" style="color: black;display: flex;" onclick="document.location='delite_element/sud_dela/{{item}}'">Удалить
+            	</button>
+				{% else %}
+                	<td>{{ item }}</td>
+              	{% endif %}
             {% endfor %}
 	  	  </tr>
 	  	{% endfor %}

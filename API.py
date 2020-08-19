@@ -3,8 +3,9 @@ import os, copy, sys, time, uuid ,hashlib
 import json
 import hashlib, requests, json
 import urllib.request
+import shutil
 
-from flask import jsonify, make_response ,redirect, url_for
+from flask import jsonify, make_response ,redirect, url_for, send_from_directory
 from flask import Flask , request , abort , redirect , Response ,url_for ,render_template ,render_template_string, flash
 
 import sqlite3
@@ -55,7 +56,7 @@ def success_replacer(file_name,success):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-def tables_sets(table_name):
+def tables_sets(mode,table_name=None):
 	tables={
 	'Affairs':['t_id','u_id','Client','Type','Practice','Project_Manager','Lawyers','Agreement','Invoice','Came_from','Comment','Invoice_status'],
 	'Litigation':['t_id','Case_number','Tribunal','Judge'],
@@ -65,7 +66,11 @@ def tables_sets(table_name):
 	'Non_judicial':[],
 	'Сourts':[]
 	}
-	return tables[table_name]
+	if mode == 'keys':
+		return tables.keys()
+	elif mode == 'fields':
+		return tables[table_name]
+
 class API(object):
 	def __init__(self, arg):
 		super(API, self).__init__()
@@ -88,6 +93,34 @@ class API(object):
 			return redirect('/login')
 		else:
 			return render_template("index_admin.html")
+#---------------------------------------------------------------------
+	@flask_app.route('/download_files/<t_id>/<type_f>/<filename>', methods=['GET', 'POST'])
+	def download_files(t_id,type_f,filename):
+		if request.method == 'GET':
+			try:
+				directory=os.path.join(flask_app.config['UPLOAD_FOLDER'],t_id,type_f)
+				return send_from_directory(directory, filename=filename, as_attachment=True)
+			except FileNotFoundError:
+				abort(404)
+#---------------------------------------------------------------------
+	@flask_app.route('/delite_element/<way>/<t_id>', methods=['GET', 'POST'])
+	def delite_element(way,t_id):
+		if request.method == 'GET' :
+			get_db()
+			db=Database(g._database)
+			for i in tables_sets(mode='keys'):
+				db.delite_data(i,t_id)
+			path=os.path.join(flask_app.config['UPLOAD_FOLDER'],t_id)
+			shutil.rmtree(path)
+			return redirect('/'+way)
+#---------------------------------------------------------------------
+	@flask_app.route('/change_invoice_status/<way>/<t_id>', methods=['GET', 'POST'])
+	def change_invoice_status(way,t_id):
+		if request.method == 'GET' :
+			get_db()
+			db=Database(g._database)
+			db.change_invoice_status(t_id,'#008000')
+			return redirect('/'+way)
 #---------------------------------------------------------------------
 	@flask_app.route('/add_sud_delo', methods=['GET', 'POST'])
 	def add_sud_delo():
@@ -115,9 +148,8 @@ class API(object):
 					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
 				adding_dict=request.form.to_dict(flat=False)
-				pprint(adding_dict)
 				list_to_Affairs=[]
-				for margin in tables_sets('Affairs'):
+				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
 						list_to_Affairs.append(new_t_id)
 					elif margin == 'u_id':
@@ -125,9 +157,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Судебное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],request.cookies.get('user_id'),'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],request.cookies.get('user_id'),'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -137,13 +169,11 @@ class API(object):
 				db.insert_tables('Affairs',tuple(list_to_Affairs))
 
 				list_to_Litigation=[]
-				for margin in tables_sets('Litigation'):
-					print(margin)
+				for margin in tables_sets(table_name='Litigation', mode='fields'):
 					if margin == 't_id':
 						list_to_Litigation.append(new_t_id)
 					else:
 						list_to_Litigation.append(adding_dict[margin][0])
-				pprint(list_to_Litigation)
 				db.insert_tables('Litigation',tuple(list_to_Litigation))
 
 				return redirect('/sud_dela')
@@ -182,11 +212,17 @@ class API(object):
 			d_table = db.get_join_table('Litigation')
 			if d_table != False:
 				colors=[]
+				delite_hrs=[]
 				for i in d_table:
 					colors.append(i.pop(-1))
 				for item in d_table:
-					buf=item[2]
-					item[2]=';\n'.join(json.loads(buf))
+					item.append(item.pop(1))
+					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
+					item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
+					x_lst=[item[11].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
+					item[11]='\n'.join([' '.join(i) for i in x_lst])
 				return render_template("admin/sud_dela.html",
 				data=d_table,
 				role=role,
@@ -199,7 +235,8 @@ class API(object):
 				role=role,
 				name=name,
 				urists=[1,2,3],
-				colors=[])
+				colors=[],
+				delite_href='')
 			
 
 #----------------------------------------------------------------------
@@ -282,6 +319,9 @@ class API(object):
 	@flask_app.errorhandler(401)
 	def page_not_found(e):
 	    return Response('<p>Login failed</p>')
+	@flask_app.errorhandler(404)
+	def not_found(e):
+	    return Response('<p>file not found</p>')
 	
 # print(json.dumps(encode_data,sort_keys=True, indent=4))
 if __name__ == '__main__':
