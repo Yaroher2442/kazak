@@ -103,7 +103,7 @@ class Database(object):
                 dela_list=[]
                 for i in results:
                     l_list=[results.index(i)+1]+[i[0]]+list(i[2:7])+list(i[13:])+list(i[7:12])
-                    l_list.pop(2)
+                    l_list.pop(3)
                     dela_list.append(l_list)
                 return dela_list
         except Error as e:
@@ -129,7 +129,7 @@ class Database(object):
             return 'Success_change_invoice_status'
         except Error as e:
             print(e)
-            
+
 def main():
     db=Database('123')
     db.create_connection()
@@ -163,8 +163,8 @@ def main():
     # print(data)
 
     # db.delite_data('Litigation','49428310-dd33-4dc9-81f5-ab7a54a83374')
-    db.change_invoice_status('50920196-4170-4ea9-b4e7-d2d3ba90ac0f','#008000')
-    
+    # db.change_invoice_status('50920196-4170-4ea9-b4e7-d2d3ba90ac0f','#008000')
+    print(db.get_join_table('Litigation'))
     # print(db.find_user('qwe'))
 if __name__ == '__main__':
     main()
