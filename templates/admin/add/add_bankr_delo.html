@@ -1,4 +1,4 @@
-{% extends 'admin/base.html' %}
+{% extends 'base.html' %}
 
 {% block Title %}
     Новое банкротное дело
@@ -25,7 +25,7 @@
 
 {% block Body %}
 <form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
-    <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое судебное дело</h5>
+    <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое банкротное дело</h5>
     <div class="form-group mx-5">
       <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
       <select name="Practice" class="multi-select ui fluid dropdown mb-2" multiple required>
@@ -59,7 +59,7 @@
           <option value="{{ item }}">{{ item }}</option>
         {% endfor %}
       </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Case_number" placeholder="Номер дела" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Case_number" placeholder="Номер банкротного дела" required>
             <input class="d-block mb-2 w-100 form-control" type="text" name="Arbitral_manager" placeholder="Арбитражный управляющий" required>
             <div class="custom-file mb-2">
                 <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
@@ -92,4 +92,3 @@
             </div>
           </form>
         {% endblock %}
-{% endblock %}

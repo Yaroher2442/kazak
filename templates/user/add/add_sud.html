@@ -18,7 +18,6 @@
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="p-2 text-dark" href="#">Несудебные дела</a>
 		      <a class="btn btn-secondary" role="button" href="#">Суды</a>
-		      <a class="p-2 text-dark" href="#">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
@@ -33,18 +32,12 @@
           <option value="{{ item }}">{{ item }}</option>
         {% endfor %}
       </select>      
-      <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" required>
-        <option value=''>Юрист</option>
-        {% for item in urists %}
-          <option value="{{ item }}">{{ item }}</option>
-        {% endfor %}
-      </select>
       <input class="d-block mb-2 w-100 form-control" type="date" name="Date_" placeholder="Дата" required>
       <input class="d-block mb-2 w-100 form-control" type="time" name="Time_" placeholder="Время" required>
       <input class="d-block mb-2 w-100 form-control" type="text" name="Judge" placeholder="Судья" required>
       <input class="d-block mb-2 w-100 form-control" type="text" name="Tribunal" placeholder="Суд" required>
       <input class="d-block mb-2 w-100 form-control" type="text" name="Instance" placeholder="Инстанция" required>
-      <input class="d-block mb-2 w-100 form-control" type="text" name="Substance" placeholder="Суть дела" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Sunstance" placeholder="Суть дела" required>
       <button class='btn btn-success' type="submit">Добавить</button>
     </div>
   </form>
