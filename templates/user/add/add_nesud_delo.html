@@ -18,7 +18,6 @@
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="btn btn-secondary" role="button">Несудебные дела</a>
           <a class="p-2 text-dark" href="#">Суды</a>
-          <a class="p-2 text-dark" href="#">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
@@ -46,12 +45,6 @@
           <option value="Жилищное право">Жилищное право</option>
           <option value="Интеллектуальное право">Интеллектуальное право</option>
           <option value="Спортивное право">Спортивное право</option>
-        </select>
-        <select name='Project_Manager' class="multi-select ui fluid dropdown mb-2" required>
-          <option value=''>Руководитель проекта</option>
-          {% for item in urists %}
-            <option value="{{ item }}">{{ item }}</option>
-          {% endfor %}
         </select>
         <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" multiple required>
           <option value=''>Юристы</option>
