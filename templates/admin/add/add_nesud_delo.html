@@ -18,13 +18,13 @@
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="btn btn-secondary" role="button">Несудебные дела</a>
           <a class="p-2 text-dark" href="#">Суды</a>
-          <a class="p-2 text-dark" href="#">Сотрудники</a>
+          <a class="p-2 text-dark" href="/admin_users">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
 
 {% block Body %}
-  <form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
+  <form class="py-3 px-5" action="/add_none_sud" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое несудебное дело</h5>
     <div class="form-group mx-5">
         <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
@@ -59,8 +59,8 @@
             <option value="{{ item }}">{{ item }}</option>
           {% endfor %}
         </select>
-      <input class="d-block mb-2 w-100 form-control" type="text" name="Character" placeholder="Характер работ" required>
-      <input class="d-block mb-2 w-100 form-control" type="text" name="Period" placeholder="Срок"brequired>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Nature_of_work" placeholder="Характер работ" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Term" placeholder="Срок"brequired>
       <div class="custom-file mb-2">
         <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
         <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
@@ -81,7 +81,7 @@
         <input type="radio" name="Came_from" value="От сотрудника"> От сотрудника &nbsp;
         <input type="radio" name="Came_from" value="Другое"> Другое &nbsp;
       </p>         
-      <input class="d-block mb-3 w-100 form-control" type="text" name="cl_name" placeholder="Комментарий" required>
+      <input class="d-block mb-3 w-100 form-control" type="text" name="Comment" placeholder="Комментарий" required>
       <label style="display: none; color: red" id = "error">error_here</label>
       <script>
         if (document.getElementById("error").textContent != "error_here") {

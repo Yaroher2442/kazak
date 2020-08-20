@@ -18,13 +18,13 @@
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="p-2 text-dark" href="#">Несудебные дела</a>
           <a class="p-2 text-dark" href="#">Суды</a>
-          <a class="p-2 text-dark" href="#">Сотрудники</a>
+          <a class="p-2 text-dark" href="/admin_users">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
 
 {% block Body %}
-<form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
+<form class="py-3 px-5" action="/add_bank_dela" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое банкротное дело</h5>
     <div class="form-group mx-5">
       <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
@@ -59,8 +59,8 @@
           <option value="{{ item }}">{{ item }}</option>
         {% endfor %}
       </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Case_number" placeholder="Номер банкротного дела" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Arbitral_manager" placeholder="Арбитражный управляющий" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Bankruptcy_case_number" placeholder="Номер банкротного дела" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Arbitration_manager" placeholder="Арбитражный управляющий" required>
             <div class="custom-file mb-2">
                 <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
                 <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>

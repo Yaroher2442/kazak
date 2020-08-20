@@ -18,14 +18,14 @@
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="btn btn-secondary" role="button">Несудебные дела</a>
 		  <a class="p-2 text-dark" href="#">Суды</a>
-		  <a class="p-2 text-dark" href="#">Сотрудники</a>
+		  <a class="p-2 text-dark" href="/admin_users">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
 
 {% block Body %}
 	<h3 id="headline">Несудебные дела</h3>
-	<a style="margin-bottom: 10px; margin-top: 10px;" href="#">Добавить новое несудебное дело</a>
+	<a style="margin-bottom: 10px; margin-top: 10px;" href="/add_none_sud">Добавить новое несудебное дело</a>
 	  <form class="form-inline py-3 px-5" action="/#" method="post">	
 			<input class='form-control mr-2' type="search" list='client' name="Client" style="margin-bottom: 7px; height: 37px;" placeholder="Клиент" size="30">
 			<datalist id='client'>
@@ -82,9 +82,9 @@
 			  {% elif loop.index == 9 %}
 				<td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
 			  {% elif loop.index == 12 %}
-				<td><div style="display: flex; margin-top: -30px">
-					<button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/sud_dela/{{ item }}'">Оплачено</button>
-					<button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/sud_dela/{{ item }}'">Удалить</button>
+				<td><div style="display: flex;">
+					<button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/none_sud/{{ item }}'">Оплачено</button>
+					<button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/none_sud/{{ item }}'">Удалить</button>
 				</div></td>
 			{% else %}
 				<td>{{ item }}</td>

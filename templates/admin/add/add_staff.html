@@ -18,23 +18,25 @@
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="p-2 text-dark" href="#">Несудебные дела</a>
 		  <a class="p-2 text-dark" href="#">Суды</a>
-          <a class="btn btn-secondary" role="button" href="#">Сотрудники</a>
+          <a class="btn btn-secondary" role="button" href="/admin_users">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
 
 {% block Body %}
-  <form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
+  <form class="py-3 px-5" action="/add_user" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить нового сотрудника</h5>
     <div class="form-group mx-5">
-        <input class="d-block mb-2 w-100 form-control" type="text" name="Name" placeholder="ФИО" required>
+        <input class="d-block mb-2 w-100 form-control" type="text" name="surname" placeholder="Фамилия" required>
+        <input class="d-block mb-2 w-100 form-control" type="text" name="name" placeholder="Имя" required>
+        <input class="d-block mb-2 w-100 form-control" type="text" name="lastname" placeholder="Отчество" required>
         <p>Уровень доступа: &nbsp;
-            <input type="radio" name="Access" value="Суперпользователь" required> Суперпользователь &nbsp;
-            <input type="radio" name="Access" value="Пользователь"> Пользователь &nbsp;
-            <input type="radio" name="Access" value="Секретарь"> Секретарь &nbsp;
+            <input type="radio" name="Access_level" value="Суперпользователь" required> Суперпользователь &nbsp;
+            <input type="radio" name="Access_level" value="Пользователь"> Пользователь &nbsp;
+            <input type="radio" name="Access_level" value="Секретарь"> Секретарь &nbsp;
           </p>
-        <input class="d-block mb-2 w-100 form-control" type="text" name="Email" placeholder="Email" required>
-        <input class="d-block mb-2 w-100 form-control" type="password" name="Password" placeholder="Пароль" required>
+        <input class="d-block mb-2 w-100 form-control" type="text" name="email" placeholder="Email" required>
+        <input class="d-block mb-2 w-100 form-control" type="password" name="password" placeholder="Пароль" required>
       <button class='btn btn-success' type="submit">Добавить</button>
     </div>
   </form>
