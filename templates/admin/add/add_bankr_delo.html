@@ -1,4 +1,4 @@
-{% extends 'admin/base.html' %}
+{% extends 'base.html' %}
 
 {% block Title %}
     Новое банкротное дело
@@ -11,86 +11,84 @@
 					<h6 class="my-0 pr-4 font-weight-normal">{{ role }}</h6>
 					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 				</div>
-        <nav class="my-2 nav-grid">
+        <nav class="my-2 nav-grid header-link">
           <a class="p-2 text-dark" href="#">Судебные дела</a>
           <a class="btn btn-secondary" role="button">Банкротные дела</a>
           <a class="p-2 text-dark" href="#">Досудебное урегулирование</a>
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="p-2 text-dark" href="#">Несудебные дела</a>
+          <a class="p-2 text-dark" href="#">Суды</a>
           <a class="p-2 text-dark" href="#">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
 
 {% block Body %}
-    <form class="py-3 px-5" action="/add_delo" method="post">
-        <h5 class='p-2'style="margin-bottom: 25px;">Добавить новое банкротное дело</h5>
-        <div class="form-group mx-5">
-            <input class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Клиент" required>
-            <div class="row">
-                <p style="margin-left: 20px;">Практика:</p>
-                <div class="col-6 col-md">
-                  <ul class="list-unstyled text-small">
-                    <li><input type="checkbox" name="prac" value="Энергетическое право"> Энергетическое право</li>
-                    <li><input type="checkbox" name="prac" value="Банкротство"> Банкротство</li>
-                    <li><input type="checkbox" name="prac" value="Налоговое право"> Налоговое право</li>
-                    <li><input type="checkbox" name="prac" value="Административное право"> Административное право</li>
-                    <li><input type="checkbox" name="prac" value="Корпоративное право"> Корпоративное право</li>
-                    <li><input type="checkbox" name="prac" value="Уголовное право"> Уголовное право</li>
-                    <li><input type="checkbox" name="prac" value="Недвижимость, инфестиции и строительство"> Недвижимость, инфестиции и строительство</li>
-                    <li><input type="checkbox" name="prac" value="Земельное право"> Земельное право</li>
-                  </ul>
-                </div>
-                <div class="col-6 col-md">
-                  <ul class="list-unstyled text-small">
-                    <li><input type="checkbox" name="prac" value="Таможенное право"> Таможенное право</li>
-                    <li><input type="checkbox" name="prac" value="Вексельное право. Ценные бумаги"> Вексельное право. Ценные бумаги</li>
-                    <li><input type="checkbox" name="prac" value="Семейное и наследственное право"> Семейное и наследственное право</li>
-                    <li><input type="checkbox" name="prac" value="Регистрация прав и субъектов права"> Регистрация прав и субъектов права</li>
-                    <li><input type="checkbox" name="prac" value="Трудовое право"> Трудовое право</li>
-                    <li><input type="checkbox" name="prac" value="Жилищное право"> Жилищное право</li>
-                    <li><input type="checkbox" name="prac" value="Интеллектуальное право"> Интеллектуальное право</li>
-                    <li><input type="checkbox" name="prac" value="Спортивное право"> Спортивное право</li>
-                  </ul>
-                </div>
-            </div>    
-            <input class='form-control mr-2' type="text" list='urists' name="manager" placeholder="Руководитель проекта" style="margin-bottom: 8px;" required>
-            <datalist id='urists'>
-				{% for item in urists %}
-					<option value="{{ item }}">{{ item }}</option>
-				{% endfor %}
-            </datalist>
-            <select class='multi-select' name='lawyers' class="ui fluid dropdown mb-2" multiple>
-                <option value=''>Юристы</option>
-                {% for item in urists %}
-                    <option value="{{ item }}">{{ item }}</option>
-                {% endfor %}
-            </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="num" placeholder="Номер дела" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="arb_name" placeholder="Арбитражный управляющий" required>
+<form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
+    <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое банкротное дело</h5>
+    <div class="form-group mx-5">
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
+      <select name="Practice" class="multi-select ui fluid dropdown mb-2" multiple required>
+        <option value="">Практика</option>
+        <option value="Энергетическое право">Энергетическое право</option>
+        <option value="Банкротство">Банкротство</option>
+        <option value="Налоговое право">Налоговое право</option>
+        <option value="Административное право">Административное право</option>
+        <option value="Корпоративное право">Корпоративное право</option>
+        <option value="Уголовное право">Уголовное право</option>
+        <option value="Недвижимость, инфестиции и строительство">Недвижимость, инфестиции и строительство</option>
+        <option value="Земельное право">Земельное право</option>
+        <option value="Таможенное право">Таможенное право</option>
+        <option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
+        <option value="Семейное и наследственное право">Семейное и наследственное право</option>
+        <option value="Регистрация прав и субъектов права">Регистрация прав и субъектов права</option>
+        <option value="Трудовое право">Трудовое право</option>
+        <option value="Жилищное право">Жилищное право</option>
+        <option value="Интеллектуальное право">Интеллектуальное право</option>
+        <option value="Спортивное право">Спортивное право</option>
+      </select>
+      <select name='Project_Manager' class="multi-select ui fluid dropdown mb-2" required>
+        <option value=''>Руководитель проекта</option>
+        {% for item in urists %}
+          <option value="{{ item }}">{{ item }}</option>
+        {% endfor %}
+      </select>
+      <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" multiple required>
+        <option value=''>Юристы</option>
+        {% for item in urists %}
+          <option value="{{ item }}">{{ item }}</option>
+        {% endfor %}
+      </select>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Case_number" placeholder="Номер банкротного дела" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Arbitral_manager" placeholder="Арбитражный управляющий" required>
             <div class="custom-file mb-2">
-                <input class="custom-file-input" id='file1' type="file" name="file1" required>
+                <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
                 <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
-            </div>
-            <div class="custom-file mb-2" style="margin-bottom: 15px;">
-                <input class="custom-file-input" id='file2' type="file" name="file2" required>
+              </div>
+              <div class="custom-file mb-2" style="margin-bottom: 15px;">
+                <input class="custom-file-input" id='file2' type="file" name="Invoice" required >
                 <label class='custom-file-label' for="file2">Счёт (PDF)...</label>
+              </div>
+              <p style="margin-top: 10px;">Статус платежа: &nbsp; 
+                <input type="radio" name="Invoice_status" value="#008000" required> Оплачен &nbsp;
+                <input type="radio" name="Invoice_status" value="#FFFF00"> Внесена предоплата &nbsp;
+                <input type="radio" name="Invoice_status" value="#FF0000"> Не оплачен &nbsp;
+              </p>
+              <p>Откуда пришёл клиент: &nbsp;
+                <input type="radio" name="Came_from" value="Сайт" required> Сайт &nbsp;
+                <input type="radio" name="Came_from" value="По телефону"> По телефону &nbsp;
+                <input type="radio" name="Came_from" value="По рекомендации"> По рекомендации &nbsp;
+                <input type="radio" name="Came_from" value="От сотрудника"> От сотрудника &nbsp;
+                <input type="radio" name="Came_from" value="Другое"> Другое &nbsp;
+              </p>
+              <input class="d-block mb-3 w-100 form-control" type="text" name="Comment" placeholder="Комментарий" required>
+              <label style="display: none; color: red" id = "error">error_here</label>
+              <script>
+                if (document.getElementById("error").textContent != "error_here") {
+                    document.getElementById("error").style.display = "flex";
+                    }
+              </script>
+              <button class='btn btn-success' type="submit">Добавить</button>
             </div>
-            <p style="margin-top: 10px;">
-                <input type="radio" name="status" value="#008000" required> Оплачен &nbsp;
-                <input type="radio" name="status" value="#FFFF00"> Внесена предоплата &nbsp;
-                <input type="radio" name="status" value="#FF0000"> Не оплачен &nbsp;
-            </p>
-            <p>Откуда пришёл клиент: &nbsp;
-                <input type="radio" name="source" value="Сайт" required> Сайт &nbsp;
-                <input type="radio" name="source" value="По телефону"> По телефону &nbsp;
-                <input type="radio" name="source" value="По рекомендации"> По рекомендации &nbsp;
-                <input type="radio" name="source" value="От сотрудника"> От сотрудника &nbsp;
-                <input type="radio" name="source" value="Другое"> Другое &nbsp;
-            </p>
-            <input style="margin-top: 15px;" class="d-block mb-2 w-100 form-control" type="text" name="cl_name" placeholder="Откуда пришёл клиент" required>
-            <input class="d-block mb-3 w-100 form-control" type="text" name="cl_name" placeholder="Комментарий" required>
-            <button class='btn btn-success' type="submit">Добавить</button>
-        </div>
-    </form>
-{% endblock %}
+          </form>
+        {% endblock %}

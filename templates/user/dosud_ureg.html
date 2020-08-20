@@ -18,7 +18,6 @@
       <a class="p-2 text-dark" href="#">Исполнительное производство</a>
       <a class="p-2 text-dark" href="#">Несудебные дела</a>
 	  <a class="p-2 text-dark" href="#">Суды</a>
-	  <a class="p-2 text-dark" href="#">Сотрудники</a>
     </nav>
   </header>
 {% endblock %}
@@ -61,7 +60,6 @@
 		  <th>№</th>
 	  	  <th>Клиент</th>
 	  	  <th>Практика</th>
-	  	  <th>Руководитель проекта</th>
 	  	  <th>Юристы</th>
 	  	  <th>Номер дела</th>
 	  	  <th>Орган</th>
@@ -77,11 +75,11 @@
 		  <tr>
 			{% set index = loop.index %}
 			{% for item in line %}
-			  {% if loop.index == 8 %}
+			  {% if loop.index == 7 %}
 				<td><a href="{{ item }}">Соглашение.pdf</a></td>
-			  {% elif loop.index == 9 %}
+			  {% elif loop.index == 8 %}
 				<td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
-			  {% elif loop.index == 12 %}
+			  {% elif loop.index == 11 %}
 			    <td><div style="display: flex; margin-top: -30px">
 			      <button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/sud_dela/{{ item }}'">Оплачено</button>
 				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/sud_dela/{{ item }}'">Удалить</button>

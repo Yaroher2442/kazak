@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block Title %}
-    Новый клиент
+    Новое банкротное дело
 {% endblock %}
 
 {% block Header %}
@@ -13,20 +13,18 @@
 				</div>
         <nav class="my-2 nav-grid header-link">
           <a class="p-2 text-dark" href="#">Судебные дела</a>
-          <a class="p-2 text-dark" href="#">Банкротные дела</a>
-          <a class="btn btn-secondary" role="button">Досудебное урегулирование</a>
+          <a class="btn btn-secondary" role="button">Банкротные дела</a>
+          <a class="p-2 text-dark" href="#">Досудебное урегулирование</a>
           <a class="p-2 text-dark" href="#">Исполнительное производство</a>
           <a class="p-2 text-dark" href="#">Несудебные дела</a>
           <a class="p-2 text-dark" href="#">Суды</a>
-          <a class="p-2 text-dark" href="#">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
 
-
 {% block Body %}
 <form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
-    <h5 class='p-2' style="margin-bottom: 25px;">Добавить нового клиента</h5>
+    <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое банкротное дело</h5>
     <div class="form-group mx-5">
       <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
       <select name="Practice" class="multi-select ui fluid dropdown mb-2" multiple required>
@@ -48,20 +46,14 @@
         <option value="Интеллектуальное право">Интеллектуальное право</option>
         <option value="Спортивное право">Спортивное право</option>
       </select>
-      <select name='Project_Manager' class="multi-select ui fluid dropdown mb-2" required>
-        <option value=''>Руководитель проекта</option>
-        {% for item in urists %}
-          <option value="{{ item }}">{{ item }}</option>
-        {% endfor %}
-      </select>
       <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" multiple required>
         <option value=''>Юристы</option>
         {% for item in urists %}
           <option value="{{ item }}">{{ item }}</option>
         {% endfor %}
       </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Case_number" placeholder="Номер дела" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Agency" placeholder="Орган" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Case_number" placeholder="Номер банкротного дела" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Arbitral_manager" placeholder="Арбитражный управляющий" required>
             <div class="custom-file mb-2">
                 <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
                 <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
@@ -92,5 +84,4 @@
               <button class='btn btn-success' type="submit">Добавить</button>
             </div>
           </form>
-    {% endblock %}
-        
+{% endblock %}

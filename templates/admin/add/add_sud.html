@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block Title %}
+	Новый суд
+{% endblock %}
+
+{% block Header %}
+    <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+				<div class="w-30 d-flex align-items-center">
+					<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
+					<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
+					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
+				</div>
+        <nav class="my-2 nav-grid header-link">
+          <a class="p-2 text-dark" href="/sud_dela">Судебные дела</a>
+          <a class="p-2 text-dark" href="#">Банкротные дела</a>
+          <a class="p-2 text-dark" href="#">Досудебное урегулирование</a>
+          <a class="p-2 text-dark" href="#">Исполнительное производство</a>
+          <a class="p-2 text-dark" href="#">Несудебные дела</a>
+		      <a class="btn btn-secondary" role="button" href="#">Суды</a>
+		      <a class="p-2 text-dark" href="#">Сотрудники</a>
+        </nav>
+    </header>
+{% endblock %}
+
+{% block Body %}
+  <form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
+    <h5 class='p-2' style="margin-bottom: 25px;">Добавить новый суд</h5>
+    <div class="form-group mx-5">
+      <select name='Client' class="multi-select ui fluid dropdown mb-2" required>
+        <option value=''>Клиент</option>
+        {% for item in clients %}
+          <option value="{{ item }}">{{ item }}</option>
+        {% endfor %}
+      </select>      
+      <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" required>
+        <option value=''>Юрист</option>
+        {% for item in urists %}
+          <option value="{{ item }}">{{ item }}</option>
+        {% endfor %}
+      </select>
+      <input class="d-block mb-2 w-100 form-control" type="date" name="Date_" placeholder="Дата" required>
+      <input class="d-block mb-2 w-100 form-control" type="time" name="Time_" placeholder="Время" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Judge" placeholder="Судья" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Tribunal" placeholder="Суд" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Instance" placeholder="Инстанция" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Substance" placeholder="Суть дела" required>
+      <button class='btn btn-success' type="submit">Добавить</button>
+    </div>
+  </form>
+{% endblock %}
