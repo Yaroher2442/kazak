@@ -65,7 +65,7 @@ def tables_sets(mode,table_name=None):
 	'Pre_trial_settlement':['t_id','Case_number','Agency',],
 	'Enforcement_proceedings':['t_id','Executive_case_number','Amount','FSSP','Bailiff'],
 	'Non_judicial':['t_id','Nature_of_work','Term'],
-	'Сourts':[],
+	'Sud':['c_id','u_id','client','date','time','lawyer','judge','tribunal','instance','comment'],
 	'users':['id','alevel','email','password','name','surname','lastname']
 	}
 	if mode == 'keys':
@@ -88,8 +88,8 @@ class API(object):
 			except FileNotFoundError:
 				abort(404)
 #---------------------------------------------------------------------
-	@flask_app.route('/delite_element/<way>/<t_id>', methods=['GET', 'POST'])
-	def delite_element(way,t_id):
+	@flask_app.route('/delite_element/<type>/<way>/<t_id>', methods=['GET', 'POST'])
+	def delite_element(type,way,t_id):
 		if request.method == 'GET' :
 			get_db()
 			db=Database(g._database)
@@ -97,7 +97,15 @@ class API(object):
 				db.delite_data(i,t_id)
 			path=os.path.join(flask_app.config['UPLOAD_FOLDER'],t_id)
 			shutil.rmtree(path)
-			return redirect('/'+way)
+			return redirect('/'+type+'/'+way)
+#---------------------------------------------------------------------
+	@flask_app.route('/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
+	def delite_sud(type,way,c_id):
+		if request.method == 'GET' :
+			get_db()
+			db=Database(g._database)
+			db.delite_sud(c_id)
+			return redirect('/'+type+'/'+way)
 #---------------------------------------------------------------------
 	@flask_app.route('/change_invoice_status/<way>/<t_id>', methods=['GET', 'POST'])
 	def change_invoice_status(way,t_id):
@@ -108,8 +116,8 @@ class API(object):
 			return redirect('/'+way)
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	@flask_app.route('/admin_users', methods=['GET', 'POST'])
-	def admin_users():
+	@flask_app.route('/admin/admin_users', methods=['GET', 'POST'])
+	def admin_admin_users():
 		if request.method == 'GET' :
 			user=request.cookies.get('user_id')
 			get_db()
@@ -135,8 +143,8 @@ class API(object):
 				data=staff_to_up
 				)
 #---------------------------------------------------------------------
-	@flask_app.route('/add_user', methods=['GET', 'POST'])
-	def add_user():
+	@flask_app.route('/admin/add_user', methods=['GET', 'POST'])
+	def admin_add_user():
 		if request.method == 'POST' :
 			get_db()
 			db=Database(g._database)
@@ -168,8 +176,8 @@ class API(object):
 				)
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	@flask_app.route('/add_sud_delo', methods=['GET', 'POST'])
-	def add_sud_delo():
+	@flask_app.route('/admin/add_sud_delo', methods=['GET', 'POST'])
+	def admin_add_sud_delo():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
 			new_t_id=str(uuid.uuid4())
@@ -244,8 +252,8 @@ class API(object):
 					name=name,
 					urists=ur_up)
 #---------------------------------------------------------------------
-	@flask_app.route('/sud_dela', methods=['GET', 'POST'])
-	def sud_dela():
+	@flask_app.route('/admin/sud_dela', methods=['GET', 'POST'])
+	def admin_sud_dela():
 		if request.cookies.get('user_id') == None:
 			return redirect('/login')
 		else:
@@ -283,8 +291,8 @@ class API(object):
 				delite_href='')
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	@flask_app.route('/add_bank_dela', methods=['GET', 'POST'])
-	def add_bank_dela():
+	@flask_app.route('/admin/add_bank_dela', methods=['GET', 'POST'])
+	def admin_add_bank_dela():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
 			new_t_id=str(uuid.uuid4())
@@ -358,8 +366,8 @@ class API(object):
 					name=name,
 					urists=ur_up)
 #-----------------------------------------------------------------------
-	@flask_app.route('/bank_dela', methods=['GET', 'POST'])
-	def bank_dela():
+	@flask_app.route('/admin/bank_dela', methods=['GET', 'POST'])
+	def admin_bank_dela():
 		if request.cookies.get('user_id') == None:
 			return redirect('/login')
 		else:
@@ -397,8 +405,8 @@ class API(object):
 				delite_href='')
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	@flask_app.route('/add_none_sud', methods=['GET', 'POST'])
-	def add_none_sud():
+	@flask_app.route('/admin/add_none_sud', methods=['GET', 'POST'])
+	def admin_add_none_sud():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
 			new_t_id=str(uuid.uuid4())
@@ -414,13 +422,13 @@ class API(object):
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
-						return html_error_replacer(os.path.join('admin','add','add_bank_dela.html'),'Такие файлы уже существуют')
+						return html_error_replacer(os.path.join('admin','add','add_nesud_delo.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
 					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
-					return html_error_replacer(os.path.join('admin','add','add_bankr_delo.html'),'Ошибка файлов, попробуйте ещё раз')
+					return html_error_replacer(os.path.join('admin','add','add_nesud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
 				adding_dict=request.form.to_dict(flat=False)
 				list_to_Affairs=[]
@@ -472,8 +480,8 @@ class API(object):
 					name=name,
 					urists=ur_up)
 #-----------------------------------------------------------------------
-	@flask_app.route('/none_sud', methods=['GET', 'POST'])
-	def none_sud():
+	@flask_app.route('/admin/none_sud', methods=['GET', 'POST'])
+	def admin_none_sud():
 		if request.cookies.get('user_id') == None:
 			return redirect('/login')
 		else:
@@ -511,8 +519,8 @@ class API(object):
 				delite_href='')
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	@flask_app.route('/add_dosud_ureg', methods=['GET', 'POST'])
-	def add_dosud_ureg():
+	@flask_app.route('/admin/add_dosud_ureg', methods=['GET', 'POST'])
+	def admin_add_dosud_ureg():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
 			new_t_id=str(uuid.uuid4())
@@ -528,13 +536,13 @@ class API(object):
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
-						return html_error_replacer(os.path.join('admin','add','add_bank_dela.html'),'Такие файлы уже существуют')
+						return html_error_replacer(os.path.join('admin','add','add_dosud_ureg.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
 					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
-					return html_error_replacer(os.path.join('admin','add','add_bankr_delo.html'),'Ошибка файлов, попробуйте ещё раз')
+					return html_error_replacer(os.path.join('admin','add','add_dosud_ureg.html'),'Ошибка файлов, попробуйте ещё раз')
 
 				adding_dict=request.form.to_dict(flat=False)
 				list_to_Affairs=[]
@@ -586,8 +594,8 @@ class API(object):
 					name=name,
 					urists=ur_up)
 #-----------------------------------------------------------------------
-	@flask_app.route('/dosud_ureg', methods=['GET', 'POST'])
-	def dosud_ureg():
+	@flask_app.route('/admin/dosud_ureg', methods=['GET', 'POST'])
+	def admin_dosud_ureg():
 		if request.cookies.get('user_id') == None:
 			return redirect('/login')
 		else:
@@ -625,8 +633,8 @@ class API(object):
 				delite_href='')
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@	
-	@flask_app.route('/add_isp_proiz', methods=['GET', 'POST'])
-	def add_isp_proiz():
+	@flask_app.route('/admin/add_isp_proiz', methods=['GET', 'POST'])
+	def admin_add_isp_proiz():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
 			new_t_id=str(uuid.uuid4())
@@ -642,13 +650,13 @@ class API(object):
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
-						return html_error_replacer(os.path.join('admin','add','add_bank_dela.html'),'Такие файлы уже существуют')
+						return html_error_replacer(os.path.join('admin','add','add_isp_proiz.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
 					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
-					return html_error_replacer(os.path.join('admin','add','add_bankr_delo.html'),'Ошибка файлов, попробуйте ещё раз')
+					return html_error_replacer(os.path.join('admin','add','add_isp_proiz.html'),'Ошибка файлов, попробуйте ещё раз')
 
 				adding_dict=request.form.to_dict(flat=False)
 				list_to_Affairs=[]
@@ -700,8 +708,8 @@ class API(object):
 					name=name,
 					urists=ur_up)
 #-----------------------------------------------------------------------
-	@flask_app.route('/isp_proiz', methods=['GET', 'POST'])
-	def isp_proiz():
+	@flask_app.route('/admin/isp_proiz', methods=['GET', 'POST'])
+	def admin_isp_proiz():
 		if request.cookies.get('user_id') == None:
 			return redirect('/login')
 		else:
@@ -736,6 +744,75 @@ class API(object):
 				role=role,
 				name=name,
 				colors=[],
+				delite_href='')
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@	
+	@flask_app.route('/admin/add_sud', methods=['GET', 'POST'])
+	def admin_add_sudy():
+		if request.method == 'POST':
+			new_c_id=str(uuid.uuid4())
+			get_db()
+			db=Database(g._database)
+			adding_dict=request.form.to_dict(flat=False)
+			list_to_Courts=[]
+			for margin in tables_sets(table_name='Sud', mode='fields'):
+				if margin == 'c_id':
+					list_to_Courts.append(new_c_id)
+				elif margin == 'u_id':
+					list_to_Courts.append(request.cookies.get('user_id'))
+				else:
+					list_to_Courts.append(adding_dict[margin][0])
+			print(adding_dict)
+			print(list_to_Courts)
+			db.insert_tables('Sud',tuple(list_to_Courts))
+			return redirect('/admin/sudy')
+
+		if request.method == 'GET':
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
+			else:
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+				urists=db.get_urists()
+				ur_up=[' '.join(i) for i in urists]
+				clients=[cl[0] for cl in db.get_clients()]
+				return render_template('admin/add/add_sud.html',
+					clients=clients,
+					role=role,
+					name=name,
+					urists=ur_up)
+#-----------------------------------------------------------------------
+	@flask_app.route('/admin/sudy', methods=['GET', 'POST'])
+	def admin_sudy():
+		if request.cookies.get('user_id') == None:
+			return redirect('/login')
+		else:
+			user=request.cookies.get('user_id')
+			get_db()
+			db=Database(g._database)
+			user_info=db.find_user_by_id(user)
+			role=user_info[0]
+			name=' '.join(user_info[1:])
+			d_table = db.get_courts()
+			print(d_table)
+			for item in d_table:
+				item.insert(0,d_table.index(item)+1)
+				item.append(item.pop(1))
+				item.pop(1)
+			if d_table != False:
+				return render_template("admin/sudy.html",
+				data=d_table,
+				role=role,
+				name=name)
+			else:
+				return render_template("admin/sudy.html",
+				data=[],
+				role=role,
+				name=name,
 				delite_href='')
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

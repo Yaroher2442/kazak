@@ -12,20 +12,20 @@
 					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 				</div>
         <nav class="my-2 nav-grid header-link">
-          <a class="p-2 text-dark" href="/sud_dela">Судебные дела</a>
-          <a class="p-2 text-dark" href="#">Банкротные дела</a>
-          <a class="p-2 text-dark" href="#">Досудебное урегулирование</a>
-          <a class="p-2 text-dark" href="#">Исполнительное производство</a>
-          <a class="p-2 text-dark" href="#">Несудебные дела</a>
-		  <a class="btn btn-secondary" role="button" href="#">Суды</a>
-		  <a class="p-2 text-dark" href="/admin_users">Сотрудники</a>
+          <a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
+          <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
+          <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
+          <a class="p-2 text-dark" href="/admin/isp_proiz">Исполнительное производство</a>
+          <a class="p-2 text-dark" href="/admin/none_sud">Несудебные дела</a>
+		  <a class="btn btn-secondary" role="button" href="/admin/sudy">Суды</a>
+		  <a class="p-2 text-dark" href="/admin/admin_users">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
 
 {% block Body %}
 	<h3 id="headline">Суды</h3>
-	<a style="margin-bottom: 10px; margin-top: 10px;" href="#">Добавить новый суд</a>
+	<a style="margin-bottom: 10px; margin-top: 10px;" href="/admin/add_sud">Добавить новый суд</a>
 	  <form class="form-inline py-3 px-5" action="/#" method="post">	
 			<input class='form-control mr-2' type="search" list='client' name="Client" placeholder="Клиент" style="margin-bottom: 7px; height: 37px;" size="24">
 			<datalist id='client'>
@@ -58,8 +58,8 @@
 			{% set index = loop.index %}
 			{% for item in line %}
 			  {% if loop.index == 10 %}
-			    <td><div style="display: flex; margin-top: -30px">
-				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/sud_dela/{{ item }}'">Удалить</button>
+			    <td><div style="display: flex;">
+				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='/delite_sud/admin/sudy/{{ item }}'">Удалить</button>
 			    </div></td>
 			  {% else %}
 				<td>{{ item }}</td>
