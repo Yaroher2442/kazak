@@ -53,8 +53,14 @@
             {% set access = line[2] %}
             {% set index = 5 %}
             {% for item in line %}
+              {% if access == 'Суперпользователь' and loop.index == index %}
+              <td><div style="display: flex;">
+              <button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/admin/restore_pass/{{line[3]}}'">Пароль</button>
+              </div></td>
+              {% endif %}
               {% if access != 'Суперпользователь' and loop.index == index %}
               <td><div style="display: flex;">
+              	<button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/admin/restore_pass/{{line[3]}}'">Пароль</button>
                 <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_user/admin/admin_user/{{ item }}'">Удалить</button>
               </div></td>
               {% elif loop.index!=index %}

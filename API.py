@@ -116,9 +116,16 @@ class API(object):
 			return redirect('/'+way)
 #---------------------------------------------------------------------
 	@flask_app.route('/admin/restore_pass', methods=['GET', 'POST'])
-	def restore_pass():
+	@flask_app.route('/admin/restore_pass/<email>', methods=['GET', 'POST'])
+	def restore_pass(email=None):
 		if request.method == 'GET' :
-			return render_template('/admin/restore_pass.html')
+			if email != None:
+				password=zlib.crc32(email.encode())
+				ls=[]
+				ls.append(password)
+				return render_template('/admin/restore_pass.html', passw=ls)
+			else:
+				return render_template('/admin/restore_pass.html')
 		if request.method == 'POST':
 			password=zlib.crc32(request.form.get('email').encode())
 			ls=[]
@@ -160,18 +167,20 @@ class API(object):
 			db=Database(g._database)
 			pprint(request.form.to_dict(flat=False))
 			email=request.form.get('email')
-			password=request.form.get('password')
 			name=request.form.get('name')
 			surname=request.form.get('surname')
 			lastname=request.form.get('lastname')
 			Access_level =request.form.get('Access_level')
+
+			password=str(zlib.crc32(request.form.get('email').encode()))
 			def hash_password(password):
 				salt = uuid.uuid4()
 				return salt,hashlib.sha256(salt.hex.encode() + password.encode()).hexdigest() + ':' + salt.hex
 			u_id,hash_p=hash_password(password)
+
 			new_U=(str(u_id),Access_level,email,str(hash_p),name,surname,lastname)
 			db.insert_User(new_U)
-			return redirect('/admin_users')
+			return redirect('/admin/admin_users')
 
 		elif request.method == 'GET' :
 			user=request.cookies.get('user_id')
