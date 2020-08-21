@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os, copy, sys, time, uuid  
 import json
-import hashlib, requests, json
+import hashlib,zlib,requests, json
 import urllib.request
 import shutil
 
@@ -114,6 +114,16 @@ class API(object):
 			db=Database(g._database)
 			db.change_invoice_status(t_id,'#008000')
 			return redirect('/'+way)
+#---------------------------------------------------------------------
+	@flask_app.route('/admin/restore_pass', methods=['GET', 'POST'])
+	def restore_pass():
+		if request.method == 'GET' :
+			return render_template('/admin/restore_pass.html')
+		if request.method == 'POST':
+			password=zlib.crc32(request.form.get('email').encode())
+			ls=[]
+			ls.append(password)
+			return render_template('/admin/restore_pass.html', passw=ls)
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	@flask_app.route('/admin/admin_users', methods=['GET', 'POST'])
@@ -829,7 +839,14 @@ class API(object):
 					password, salt = hashed_password.split(':')
 					return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 				if check_password(hash_pass,password):
-					response = make_response(redirect('/sud_dela'))
+					if db.find_user(email)[0][1]=='Суперпользователь':
+						way='/admin/sud_dela'
+					elif db.find_user(email)[0][1]=='Пользователь':
+						way='/user/sud_dela'
+					elif db.find_user(email)[0][1]=='Секретарь':
+						way='/secretary'	
+					else: way='/login'
+					response = make_response(redirect(way))
 					response.set_cookie('user_id',db.find_user(email)[0][0])
 					return response
 				else:
