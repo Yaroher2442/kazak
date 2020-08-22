@@ -1060,13 +1060,13 @@ class API(object):
 					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 					item[10]='\n'.join([' '.join(i) for i in x_lst])
 					item.pop(4)
-				return render_template("admin/bankr_dela.html",
+				return render_template("user/bankr_dela.html",
 				data=d_table,
 				role=role,
 				name=name,
 				colors=colors)
 			else:
-				return render_template("admin/bankr_dela.html",
+				return render_template("user/bankr_dela.html",
 				data=[],
 				role=role,
 				name=name,
@@ -1178,13 +1178,13 @@ class API(object):
 					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 					item[10]='\n'.join([' '.join(i) for i in x_lst])
 					item.pop(4)
-				return render_template("admin/nesud_dela.html",
+				return render_template("user/nesud_dela.html",
 				data=d_table,
 				role=role,
 				name=name,
 				colors=colors)
 			else:
-				return render_template("admin/nesud_dela.html",
+				return render_template("user/nesud_dela.html",
 				data=[],
 				role=role,
 				name=name,
@@ -1296,13 +1296,13 @@ class API(object):
 					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 					item[10]='\n'.join([' '.join(i) for i in x_lst])
 					item.pop(4)
-				return render_template("admin/dosud_ureg.html",
+				return render_template("user/dosud_ureg.html",
 				data=d_table,
 				role=role,
 				name=name,
 				colors=colors)
 			else:
-				return render_template("admin/dosud_ureg.html",
+				return render_template("user/dosud_ureg.html",
 				data=[],
 				role=role,
 				name=name,
@@ -1415,13 +1415,13 @@ class API(object):
 					x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
 					item[12]='\n'.join([' '.join(i) for i in x_lst])
 					item.pop(4)
-				return render_template("admin/isp_proiz.html",
+				return render_template("user/isp_proiz.html",
 				data=d_table,
 				role=role,
 				name=name,
 				colors=colors)
 			else:
-				return render_template("admin/isp_proiz.html",
+				return render_template("user/isp_proiz.html",
 				data=[],
 				role=role,
 				name=name,
