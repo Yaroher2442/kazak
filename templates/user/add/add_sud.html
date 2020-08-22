@@ -12,18 +12,18 @@
 					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 				</div>
         <nav class="my-2 nav-grid header-link">
-          <a class="p-2 text-dark" href="/sud_dela">Судебные дела</a>
-          <a class="p-2 text-dark" href="#">Банкротные дела</a>
-          <a class="p-2 text-dark" href="#">Досудебное урегулирование</a>
-          <a class="p-2 text-dark" href="#">Исполнительное производство</a>
-          <a class="p-2 text-dark" href="#">Несудебные дела</a>
-		      <a class="btn btn-secondary" role="button" href="#">Суды</a>
+          <a class="p-2 text-dark" href="/user/sud_dela">Судебные дела</a>
+          <a class="p-2 text-dark" href="/user/bank_dela">Банкротные дела</a>
+          <a class="p-2 text-dark" href="/user/dosud_ureg">Досудебное урегулирование</a>
+          <a class="p-2 text-dark" href="/user/isp_proiz">Исполнительное производство</a>
+          <a class="p-2 text-dark" href="/user/none_sud">Несудебные дела</a>
+          <a class="btn btn-secondary" role="button" href="/user/sudy">Суды</a>
         </nav>
     </header>
 {% endblock %}
 
 {% block Body %}
-  <form class="py-3 px-5" action="/add_sud_delo" method="post" enctype="multipart/form-data">
+  <form class="py-3 px-5" action="/user/add_sud" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить новый суд</h5>
     <div class="form-group mx-5">
       <select name='Client' class="multi-select ui fluid dropdown mb-2" required>

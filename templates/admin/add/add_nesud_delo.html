@@ -18,13 +18,13 @@
           <a class="p-2 text-dark" href="/admin/isp_proiz">Исполнительное производство</a>
           <a class="btn btn-secondary" role="button" href="/admin/none_sud">Несудебные дела</a>
           <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
-          <a class="p-2 text-dark" href="/admin/admin_users">Сотрудники</
+          <a class="p-2 text-dark" href="/admin/admin_users">Сотрудники</a>
         </nav>
     </header>
 {% endblock %}
 
 {% block Body %}
-  <form class="py-3 px-5" action="/add_none_sud" method="post" enctype="multipart/form-data">
+  <form class="py-3 px-5" action="/admin/add_none_sud" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое несудебное дело</h5>
     <div class="form-group mx-5">
         <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
