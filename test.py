@@ -9,6 +9,8 @@ def main():
     #     print(r)
     password=zlib.crc32('stolbunov.yaroslav@gmail.com'.encode())
     print(password)
+    stolbunov.yaroslav@gmail.com- 2127642222
+    yaroher2442@gmail.com - 2124346601
     # def hash_password(password):
     #     salt = uuid.uuid4()
     #     return salt,hashlib.sha256(salt.hex.encode() + password.encode()).hexdigest() + ':' + salt.hex

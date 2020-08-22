@@ -188,8 +188,12 @@ class API(object):
 			get_db()
 			db=Database(g._database)
 			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
+			if user_info==False:
+				role = 'None'
+				name = 'None'
+			else:
+				role=user_info[0]
+				name=' '.join(user_info[1:])
 			return render_template('admin/add/add_staff.html',
 				role=role,
 				name=name
@@ -921,7 +925,7 @@ class API(object):
 			user_info=db.find_user_by_id(user)
 			role=user_info[0]
 			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Litigation')
+			d_table = db.get_join_table_u_id('Litigation',user)
 			if d_table != False:
 				colors=[]
 				delite_hrs=[]
