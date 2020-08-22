@@ -141,7 +141,18 @@ class Database(object):
             return lst                
         except Error as e:
             print(e)
-
+    def get_courts_u_id(self,u_id):
+        try:
+            conn=self.connect
+            c = conn.cursor()
+            res=c.execute("SELECT * FROM Sud WHERE u_id =?",(u_id,))  
+            results = c.fetchall()
+            lst=[]
+            for item in results:
+                lst.append(list(item))
+            return lst                
+        except Error as e:
+            print(e)
     def get_join_table(self,join_table):
         try:
             conn=self.connect

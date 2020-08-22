@@ -101,7 +101,8 @@ class API(object):
 			print('/'+type+'/'+way)
 			return redirect('/'+type+'/'+way)
 #---------------------------------------------------------------------
-	@flask_app.route('/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
+	@flask_app.route('/admin/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
+	@flask_app.route('/user/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
 	def delite_sud(type,way,c_id):
 		if request.method == 'GET' :
 			get_db()
@@ -819,7 +820,6 @@ class API(object):
 			role=user_info[0]
 			name=' '.join(user_info[1:])
 			d_table = db.get_courts()
-			print(d_table)
 			for item in d_table:
 				item.insert(0,d_table.index(item)+1)
 				item.append(item.pop(1))
@@ -912,7 +912,6 @@ class API(object):
 				name=' '.join(user_info[1:])
 				urists=db.get_urists()
 				ur_up=[' '.join(i) for i in urists]
-				print(ur_up)
 				return render_template('user/add/add_sud_delo.html',
 					role=role,
 					name=name,
@@ -964,6 +963,8 @@ class API(object):
 			new_t_id=str(uuid.uuid4())
 			get_db()
 			db=Database(g._database)
+			user=request.cookies.get('user_id')
+			user_info=db.find_user_by_id(user)
 
 			file_agree = request.files["Agreement"]
 			file_invoice = request.files["Invoice"]
@@ -974,13 +975,13 @@ class API(object):
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
-						return html_error_replacer(os.path.join('admin','add','add_bank_dela.html'),'Такие файлы уже существуют')
+						return html_error_replacer(os.path.join('user','add','add_bank_dela.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
 					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
-					return html_error_replacer(os.path.join('admin','add','add_bankr_delo.html'),'Ошибка файлов, попробуйте ещё раз')
+					return html_error_replacer(os.path.join('user','add','add_bankr_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
 				adding_dict=request.form.to_dict(flat=False)
 				list_to_Affairs=[]
@@ -999,6 +1000,8 @@ class API(object):
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
+					elif margin == 'Project_Manager':
+						list_to_Affairs.append(' '.join(user_info[1:]))
 					else:
 						list_to_Affairs.append(adding_dict[margin][0])
 				db.insert_tables('Affairs',tuple(list_to_Affairs))
@@ -1013,7 +1016,7 @@ class API(object):
 
 				return redirect('/bank_dela')
 			else:
-				return html_error_replacer(os.path.join('admin','add','add_bankr_delo.html'),'Не загружены файлы')
+				return html_error_replacer(os.path.join('user','add','add_bankr_delo.html'),'Не загружены файлы')
 
 		if request.method == 'GET':
 			if request.cookies.get('user_id') == None:
@@ -1027,7 +1030,7 @@ class API(object):
 				name=' '.join(user_info[1:])
 				urists=db.get_urists()
 				ur_up=[' '.join(i) for i in urists]
-				return render_template('admin/add/add_bankr_delo.html',
+				return render_template('user/add/add_bankr_delo.html',
 					role=role,
 					name=name,
 					urists=ur_up)
@@ -1042,7 +1045,7 @@ class API(object):
 			user_info=db.find_user_by_id(user)
 			role=user_info[0]
 			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Bankruptcy')
+			d_table = db.get_join_table_u_id('Bankruptcy',user)
 			if d_table != False:
 				colors=[]
 				delite_hrs=[]
@@ -1056,6 +1059,7 @@ class API(object):
 					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 					item[10]='\n'.join([' '.join(i) for i in x_lst])
+					item.pop(4)
 				return render_template("admin/bankr_dela.html",
 				data=d_table,
 				role=role,
@@ -1077,6 +1081,8 @@ class API(object):
 			new_t_id=str(uuid.uuid4())
 			get_db()
 			db=Database(g._database)
+			user=request.cookies.get('user_id')
+			user_info=db.find_user_by_id(user)
 
 			file_agree = request.files["Agreement"]
 			file_invoice = request.files["Invoice"]
@@ -1087,13 +1093,13 @@ class API(object):
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
-						return html_error_replacer(os.path.join('admin','add','add_nesud_delo.html'),'Такие файлы уже существуют')
+						return html_error_replacer(os.path.join('user','add','add_nesud_delo.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
 					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
-					return html_error_replacer(os.path.join('admin','add','add_nesud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
+					return html_error_replacer(os.path.join('user','add','add_nesud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
 				adding_dict=request.form.to_dict(flat=False)
 				list_to_Affairs=[]
@@ -1112,6 +1118,8 @@ class API(object):
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
+					elif margin == 'Project_Manager':
+						list_to_Affairs.append(' '.join(user_info[1:]))
 					else:
 						list_to_Affairs.append(adding_dict[margin][0])
 				db.insert_tables('Affairs',tuple(list_to_Affairs))
@@ -1126,7 +1134,7 @@ class API(object):
 
 				return redirect('/none_sud')
 			else:
-				return html_error_replacer(os.path.join('admin','add','add_nesud_delo.html'),'Не загружены файлы')
+				return html_error_replacer(os.path.join('user','add','add_nesud_delo.html'),'Не загружены файлы')
 
 		if request.method == 'GET':
 			if request.cookies.get('user_id') == None:
@@ -1140,7 +1148,7 @@ class API(object):
 				name=' '.join(user_info[1:])
 				urists=db.get_urists()
 				ur_up=[' '.join(i) for i in urists]
-				return render_template('admin/add/add_nesud_delo.html',
+				return render_template('user/add/add_nesud_delo.html',
 					role=role,
 					name=name,
 					urists=ur_up)
@@ -1155,7 +1163,7 @@ class API(object):
 			user_info=db.find_user_by_id(user)
 			role=user_info[0]
 			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Non_judicial')
+			d_table = db.get_join_table_u_id('Non_judicial',user)
 			if d_table != False:
 				colors=[]
 				delite_hrs=[]
@@ -1169,6 +1177,7 @@ class API(object):
 					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 					item[10]='\n'.join([' '.join(i) for i in x_lst])
+					item.pop(4)
 				return render_template("admin/nesud_dela.html",
 				data=d_table,
 				role=role,
@@ -1190,6 +1199,8 @@ class API(object):
 			new_t_id=str(uuid.uuid4())
 			get_db()
 			db=Database(g._database)
+			user=request.cookies.get('user_id')
+			user_info=db.find_user_by_id(user)
 
 			file_agree = request.files["Agreement"]
 			file_invoice = request.files["Invoice"]
@@ -1200,13 +1211,13 @@ class API(object):
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
-						return html_error_replacer(os.path.join('admin','add','add_dosud_ureg.html'),'Такие файлы уже существуют')
+						return html_error_replacer(os.path.join('user','add','add_dosud_ureg.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
 					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
-					return html_error_replacer(os.path.join('admin','add','add_dosud_ureg.html'),'Ошибка файлов, попробуйте ещё раз')
+					return html_error_replacer(os.path.join('user','add','add_dosud_ureg.html'),'Ошибка файлов, попробуйте ещё раз')
 
 				adding_dict=request.form.to_dict(flat=False)
 				list_to_Affairs=[]
@@ -1225,6 +1236,8 @@ class API(object):
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
+					elif margin == 'Project_Manager':
+						list_to_Affairs.append(' '.join(user_info[1:]))
 					else:
 						list_to_Affairs.append(adding_dict[margin][0])
 				db.insert_tables('Affairs',tuple(list_to_Affairs))
@@ -1239,7 +1252,7 @@ class API(object):
 
 				return redirect('/dosud_ureg')
 			else:
-				return html_error_replacer(os.path.join('admin','add','add_dosud_ureg.html'),'Не загружены файлы')
+				return html_error_replacer(os.path.join('user','add','add_dosud_ureg.html'),'Не загружены файлы')
 
 		if request.method == 'GET':
 			if request.cookies.get('user_id') == None:
@@ -1253,7 +1266,7 @@ class API(object):
 				name=' '.join(user_info[1:])
 				urists=db.get_urists()
 				ur_up=[' '.join(i) for i in urists]
-				return render_template('admin/add/add_dosud_ureg.html',
+				return render_template('user/add/add_dosud_ureg.html',
 					role=role,
 					name=name,
 					urists=ur_up)
@@ -1268,7 +1281,7 @@ class API(object):
 			user_info=db.find_user_by_id(user)
 			role=user_info[0]
 			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Pre_trial_settlement')
+			d_table = db.get_join_table_u_id('Pre_trial_settlement',user)
 			if d_table != False:
 				colors=[]
 				delite_hrs=[]
@@ -1282,6 +1295,7 @@ class API(object):
 					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 					item[10]='\n'.join([' '.join(i) for i in x_lst])
+					item.pop(4)
 				return render_template("admin/dosud_ureg.html",
 				data=d_table,
 				role=role,
@@ -1303,6 +1317,8 @@ class API(object):
 			new_t_id=str(uuid.uuid4())
 			get_db()
 			db=Database(g._database)
+			user=request.cookies.get('user_id')
+			user_info=db.find_user_by_id(user)
 
 			file_agree = request.files["Agreement"]
 			file_invoice = request.files["Invoice"]
@@ -1313,13 +1329,13 @@ class API(object):
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
 						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
-						return html_error_replacer(os.path.join('admin','add','add_isp_proiz.html'),'Такие файлы уже существуют')
+						return html_error_replacer(os.path.join('user','add','add_isp_proiz.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
 					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
-					return html_error_replacer(os.path.join('admin','add','add_isp_proiz.html'),'Ошибка файлов, попробуйте ещё раз')
+					return html_error_replacer(os.path.join('user','add','add_isp_proiz.html'),'Ошибка файлов, попробуйте ещё раз')
 
 				adding_dict=request.form.to_dict(flat=False)
 				list_to_Affairs=[]
@@ -1338,6 +1354,8 @@ class API(object):
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
+					elif margin == 'Project_Manager':
+						list_to_Affairs.append(' '.join(user_info[1:]))
 					else:
 						list_to_Affairs.append(adding_dict[margin][0])
 				db.insert_tables('Affairs',tuple(list_to_Affairs))
@@ -1352,7 +1370,7 @@ class API(object):
 
 				return redirect('/isp_proiz')
 			else:
-				return html_error_replacer(os.path.join('admin','add','add_isp_proiz.html'),'Не загружены файлы')
+				return html_error_replacer(os.path.join('user','add','add_isp_proiz.html'),'Не загружены файлы')
 
 		if request.method == 'GET':
 			if request.cookies.get('user_id') == None:
@@ -1366,7 +1384,7 @@ class API(object):
 				name=' '.join(user_info[1:])
 				urists=db.get_urists()
 				ur_up=[' '.join(i) for i in urists]
-				return render_template('admin/add/add_isp_proiz.html',
+				return render_template('user/add/add_isp_proiz.html',
 					role=role,
 					name=name,
 					urists=ur_up)
@@ -1380,8 +1398,9 @@ class API(object):
 			db=Database(g._database)
 			user_info=db.find_user_by_id(user)
 			role=user_info[0]
+
 			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Enforcement_proceedings')
+			d_table = db.get_join_table_u_id('Enforcement_proceedings',user)
 			if d_table != False:
 				colors=[]
 				delite_hrs=[]
@@ -1395,6 +1414,7 @@ class API(object):
 					item[10]='download_files/'+'/'.join(item[10].split('\\')[-3:])
 					x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
 					item[12]='\n'.join([' '.join(i) for i in x_lst])
+					item.pop(4)
 				return render_template("admin/isp_proiz.html",
 				data=d_table,
 				role=role,
@@ -1415,6 +1435,9 @@ class API(object):
 			new_c_id=str(uuid.uuid4())
 			get_db()
 			db=Database(g._database)
+			user=request.cookies.get('user_id')
+			user_info=db.find_user_by_id(user)
+
 			adding_dict=request.form.to_dict(flat=False)
 			list_to_Courts=[]
 			for margin in tables_sets(table_name='Sud', mode='fields'):
@@ -1424,10 +1447,8 @@ class API(object):
 					list_to_Courts.append(request.cookies.get('user_id'))
 				else:
 					list_to_Courts.append(adding_dict[margin][0])
-			print(adding_dict)
-			print(list_to_Courts)
 			db.insert_tables('Sud',tuple(list_to_Courts))
-			return redirect('/admin/sudy')
+			return redirect('/user/sudy')
 
 		if request.method == 'GET':
 			if request.cookies.get('user_id') == None:
@@ -1442,7 +1463,7 @@ class API(object):
 				urists=db.get_urists()
 				ur_up=[' '.join(i) for i in urists]
 				clients=[cl[0] for cl in db.get_clients()]
-				return render_template('admin/add/add_sud.html',
+				return render_template('user/add/add_sud.html',
 					clients=clients,
 					role=role,
 					name=name,
@@ -1458,19 +1479,18 @@ class API(object):
 			user_info=db.find_user_by_id(user)
 			role=user_info[0]
 			name=' '.join(user_info[1:])
-			d_table = db.get_courts()
-			print(d_table)
+			d_table = db.get_courts_u_id(user)
 			for item in d_table:
 				item.insert(0,d_table.index(item)+1)
 				item.append(item.pop(1))
 				item.pop(1)
 			if d_table != False:
-				return render_template("admin/sudy.html",
+				return render_template("user/sudy.html",
 				data=d_table,
 				role=role,
 				name=name)
 			else:
-				return render_template("admin/sudy.html",
+				return render_template("user/sudy.html",
 				data=[],
 				role=role,
 				name=name,
