@@ -7,11 +7,11 @@ def main():
     # for i in range(100):
     #     r=requests.get("http://127.0.0.1:5000/admin/add_user")
     #     print(r)
-    password=zlib.crc32('yaroher2442@gmail.com'.encode())
+    password=zlib.crc32('stolbunov.yaroslav@gmail.com'.encode())
     print(password)
-    def hash_password(password):
-        salt = uuid.uuid4()
-        return salt,hashlib.sha256(salt.hex.encode() + password.encode()).hexdigest() + ':' + salt.hex
-    print(hash_password(str(password)))
+    # def hash_password(password):
+    #     salt = uuid.uuid4()
+    #     return salt,hashlib.sha256(salt.hex.encode() + password.encode()).hexdigest() + ':' + salt.hex
+    # print(hash_password(str(password)))
 if __name__ == '__main__':
     main()
