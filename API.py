@@ -88,7 +88,8 @@ class API(object):
 			except FileNotFoundError:
 				abort(404)
 #---------------------------------------------------------------------
-	@flask_app.route('/delite_element/<type>/<way>/<t_id>', methods=['GET', 'POST'])
+	@flask_app.route('/admin/delite_element/<type>/<way>/<t_id>', methods=['GET', 'POST'])
+	@flask_app.route('/user/delite_element/<type>/<way>/<t_id>', methods=['GET', 'POST'])
 	def delite_element(type,way,t_id):
 		if request.method == 'GET' :
 			get_db()
@@ -97,6 +98,7 @@ class API(object):
 				db.delite_data(i,t_id)
 			path=os.path.join(flask_app.config['UPLOAD_FOLDER'],t_id)
 			shutil.rmtree(path)
+			print('/'+type+'/'+way)
 			return redirect('/'+type+'/'+way)
 #---------------------------------------------------------------------
 	@flask_app.route('/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
@@ -107,13 +109,14 @@ class API(object):
 			db.delite_sud(c_id)
 			return redirect('/'+type+'/'+way)
 #---------------------------------------------------------------------
-	@flask_app.route('/change_invoice_status/<way>/<t_id>', methods=['GET', 'POST'])
-	def change_invoice_status(way,t_id):
+	@flask_app.route('/admin/change_invoice_status/<type>/<way>/<t_id>', methods=['GET', 'POST'])
+	@flask_app.route('/user/change_invoice_status/<type>/<way>/<t_id>', methods=['GET', 'POST'])
+	def change_invoice_status(type,way,t_id):
 		if request.method == 'GET' :
 			get_db()
 			db=Database(g._database)
 			db.change_invoice_status(t_id,'#008000')
-			return redirect('/'+way)
+			return redirect('/'+type+'/'+way)
 #---------------------------------------------------------------------
 #settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_
 #settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_
@@ -939,13 +942,14 @@ class API(object):
 					item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
 					x_lst=[item[11].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 					item[11]='\n'.join([' '.join(i) for i in x_lst])
-				return render_template("admin/sud_dela.html",
+					item.pop(4)
+				return render_template("user/sud_dela.html",
 				data=d_table,
 				role=role,
 				name=name,
 				colors=colors)
 			else:
-				return render_template("admin/sud_dela.html",
+				return render_template("user/sud_dela.html",
 				data=[],
 				role=role,
 				name=name,
