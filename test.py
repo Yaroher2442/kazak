@@ -1,9 +1,17 @@
 import requests
-
+import zlib,hashlib,uuid 
+import json
 def main():
-    for i in range(100):
-        r=requests.get("http://127.0.0.1:5000/add_sud_delo")
-        print(r)
-
+	# print(zlib.crc32('Казаков Дмитрий Вячеславович'.encode()))
+	# print(hashlib.sha224('Казаков Дмитрий Вячеславович'.encode()))
+    # for i in range(100):
+    #     r=requests.get("http://127.0.0.1:5000/admin/add_user")
+    #     print(r)
+    password=zlib.crc32('stolbunov.yaroslav@gmail.com'.encode())
+    print(password)
+    # def hash_password(password):
+    #     salt = uuid.uuid4()
+    #     return salt,hashlib.sha256(salt.hex.encode() + password.encode()).hexdigest() + ':' + salt.hex
+    # print(hash_password(str(password)))
 if __name__ == '__main__':
     main()
