@@ -141,15 +141,22 @@ class API(object):
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 	@flask_app.route('/admin/admin_users', methods=['GET', 'POST'])
 	def admin_admin_users():
-		if request.method == 'GET' :
+		def user_worker(method):
 			user=request.cookies.get('user_id')
 			get_db()
 			db=Database(g._database)
 			user_info=db.find_user_by_id(user)
 			role=user_info[0]
 			name=' '.join(user_info[1:])
-
-			staff=db.get_all_users()
+			if method == 'GET':
+				staff=db.get_all_users()
+				print(staff)
+			else:
+				param=request.form.get('search_user')
+				if param == '':
+					staff=db.get_all_users()
+				else:
+					staff=db.get_users_search(param.split(' '))
 			staff_to_up=[]
 			for item in staff:
 				lst=[]
@@ -159,12 +166,19 @@ class API(object):
 				lst.append(item[5])
 				lst.append(item[0])
 				staff_to_up.append(lst)
+			search_urists=[]
+			for u in db.get_all_users():
+				search_urists.append(' '.join(u[1:4]))
 			return render_template('admin/staff.html',
 				role=role,
 				name=name,
-				urists=[1,2,3,4,5],
+				search_urists=search_urists,
 				data=staff_to_up
 				)
+		if request.method == 'GET' :
+			return user_worker('GET')
+		if request.method == 'POST':
+			return user_worker('POST')
 	@flask_app.route('/admin/add_user', methods=['GET', 'POST'])
 	def admin_add_user():
 		if request.method == 'POST' :
@@ -202,6 +216,12 @@ class API(object):
 				role=role,
 				name=name
 				)
+	@flask_app.route('/admin/delite_user/<type>/<way>/<_id>', methods=['GET', 'POST'])
+	def delite_user(type,way,_id):
+		get_db()
+		db=Database(g._database)
+		db.delite_user(_id)
+		return redirect('/'+type+'/'+way)
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 	@flask_app.route('/admin/add_sud_delo', methods=['GET', 'POST'])
@@ -785,8 +805,6 @@ class API(object):
 					list_to_Courts.append(request.cookies.get('user_id'))
 				else:
 					list_to_Courts.append(adding_dict[margin][0])
-			print(adding_dict)
-			print(list_to_Courts)
 			db.insert_tables('Sud',tuple(list_to_Courts))
 			return redirect('/admin/sudy')
 
@@ -810,31 +828,57 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/admin/sudy', methods=['GET', 'POST'])
 	def admin_sudy():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_courts()
-			for item in d_table:
-				item.insert(0,d_table.index(item)+1)
-				item.append(item.pop(1))
-				item.pop(1)
-			if d_table != False:
-				return render_template("admin/sudy.html",
-				data=d_table,
-				role=role,
-				name=name)
+		def admin_sudy_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("admin/sudy.html",
-				data=[],
-				role=role,
-				name=name,
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+
+				if method == 'GET':
+					d_table = db.get_courts()
+				else:
+					client=request.form.get('client')
+					date=request.form.get('date')
+					if client == '' and date == '':
+						d_table = db.get_courts()
+					elif client == '' and date != '':
+						d_table=db.get_courts_search(date=date)
+					elif client != '' and date == '':
+						d_table=db.get_courts_search(client=client)
+					elif client != '' and date != '':
+						d_table=db.get_courts_search(client=client,date=date)
+					else:
+						redirect('/admin/sudy')
+				if d_table == False:
+					return render_template("admin/sudy.html",
+					data=[],
+					role=role,
+					name=name,
+					delite_href='')
+				else:
+					for item in d_table:
+						item.insert(0,d_table.index(item)+1)
+						item.append(item.pop(1))
+						item.pop(1)
+	
+					serch_clients=[]
+					for cl in db.get_courts_clients():
+						serch_clients.append(cl[0])
+							
+					return render_template("admin/sudy.html",
+						data=d_table,
+						role=role,
+						serch_clients=serch_clients,
+						name=name)
+		if request.method == 'GET' :
+			return admin_sudy_worker('GET')
+		if request.method == 'POST':
+			return admin_sudy_worker('POST')
 ##############################################################################################
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
@@ -1308,7 +1352,7 @@ class API(object):
 				name=name,
 				colors=[],
 				delite_href='')
-#U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
+#U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_-
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_	
 	@flask_app.route('/user/add_isp_proiz', methods=['GET', 'POST'])
 	def user_add_isp_proiz():
@@ -1439,10 +1483,14 @@ class API(object):
 			user_info=db.find_user_by_id(user)
 
 			adding_dict=request.form.to_dict(flat=False)
+			print(adding_dict)
+			print(tables_sets(table_name='Sud', mode='fields'))
 			list_to_Courts=[]
 			for margin in tables_sets(table_name='Sud', mode='fields'):
 				if margin == 'c_id':
 					list_to_Courts.append(new_c_id)
+				elif margin == 'lawyer':
+					list_to_Courts.append(' '.join(user_info[1:]))
 				elif margin == 'u_id':
 					list_to_Courts.append(request.cookies.get('user_id'))
 				else:
@@ -1470,6 +1518,60 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/user/sudy', methods=['GET', 'POST'])
 	def user_sudy():
+		def user_sudy_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
+			else:
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+
+				if method == 'GET':
+					d_table = db.get_courts_u_id(u_id=user)
+				else:
+					client=request.form.get('client')
+					date=request.form.get('date')
+					if client == '' and date == '':
+						d_table = db.get_courts_u_id(u_id=user)
+					elif client == '' and date != '':
+						d_table=db.get_courts_search_u_id(date=date,u_id=user)
+					elif client != '' and date == '':
+						d_table=db.get_courts_search_u_id(client=client,u_id=user)
+					elif client != '' and date != '':
+						d_table=db.get_courts_search_u_id(client=client,date=date,u_id=user)
+					else:
+						redirect('/user/sudy')
+
+				if d_table == False:
+					return render_template("user/sudy.html",
+					data=[],
+					role=role,
+					name=name,
+					delite_href='')
+				else:
+					for item in d_table:
+						item.insert(0,d_table.index(item)+1)
+						item.append(item.pop(1))
+						item.pop(1)
+					serch_clients=[]
+					for cl in db.get_courts_clients_u_id(u_id=user):
+						serch_clients.append(cl[0])
+					return render_template("user/sudy.html",
+						data=d_table,
+						role=role,
+						serch_clients=serch_clients,
+						name=name)
+		if request.method == 'GET' :
+			return user_sudy_worker('GET')
+		if request.method == 'POST':
+			return user_sudy_worker('POST')
+
+#S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_
+	@flask_app.route('/secretary', methods=['GET', 'POST'])
+	def secretary_sudy():
 		if request.cookies.get('user_id') == None:
 			return redirect('/login')
 		else:
@@ -1479,28 +1581,29 @@ class API(object):
 			user_info=db.find_user_by_id(user)
 			role=user_info[0]
 			name=' '.join(user_info[1:])
-			d_table = db.get_courts_u_id(user)
+			d_table = db.get_courts()
 			for item in d_table:
 				item.insert(0,d_table.index(item)+1)
 				item.append(item.pop(1))
 				item.pop(1)
 			if d_table != False:
-				return render_template("user/sudy.html",
+				return render_template("secretary/sudy.html",
 				data=d_table,
 				role=role,
 				name=name)
 			else:
-				return render_template("user/sudy.html",
+				return render_template("secretary/sudy.html",
 				data=[],
 				role=role,
 				name=name,
 				delite_href='')
-#L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_
+
+#S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_
 #L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_
 	@flask_app.route('/login' , methods=['GET' , 'POST'])
 	def login():
 		if request.method == 'POST':     
-			email=request.form.get('email')
+			email=request.form.get('email').rstrip()
 			password=request.form.get('password')
 			get_db()
 			db=Database(g._database)
@@ -1547,6 +1650,8 @@ class API(object):
 		else:
 			return abort(401)
 #L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_
+
+
 #_______________________________________________________________________________________________
 #_______________________________________________________________________________________________
 	@flask_app.errorhandler(401)

@@ -47,6 +47,7 @@
         <option value="Интеллектуальное право">Интеллектуальное право</option>
         <option value="Спортивное право">Спортивное право</option>
       </select>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Project_Manager" placeholder="Руководитель проекта: {{ name }}" disabled>
       <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" multiple required>
         <option value=''>Юристы</option>
         {% for item in urists %}

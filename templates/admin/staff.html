@@ -27,15 +27,15 @@
 	<h3 id="headline">Сотрудники</h3>
 	<a style="margin-bottom: 10px; margin-top: 10px;" href="/admin/add_user">Добавить нового сотрудника</a>
 	<a style="margin-bottom: 10px; margin-top: 10px;margin-left: 30px; " href="/admin/restore_pass">Узнать забытый пароль</a>
-	  <form class="form-inline py-3 px-5" action="/#" method="post">	
-			<select name="Practice" class="multi-select dropdown mb-2" style="width: 60px" multiple required>
-                <option value="">Сотрудник</option>
-                {% for item in urists %}
-                    <option value="{{ item }}">{{ item }}</option>
-                {% endfor %}
-			</select>
-			<input type="submit" class="btn btn-success" style="margin-bottom: 7px; margin-left: 7px; height: 37px" value="Найти">
-		</form>	
+	<form class="form-inline py-3 px-5" action="/admin/admin_users" method="post" enctype="multipart/form-data">	
+		<input class='form-control mr-2' type="search" list='search_urists' name="search_user" placeholder="Cотрудник" style="margin-bottom: 7px; height: 37px;" size="32">
+		<datalist id='search_urists'>
+		{% for item in search_urists %}
+			<option value="{{item}}">{{ item }}</option>
+		{% endfor %}
+		</datalist>
+		<input type="submit" class="btn btn-success" style="margin-bottom: 7px; margin-left: 7px; height: 37px" value="Найти">
+	</form>	
   <div class="table-responsive-vertical shadow-z-1">
 	<table id="table" class="table table-hover table-mc-light-blue" style='white-space: pre-wrap'>
 	  <thead>
@@ -61,7 +61,7 @@
               {% if access != 'Суперпользователь' and loop.index == index %}
               <td><div style="display: flex;">
               	<button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/admin/restore_pass/{{ line[3] }}'">Пароль</button>
-                <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_user/admin/admin_user/{{ item }}'">Удалить</button>
+                <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_user/admin/admin_users/{{ item }}'">Удалить</button>
               </div></td>
               {% elif loop.index!=index %}
               	<td>{{ item }}</td>

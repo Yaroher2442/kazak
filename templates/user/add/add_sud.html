@@ -26,18 +26,19 @@
   <form class="py-3 px-5" action="/user/add_sud" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить новый суд</h5>
     <div class="form-group mx-5">
-      <select name='Client' class="multi-select ui fluid dropdown mb-2" required>
+      <select name="client" class="multi-select ui fluid dropdown mb-2" required>
         <option value=''>Клиент</option>
         {% for item in clients %}
           <option value="{{ item }}">{{ item }}</option>
         {% endfor %}
-      </select>      
-      <input class="d-block mb-2 w-100 form-control" type="date" name="Date_" placeholder="Дата" required>
-      <input class="d-block mb-2 w-100 form-control" type="time" name="Time_" placeholder="Время" required>
-      <input class="d-block mb-2 w-100 form-control" type="text" name="Judge" placeholder="Судья" required>
-      <input class="d-block mb-2 w-100 form-control" type="text" name="Tribunal" placeholder="Суд" required>
-      <input class="d-block mb-2 w-100 form-control" type="text" name="Instance" placeholder="Инстанция" required>
-      <input class="d-block mb-2 w-100 form-control" type="text" name="Sunstance" placeholder="Суть дела" required>
+      </select>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="lawyer" placeholder="Юрист: {{name}}" disabled>     
+      <input class="d-block mb-2 w-100 form-control" type="date" name="date" placeholder="Дата" required>
+      <input class="d-block mb-2 w-100 form-control" type="time" name="time" placeholder="Время" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="judge" placeholder="Судья" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="tribunal" placeholder="Суд" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="instance" placeholder="Инстанция" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="comment" placeholder="Суть дела" required>
       <button class='btn btn-success' type="submit">Добавить</button>
     </div>
   </form>
