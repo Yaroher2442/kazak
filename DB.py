@@ -1,6 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 import os,uuid
+import json
  
 class Database(object):
     """docstring for Database"""
@@ -37,6 +38,7 @@ class Database(object):
             # (u_id,email,password,name,surname)
         except Error as e:
             print(e)
+
     def find_user(self,email):
         try:
             conn=self.connect
@@ -107,9 +109,22 @@ class Database(object):
             if results==[]:
                 return False
             else:
+                return [ i[0] for i in results]
+        except Error as e:
+            print(e)
+    def get_clients_u_id(self,u_id):
+        try:
+            conn=self.connect
+            c = conn.cursor()
+            res=c.execute("SELECT Client From Affairs WHERE u_id=?",(u_id,))  
+            results = c.fetchall()
+            if results==[]:
+                return False
+            else:
                 return list(results)
         except Error as e:
             print(e)
+
 
     def insert_tables(self,table_name,data):
         try:
@@ -261,6 +276,43 @@ class Database(object):
         except Error as e:
             print(e)
 
+    def get_join_table_search(self,join_table,client=None,practice=None):
+        try:
+            conn=self.connect
+            c = conn.cursor()
+            if client!=None:
+                res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id AND a.Client=?".format(join_table),(client,))
+            else: 
+                res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id ".format(join_table)) 
+            results = c.fetchall()
+            if results==[]:
+                return False
+            else:
+                dela_list=[]
+                for i in results:
+                    l_list=[results.index(i)+1]+[i[0]]+list(i[2:7])+list(i[13:])+list(i[7:12])
+                    l_list.pop(3)
+                    dela_list.append(l_list)
+                if practice != None:
+                    s_lst=[]
+                    for d_ in dela_list:
+                        check=0
+                        for i in practice:
+                            if i in json.loads(d_[3]):
+                                check+=1
+                        if check == len(practice):
+                            s_lst.append(d_)
+                    if s_lst==[]:
+                        return False
+                    else:
+                        return s_lst
+                else:
+                    return dela_list
+        except Error as e:
+            print(e)
+    def get_join_table_search_u_id(self,join_table,u_id,client=None,date=None):
+        pass
+
     def delite_data(self,table_name,t_id):
         try:
             conn=self.connect
@@ -309,7 +361,13 @@ def main():
     db=Database('123')
     db.create_connection()
     # print(db.find_user('qqq@qqq.qqq'))
-    print(db.get_courts_clients())
+    print(db.get_clients())
+    # r=db.get_join_table_search('Litigation',practice=['Корпоративное право'])
+    # print(r)
+    # for i in r:
+    #     print(i[2])
+    #     print(json.loads(i[3]))
+    # practice=['Энергетическое право']
     # print(db.get_urists())
     # sql_file = open("shema.sql")
     # sql_as_string = sql_file.read()

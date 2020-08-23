@@ -150,7 +150,6 @@ class API(object):
 			name=' '.join(user_info[1:])
 			if method == 'GET':
 				staff=db.get_all_users()
-				print(staff)
 			else:
 				param=request.form.get('search_user')
 				if param == '':
@@ -301,41 +300,65 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/admin/sud_dela', methods=['GET', 'POST'])
 	def admin_sud_dela():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Litigation')
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
-					item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
-					x_lst=[item[11].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
-					item[11]='\n'.join([' '.join(i) for i in x_lst])
-				return render_template("admin/sud_dela.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def admin_sud_dela_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("admin/sud_dela.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+
+				if method == 'GET':
+					d_table = db.get_join_table('Litigation')
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table('Litigation')
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search('Litigation',practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search('Litigation',client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search('Litigation',practice=practice,client=client)
+					else:
+						return redirect('/admin/sud_dela')
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
+						item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
+						x_lst=[item[11].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
+						item[11]='\n'.join([' '.join(i) for i in x_lst])
+
+					serch_clients=db.get_clients()
+					return render_template("admin/sud_dela.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients)
+				else:
+					return render_template("admin/sud_dela.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return admin_sud_dela_worker('GET')
+		if request.method == 'POST':
+			return admin_sud_dela_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 	@flask_app.route('/admin/add_bank_dela', methods=['GET', 'POST'])
@@ -414,41 +437,64 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/admin/bank_dela', methods=['GET', 'POST'])
 	def admin_bank_dela():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Bankruptcy')
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
-					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
-					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
-					item[10]='\n'.join([' '.join(i) for i in x_lst])
-				return render_template("admin/bankr_dela.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def admin_bank_dela_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("admin/bankr_dela.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+
+				if method == 'GET':
+					d_table = db.get_join_table('Bankruptcy')
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table('Bankruptcy')
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search('Bankruptcy',practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search('Bankruptcy',client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search('Bankruptcy',practice=practice,client=client)
+					else:
+						return redirect('/admin/bank_dela')
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
+						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
+						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
+						item[10]='\n'.join([' '.join(i) for i in x_lst])
+					serch_clients=db.get_clients()
+					return render_template("admin/bankr_dela.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients)
+				else:
+					return render_template("admin/bankr_dela.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return admin_bank_dela_worker('GET')
+		if request.method == 'POST':
+			return admin_bank_dela_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 	@flask_app.route('/admin/add_none_sud', methods=['GET', 'POST'])
@@ -527,41 +573,65 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/admin/none_sud', methods=['GET', 'POST'])
 	def admin_none_sud():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Non_judicial')
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
-					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
-					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
-					item[10]='\n'.join([' '.join(i) for i in x_lst])
-				return render_template("admin/nesud_dela.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def admin_none_sud_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("admin/nesud_dela.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+
+				if method == 'GET':
+					d_table = db.get_join_table('Non_judicial')
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table('Non_judicial')
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search('Non_judicial',practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search('Non_judicial',client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search('Non_judicial',practice=practice,client=client)
+					else:
+						return redirect('/admin/none_sud')
+
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
+						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
+						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
+						item[10]='\n'.join([' '.join(i) for i in x_lst])
+					serch_clients=db.get_clients()
+					return render_template("admin/nesud_dela.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients,)
+				else:
+					return render_template("admin/nesud_dela.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return admin_none_sud_worker('GET')
+		if request.method == 'POST':
+			return admin_none_sud_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 	@flask_app.route('/admin/add_dosud_ureg', methods=['GET', 'POST'])
@@ -640,41 +710,64 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/admin/dosud_ureg', methods=['GET', 'POST'])
 	def admin_dosud_ureg():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Pre_trial_settlement')
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
-					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
-					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
-					item[10]='\n'.join([' '.join(i) for i in x_lst])
-				return render_template("admin/dosud_ureg.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def admin_dosud_ureg_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("admin/dosud_ureg.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+
+				if method == 'GET':
+					d_table = db.get_join_table('Pre_trial_settlement')
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table('Pre_trial_settlement')
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search('Pre_trial_settlement',practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search('Pre_trial_settlement',client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search('Pre_trial_settlement',practice=practice,client=client)
+					else:
+						return redirect('/admin/dosud_ureg')
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
+						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
+						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
+						item[10]='\n'.join([' '.join(i) for i in x_lst])
+					serch_clients=db.get_clients()
+					return render_template("admin/dosud_ureg.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients)
+				else:
+					return render_template("admin/dosud_ureg.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return admin_dosud_ureg_worker('GET')
+		if request.method == 'POST':
+			return admin_dosud_ureg_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_	
 	@flask_app.route('/admin/add_isp_proiz', methods=['GET', 'POST'])
@@ -753,41 +846,65 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/admin/isp_proiz', methods=['GET', 'POST'])
 	def admin_isp_proiz():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table('Enforcement_proceedings')
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
-					item[10]='download_files/'+'/'.join(item[10].split('\\')[-3:])
-					x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
-					item[12]='\n'.join([' '.join(i) for i in x_lst])
-				return render_template("admin/isp_proiz.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def admin_isp_proiz_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("admin/isp_proiz.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+
+				if method == 'GET':
+					d_table = db.get_join_table('Enforcement_proceedings')
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table('Enforcement_proceedings')
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search('Enforcement_proceedings',practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search('Enforcement_proceedings',client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search('Enforcement_proceedings',practice=practice,client=client)
+					else:
+						return redirect('/admin/isp_proiz') 
+
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
+						item[10]='download_files/'+'/'.join(item[10].split('\\')[-3:])
+						x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
+						item[12]='\n'.join([' '.join(i) for i in x_lst])
+					serch_clients=db.get_clients()
+					return render_template("admin/isp_proiz.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients)
+				else:
+					return render_template("admin/isp_proiz.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return admin_isp_proiz_worker('GET')
+		if request.method == 'POST':
+			return admin_isp_proiz_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_	
 	@flask_app.route('/admin/add_sud', methods=['GET', 'POST'])
