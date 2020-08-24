@@ -311,7 +311,39 @@ class Database(object):
         except Error as e:
             print(e)
     def get_join_table_search_u_id(self,join_table,u_id,client=None,date=None):
-        pass
+        try:
+            conn=self.connect
+            c = conn.cursor()
+            if client!=None:
+                res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id AND a.Client=? AND a.u_id=?".format(join_table),(client,u_id,))
+            else: 
+                res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id AND a.u_id=?".format(join_table),(u_id,)) 
+            results = c.fetchall()
+            if results==[]:
+                return False
+            else:
+                dela_list=[]
+                for i in results:
+                    l_list=[results.index(i)+1]+[i[0]]+list(i[2:7])+list(i[13:])+list(i[7:12])
+                    l_list.pop(3)
+                    dela_list.append(l_list)
+                if practice != None:
+                    s_lst=[]
+                    for d_ in dela_list:
+                        check=0
+                        for i in practice:
+                            if i in json.loads(d_[3]):
+                                check+=1
+                        if check == len(practice):
+                            s_lst.append(d_)
+                    if s_lst==[]:
+                        return False
+                    else:
+                        return s_lst
+                else:
+                    return dela_list
+        except Error as e:
+            print(e)
 
     def delite_data(self,table_name,t_id):
         try:

@@ -1079,42 +1079,67 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/user/sud_dela', methods=['GET', 'POST'])
 	def user_sud_dela():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table_u_id('Litigation',user)
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
-					item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
-					x_lst=[item[11].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
-					item[11]='\n'.join([' '.join(i) for i in x_lst])
-					item.pop(4)
-				return render_template("user/sud_dela.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def user_sud_dela_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("user/sud_dela.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+
+				if method == 'GET':
+					d_table = db.get_join_table_u_id('Litigation',user)
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table_u_id('Litigation',user)
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search_u_id('Litigation',user,practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Litigation',user,client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Litigation',user,practice=practice,client=client)
+					else:
+						return redirect('/user/sud_dela')
+
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
+						item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
+						x_lst=[item[11].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
+						item[11]='\n'.join([' '.join(i) for i in x_lst])
+						item.pop(4)
+
+					serch_clients=db.get_clients_u_id(user)
+					return render_template("user/sud_dela.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients)
+				else:
+					return render_template("user/sud_dela.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return user_sud_dela_worker('GET')
+		if request.method == 'POST':
+			return user_sud_dela_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 	@flask_app.route('/user/add_bank_dela', methods=['GET', 'POST'])
@@ -1197,42 +1222,66 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/user/bank_dela', methods=['GET', 'POST'])
 	def user_bank_dela():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table_u_id('Bankruptcy',user)
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
-					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
-					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
-					item[10]='\n'.join([' '.join(i) for i in x_lst])
-					item.pop(4)
-				return render_template("user/bankr_dela.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def user_bank_dela_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("user/bankr_dela.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+
+				if method == 'GET':
+					d_table = db.get_join_table_u_id('Bankruptcy',user)
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table_u_id('Bankruptcy',user)
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search_u_id('Bankruptcy',user,practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Bankruptcy',user,client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Bankruptcy',user,practice=practice,client=client)
+					else:
+						return redirect('/user/bank_dela')
+
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
+						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
+						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
+						item[10]='\n'.join([' '.join(i) for i in x_lst])
+						item.pop(4)
+					serch_clients=db.get_clients_u_id(user)
+					return render_template("user/bankr_dela.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients)
+				else:
+					return render_template("user/bankr_dela.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return user_bank_dela_worker('GET')
+		if request.method == 'POST':
+			return user_bank_dela_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 	@flask_app.route('/user/add_none_sud', methods=['GET', 'POST'])
@@ -1315,42 +1364,65 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/user/none_sud', methods=['GET', 'POST'])
 	def user_none_sud():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table_u_id('Non_judicial',user)
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
-					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
-					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
-					item[10]='\n'.join([' '.join(i) for i in x_lst])
-					item.pop(4)
-				return render_template("user/nesud_dela.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def user_none_sud_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("user/nesud_dela.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+				if method == 'GET':
+					d_table = db.get_join_table_u_id('Non_judicial',user)
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table_u_id('Non_judicial',user)
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search_u_id('Non_judicial',user,practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Non_judicial',user,client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Non_judicial',user,practice=practice,client=client)
+					else:
+						return redirect('/user/none_sud')
+
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
+						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
+						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
+						item[10]='\n'.join([' '.join(i) for i in x_lst])
+						item.pop(4)
+					serch_clients=db.get_clients_u_id(user)
+					return render_template("user/nesud_dela.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients)
+				else:
+					return render_template("user/nesud_dela.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return user_none_sud_worker('GET')
+		if request.method == 'POST':
+			return user_none_sud_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 	@flask_app.route('/user/add_dosud_ureg', methods=['GET', 'POST'])
@@ -1433,42 +1505,65 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/user/dosud_ureg', methods=['GET', 'POST'])
 	def user_dosud_ureg():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table_u_id('Pre_trial_settlement',user)
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
-					item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
-					x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
-					item[10]='\n'.join([' '.join(i) for i in x_lst])
-					item.pop(4)
-				return render_template("user/dosud_ureg.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def user_dosud_ureg_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("user/dosud_ureg.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+				if method == 'GET':
+					d_table = db.get_join_table_u_id('Pre_trial_settlement',user)
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table_u_id('Pre_trial_settlement',user)
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search_u_id('Pre_trial_settlement',user,practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Pre_trial_settlement',user,client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Pre_trial_settlement',user,practice=practice,client=client)
+					else:
+						return redirect('/user/dosud_ureg')
+
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
+						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
+						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
+						item[10]='\n'.join([' '.join(i) for i in x_lst])
+						item.pop(4)
+					serch_clients=db.get_clients_u_id(user)
+					return render_template("user/dosud_ureg.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients)
+				else:
+					return render_template("user/dosud_ureg.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return user_dosud_ureg_worker('GET')
+		if request.method == 'POST':
+			return user_dosud_ureg_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_-
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_	
 	@flask_app.route('/user/add_isp_proiz', methods=['GET', 'POST'])
@@ -1551,43 +1646,64 @@ class API(object):
 					urists=ur_up)
 	@flask_app.route('/user/isp_proiz', methods=['GET', 'POST'])
 	def user_isp_proiz():
-		if request.cookies.get('user_id') == None:
-			return redirect('/login')
-		else:
-			user=request.cookies.get('user_id')
-			get_db()
-			db=Database(g._database)
-			user_info=db.find_user_by_id(user)
-			role=user_info[0]
-
-			name=' '.join(user_info[1:])
-			d_table = db.get_join_table_u_id('Enforcement_proceedings',user)
-			if d_table != False:
-				colors=[]
-				delite_hrs=[]
-				for i in d_table:
-					colors.append(i.pop(-1))
-				for item in d_table:
-					item.append(item.pop(1))
-					item[2]=' ;\n'.join(json.loads(item[2]))+' .'
-					item[4]=' ;\n'.join(json.loads(item[4]))+' .'
-					item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
-					item[10]='download_files/'+'/'.join(item[10].split('\\')[-3:])
-					x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
-					item[12]='\n'.join([' '.join(i) for i in x_lst])
-					item.pop(4)
-				return render_template("user/isp_proiz.html",
-				data=d_table,
-				role=role,
-				name=name,
-				colors=colors)
+		def user_isp_proiz_worker(method):
+			if request.cookies.get('user_id') == None:
+				return redirect('/login')
 			else:
-				return render_template("user/isp_proiz.html",
-				data=[],
-				role=role,
-				name=name,
-				colors=[],
-				delite_href='')
+				user=request.cookies.get('user_id')
+				get_db()
+				db=Database(g._database)
+				user_info=db.find_user_by_id(user)
+				role=user_info[0]
+				name=' '.join(user_info[1:])
+				if method == 'GET':
+					d_table = db.get_join_table_u_id('Enforcement_proceedings',user)
+				else:
+					dict_=request.form.to_dict(flat=False)
+					practice=dict_['practice']
+					client=request.form.get('client')
+					if practice == [''] and client == '':
+						d_table=db.get_join_table_u_id('Enforcement_proceedings',user)
+					elif practice != [''] and client == '':
+						d_table = db.get_join_table_search_u_id('Enforcement_proceedings',user,practice=practice)
+					elif practice == [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Enforcement_proceedings',user,client=client)
+					elif practice != [''] and client != '':
+						d_table = db.get_join_table_search_u_id('Enforcement_proceedings',user,practice=practice,client=client)
+					else:
+						return redirect('/user/isp_proiz')
+				if d_table != False:
+					colors=[]
+					delite_hrs=[]
+					for i in d_table:
+						colors.append(i.pop(-1))
+					for item in d_table:
+						item.append(item.pop(1))
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
+						item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
+						item[10]='download_files/'+'/'.join(item[10].split('\\')[-3:])
+						x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
+						item[12]='\n'.join([' '.join(i) for i in x_lst])
+						item.pop(4)
+					serch_clients=db.get_clients_u_id(user)
+					return render_template("user/isp_proiz.html",
+					data=d_table,
+					role=role,
+					name=name,
+					colors=colors,
+					serch_clients=serch_clients)
+				else:
+					return render_template("user/isp_proiz.html",
+					data=[],
+					role=role,
+					name=name,
+					colors=[],
+					delite_href='')
+		if request.method == 'GET' :
+			return user_isp_proiz_worker('GET')
+		if request.method == 'POST':
+			return user_isp_proiz_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_	
 	@flask_app.route('/user/add_sud', methods=['GET', 'POST'])
