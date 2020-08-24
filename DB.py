@@ -393,6 +393,8 @@ def main():
     db=Database('123')
     db.create_connection()
     # print(db.find_user('qqq@qqq.qqq'))
+    print(db.find_user_by_id('5120a525-a49e-4673-a1dd-2a6e49304fb5'))
+    
     print(db.get_clients())
     # r=db.get_join_table_search('Litigation',practice=['Корпоративное право'])
     # print(r)

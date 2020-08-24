@@ -77,6 +77,21 @@ class API(object):
 	def __init__(self, arg):
 		super(API, self).__init__()
 		self.arg = arg
+	@flask_app.route('/',methods=['GET'])
+	def base():
+		user=request.cookies.get('user_id')
+		if user:
+			get_db()
+			db=Database(g._database)
+			f_u=db.find_user_by_id(user)
+			if f_u[0] == 'Суперпользователь':
+				return redirect('/admin/sud_dela')
+			elif f_u[0]== 'Пользователь':
+				return redirect('/user/sud_dela')
+			elif f_u[0]=='Секретарь':
+				return redirect('/secretary')
+		else:
+			return redirect('/login')
 #settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_
 #settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_
 	@flask_app.route('/download_files/<t_id>/<type_f>/<filename>', methods=['GET', 'POST'])
