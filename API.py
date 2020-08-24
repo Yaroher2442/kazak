@@ -101,8 +101,8 @@ class API(object):
 			print('/'+type+'/'+way)
 			return redirect('/'+type+'/'+way)
 #---------------------------------------------------------------------
-	@flask_app.route('/admin/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
-	@flask_app.route('/user/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
+	@flask_app.route('/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
+	@flask_app.route('/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
 	def delite_sud(type,way,c_id):
 		if request.method == 'GET' :
 			get_db()
