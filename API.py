@@ -210,7 +210,7 @@ class API(object):
 		if request.method == 'POST' :
 			get_db()
 			db=Database(g._database)
-			pprint(request.form.to_dict(flat=False))
+			pprint(request.form.to_dict(flat=[]))
 			email=request.form.get('email')
 			name=request.form.get('name')
 			surname=request.form.get('surname')
@@ -232,7 +232,7 @@ class API(object):
 			get_db()
 			db=Database(g._database)
 			user_info=db.find_user_by_id(user)
-			if user_info==False:
+			if user_info==[]:
 				role = 'None'
 				name = 'None'
 			else:
@@ -275,7 +275,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -340,7 +340,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table('Litigation')
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -353,7 +353,7 @@ class API(object):
 						d_table = db.get_join_table_search('Litigation',practice=practice,client=client)
 					else:
 						return redirect('/admin/sud_dela')
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -412,7 +412,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_bankr_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -477,7 +477,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table('Bankruptcy')
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -490,7 +490,7 @@ class API(object):
 						d_table = db.get_join_table_search('Bankruptcy',practice=practice,client=client)
 					else:
 						return redirect('/admin/bank_dela')
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -548,7 +548,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_nesud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -613,7 +613,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table('Non_judicial')
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -627,7 +627,7 @@ class API(object):
 					else:
 						return redirect('/admin/none_sud')
 
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -685,7 +685,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_dosud_ureg.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -750,7 +750,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table('Pre_trial_settlement')
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -763,7 +763,7 @@ class API(object):
 						d_table = db.get_join_table_search('Pre_trial_settlement',practice=practice,client=client)
 					else:
 						return redirect('/admin/dosud_ureg')
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -821,7 +821,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_isp_proiz.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -886,7 +886,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table('Enforcement_proceedings')
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -900,7 +900,7 @@ class API(object):
 					else:
 						return redirect('/admin/isp_proiz') 
 
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -939,7 +939,7 @@ class API(object):
 			new_c_id=str(uuid.uuid4())
 			get_db()
 			db=Database(g._database)
-			adding_dict=request.form.to_dict(flat=False)
+			adding_dict=request.form.to_dict(flat=[])
 			list_to_Courts=[]
 			for margin in tables_sets(table_name='Sud', mode='fields'):
 				if margin == 'c_id':
@@ -997,7 +997,7 @@ class API(object):
 						d_table=db.get_courts_search(client=client,date=date)
 					else:
 						redirect('/admin/sudy')
-				if d_table == False:
+				if d_table == []:
 					return render_template("admin/sudy.html",
 					data=[],
 					role=role,
@@ -1010,7 +1010,7 @@ class API(object):
 						item.pop(1)
 	
 					serch_clients=[]
-					if db.get_courts_clients() ==False:
+					if db.get_courts_clients() ==[]:
 						serch_clients=[]
 					else:
 						for cl in db.get_courts_clients():
@@ -1055,7 +1055,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_sud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -1122,7 +1122,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Litigation',user)
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -1136,7 +1136,7 @@ class API(object):
 					else:
 						return redirect('/user/sud_dela')
 
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -1197,7 +1197,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_bankr_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -1264,7 +1264,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Bankruptcy',user)
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -1278,7 +1278,7 @@ class API(object):
 					else:
 						return redirect('/user/bank_dela')
 
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -1339,7 +1339,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_nesud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -1405,7 +1405,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Non_judicial',user)
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -1419,7 +1419,7 @@ class API(object):
 					else:
 						return redirect('/user/none_sud')
 
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -1480,7 +1480,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_dosud_ureg.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -1546,7 +1546,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Pre_trial_settlement',user)
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -1560,7 +1560,7 @@ class API(object):
 					else:
 						return redirect('/user/dosud_ureg')
 
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -1621,7 +1621,7 @@ class API(object):
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_isp_proiz.html'),'Ошибка файлов, попробуйте ещё раз')
 
-				adding_dict=request.form.to_dict(flat=False)
+				adding_dict=request.form.to_dict(flat=[])
 				list_to_Affairs=[]
 				for margin in tables_sets(table_name='Affairs', mode='fields'):
 					if margin == 't_id':
@@ -1687,7 +1687,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Enforcement_proceedings',user)
 				else:
-					dict_=request.form.to_dict(flat=False)
+					dict_=request.form.to_dict(flat=[])
 					practice=dict_['practice']
 					client=request.form.get('client')
 					if practice == [''] and client == '':
@@ -1700,7 +1700,7 @@ class API(object):
 						d_table = db.get_join_table_search_u_id('Enforcement_proceedings',user,practice=practice,client=client)
 					else:
 						return redirect('/user/isp_proiz')
-				if d_table != False:
+				if d_table != []:
 					colors=[]
 					delite_hrs=[]
 					for i in d_table:
@@ -1743,7 +1743,7 @@ class API(object):
 			user=request.cookies.get('user_id')
 			user_info=db.find_user_by_id(user)
 
-			adding_dict=request.form.to_dict(flat=False)
+			adding_dict=request.form.to_dict(flat=[])
 			print(adding_dict)
 			print(tables_sets(table_name='Sud', mode='fields'))
 			list_to_Courts=[]
@@ -1806,7 +1806,7 @@ class API(object):
 					else:
 						redirect('/user/sudy')
 
-				if d_table == False:
+				if d_table == []:
 					return render_template("user/sudy.html",
 					data=[],
 					role=role,
@@ -1847,7 +1847,7 @@ class API(object):
 				item.insert(0,d_table.index(item)+1)
 				item.append(item.pop(1))
 				item.pop(1)
-			if d_table != False:
+			if d_table != []:
 				return render_template("secretary/sudy.html",
 				data=d_table,
 				role=role,
@@ -1868,8 +1868,8 @@ class API(object):
 			password=request.form.get('password')
 			get_db()
 			db=Database(g._database)
-			if db.find_user(email)!=False:
-				if db.find_user(email)[0][3]!=False:
+			if db.find_user(email)!=[]:
+				if db.find_user(email)[0][3]!=[]:
 					hash_pass=db.find_user(email)[0][3]
 					def check_password(hashed_password, user_password):
 						password, salt = hashed_password.split(':')
@@ -1886,7 +1886,7 @@ class API(object):
 						response.set_cookie('user_id',db.find_user(email)[0][0])
 						return response
 					else:
-						return html_error_replacer('auth.html','Password false')
+						return html_error_replacer('auth.html','Password []')
 				else:
 					return html_error_replacer('auth.html','User not found or name invalid')   
 			else:
