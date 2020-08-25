@@ -1228,7 +1228,7 @@ class API(object):
 						list_to_Bankruptcy.append(adding_dict[margin][0])
 				db.insert_tables('Bankruptcy',tuple(list_to_Bankruptcy))
 
-				return redirect('/bank_dela')
+				return redirect('/user/bank_dela')
 			else:
 				return html_error_replacer(os.path.join('user','add','add_bankr_delo.html'),'Не загружены файлы')
 
@@ -1370,7 +1370,7 @@ class API(object):
 						list_to_Non_judicial.append(adding_dict[margin][0])
 				db.insert_tables('Non_judicial',tuple(list_to_Non_judicial))
 
-				return redirect('/none_sud')
+				return redirect('/user/none_sud')
 			else:
 				return html_error_replacer(os.path.join('user','add','add_nesud_delo.html'),'Не загружены файлы')
 
@@ -1511,7 +1511,7 @@ class API(object):
 						list_to_Pre_trial_settlement.append(adding_dict[margin][0])
 				db.insert_tables('Pre_trial_settlement',tuple(list_to_Pre_trial_settlement))
 
-				return redirect('/dosud_ureg')
+				return redirect('/user/dosud_ureg')
 			else:
 				return html_error_replacer(os.path.join('user','add','add_dosud_ureg.html'),'Не загружены файлы')
 
@@ -1652,7 +1652,7 @@ class API(object):
 						list_to_Enforcement_proceedings.append(adding_dict[margin][0])
 				db.insert_tables('Enforcement_proceedings',tuple(list_to_Enforcement_proceedings))
 
-				return redirect('/isp_proiz')
+				return redirect('/user/isp_proiz')
 			else:
 				return html_error_replacer(os.path.join('user','add','add_isp_proiz.html'),'Не загружены файлы')
 
