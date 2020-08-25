@@ -121,7 +121,7 @@ class Database(object):
             if results==[]:
                 return []
             else:
-                return list(results)
+                return [ i[0] for i in results]
         except Error as e:
             print(e)
 
