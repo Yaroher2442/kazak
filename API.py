@@ -24,8 +24,7 @@ DATAFILE=os.path.join(os.getcwd(),'db','data_file.db')
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-         db = g._database = sqlite3.connect(DATAFILE)
-         
+         db = g._database = sqlite3.connect(DATAFILE)       
     return db
 
 flask_app = Flask(__name__)
@@ -42,7 +41,20 @@ def teardown_db(exception):
         db.close()
 #_______________________________________________________________________________________________
 def html_error_replacer(file_name,error):
-		soup = BeautifulSoup(open(os.path.join(os.getcwd(),'templates', file_name), 'r' , encoding= 'utf-8'), "lxml")
+		user=request.cookies.get('user_id')
+		get_db()
+		db=Database(g._database)
+		user_info=db.find_user_by_id(user)
+		role=user_info[0]
+		name=' '.join(user_info[1:])
+		urists=db.get_urists()
+		ur_up=[' '.join(i) for i in urists]
+
+		soup = BeautifulSoup(render_template(file_name.replace('\\','/')
+			,role=role,
+			name=name,
+			urists=ur_up)
+		, "lxml")
 		err_tag = soup.find(id='error')
 		err_tag.string = error
 		return render_template_string(soup.prettify())
@@ -308,7 +320,6 @@ class API(object):
 				name=' '.join(user_info[1:])
 				urists=db.get_urists()
 				ur_up=[' '.join(i) for i in urists]
-				print(ur_up)
 				return render_template('admin/add/add_sud_delo.html',
 					role=role,
 					name=name,
