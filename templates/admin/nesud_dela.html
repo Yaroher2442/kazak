@@ -26,14 +26,14 @@
 {% block Body %}
 	<h3 id="headline">Несудебные дела</h3>
 	<a style="margin-bottom: 10px; margin-top: 10px;" href="/admin/add_none_sud">Добавить новое несудебное дело</a>
-	  <form class="form-inline py-3 px-5" action="/#" method="post">	
-			<input class='form-control mr-2' type="search" list='client' name="Client" style="margin-bottom: 7px; height: 37px;" placeholder="Клиент" size="30">
+	  <form class="form-inline py-3 px-5" action="/admin/none_sud" method="post">	
+			<input class='form-control mr-2' type="search" list='client' name="client" style="margin-bottom: 7px; height: 37px;" placeholder="Клиент" size="30">
 			<datalist id='client'>
 				{% for item in serch_clients %}
 					<option value="{{ item }}">{{ item }}</option>
 				{% endfor %}
 			</datalist>
-			<select name="Practice" class="multi-select dropdown mb-2" style="width: 60px" multiple required>
+			<select name="practice" class="multi-select dropdown mb-2" style="width: 60px" multiple required>
                 <option value="">Практика</option>
                 <option value="Энергетическое право">Энергетическое право</option>
                 <option value="Банкротство">Банкротство</option>
