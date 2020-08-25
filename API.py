@@ -1643,12 +1643,13 @@ class API(object):
 					else:
 						list_to_Affairs.append(adding_dict[margin][0])
 				db.insert_tables('Affairs',tuple(list_to_Affairs))
-
+				print(adding_dict[margin][0])
 				list_to_Enforcement_proceedings=[]
 				for margin in tables_sets(table_name='Enforcement_proceedings', mode='fields'):
 					if margin == 't_id':
 						list_to_Enforcement_proceedings.append(new_t_id)
 					else:
+						
 						list_to_Enforcement_proceedings.append(adding_dict[margin][0])
 				db.insert_tables('Enforcement_proceedings',tuple(list_to_Enforcement_proceedings))
 

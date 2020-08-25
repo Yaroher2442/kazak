@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block Body %}
-    <form class="py-3 px-5" action="/user/add_isp_proiz" method="post">
+    <form class="py-3 px-5" action="/user/add_isp_proiz" method="post" enctype="multipart/form-data">
         <h5 class='p-2' style="margin-bottom: 25px;">Добавить нового клиента</h5>
         <div class="form-group mx-5">
             <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
@@ -53,9 +53,9 @@
                 <option value="{{ item }}">{{ item }}</option>
               {% endfor %}
             </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Case_number" placeholder="Номер исполнительного дела" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Total" placeholder="Сумма" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Fssp" placeholder="ФССП" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Executive_case_number" placeholder="Номер исполнительного дела" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="Amount" placeholder="Сумма" required>
+            <input class="d-block mb-2 w-100 form-control" type="text" name="FSSP" placeholder="ФССП" required>
             <input class="d-block mb-2 w-100 form-control" type="text" name="Bailiff" placeholder="Пристав" required>
             <div class="custom-file mb-2">
                 <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
