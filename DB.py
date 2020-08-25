@@ -46,7 +46,7 @@ class Database(object):
             res=c.execute("SELECT * From users WHERE email=?",(email,))  
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return results
         except Error as e:
@@ -58,7 +58,7 @@ class Database(object):
             res=c.execute("SELECT alevel,name,surname,lastname From users WHERE id=?",(u_id,))  
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return list(results[0])
         except Error as e:
@@ -70,7 +70,7 @@ class Database(object):
             res=c.execute("SELECT id,name,surname,lastname,alevel,email From users")  
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return list(list(i) for i in results)
         except Error as e:
@@ -82,7 +82,7 @@ class Database(object):
             res=c.execute("SELECT id,name,surname,lastname,alevel,email From users WHERE name=? and surname=? and lastname=?",(param[0],param[1],param[2],))  
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return list(list(i) for i in results)
         except Error as e:
@@ -95,7 +95,7 @@ class Database(object):
             res=c.execute("SELECT name,surname,lastname From users WHERE alevel = 'Пользователь'")  
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return list(list(i) for i in results)
         except Error as e:
@@ -107,7 +107,7 @@ class Database(object):
             res=c.execute("SELECT Client From Affairs")  
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return [ i[0] for i in results]
         except Error as e:
@@ -187,7 +187,7 @@ class Database(object):
             res=c.execute("SELECT client From Sud") 
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return list(list(i) for i in results)
         except Error as e:
@@ -199,7 +199,7 @@ class Database(object):
             res=c.execute("SELECT client From Sud WHERE u_id=?",(u_id,)) 
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return list(list(i) for i in results)
         except Error as e:
@@ -217,7 +217,7 @@ class Database(object):
                 res=c.execute("SELECT * From Sud WHERE client=? and date=?",(client,date,))
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return list(list(i) for i in results)
         except Error as e:
@@ -234,7 +234,7 @@ class Database(object):
                 res=c.execute("SELECT * From Sud WHERE client=? and date=? and u_id=?",(client,date,u_id,))
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return list(list(i) for i in results)
         except Error as e:
@@ -248,7 +248,7 @@ class Database(object):
             res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id".format(join_table))  
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 dela_list=[]
                 for i in results:
@@ -268,7 +268,7 @@ class Database(object):
             	,(u_id,str_name,))  
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 dela_list=[]
                 for i in results:
@@ -289,7 +289,7 @@ class Database(object):
                 res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id ".format(join_table)) 
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 dela_list=[]
                 for i in results:
@@ -306,7 +306,7 @@ class Database(object):
                         if check == len(practice):
                             s_lst.append(d_)
                     if s_lst==[]:
-                        return False
+                        return []
                     else:
                         return s_lst
                 else:
@@ -323,7 +323,7 @@ class Database(object):
                 res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id AND a.u_id=?".format(join_table),(u_id,)) 
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 dela_list=[]
                 for i in results:
@@ -340,7 +340,7 @@ class Database(object):
                         if check == len(practice):
                             s_lst.append(d_)
                     if s_lst==[]:
-                        return False
+                        return []
                     else:
                         return s_lst
                 else:
