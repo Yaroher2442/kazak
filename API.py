@@ -1771,7 +1771,7 @@ class API(object):
 				name=' '.join(user_info[1:])
 				urists=db.get_urists()
 				ur_up=[' '.join(i) for i in urists]
-				clients=[cl[0] for cl in db.get_clients()]
+				clients=db.get_clients()
 				return render_template('user/add/add_sud.html',
 					clients=clients,
 					role=role,

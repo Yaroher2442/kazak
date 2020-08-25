@@ -16,5 +16,11 @@ def main():
     #     salt = uuid.uuid4()
     #     return salt,hashlib.sha256(salt.hex.encode() + password.encode()).hexdigest() + ':' + salt.hex
     # print(hash_password(str(password)))
+
+
+    # ftp
+    # u444511_yaroha 
+    # rat3sti2nse
+
 if __name__ == '__main__':
     main()
