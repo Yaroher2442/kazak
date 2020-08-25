@@ -1855,26 +1855,29 @@ class API(object):
 			password=request.form.get('password')
 			get_db()
 			db=Database(g._database)
-			if db.find_user(email)[0][3]!=False:
-				hash_pass=db.find_user(email)[0][3]
-				def check_password(hashed_password, user_password):
-					password, salt = hashed_password.split(':')
-					return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
-				if check_password(hash_pass,password):
-					if db.find_user(email)[0][1]=='Суперпользователь':
-						way='/admin/sud_dela'
-					elif db.find_user(email)[0][1]=='Пользователь':
-						way='/user/sud_dela'
-					elif db.find_user(email)[0][1]=='Секретарь':
-						way='/secretary'	
-					else: way='/login'
-					response = make_response(redirect(way))
-					response.set_cookie('user_id',db.find_user(email)[0][0])
-					return response
+			if db.find_user(email)!=False:
+				if db.find_user(email)[0][3]!=False:
+					hash_pass=db.find_user(email)[0][3]
+					def check_password(hashed_password, user_password):
+						password, salt = hashed_password.split(':')
+						return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+					if check_password(hash_pass,password):
+						if db.find_user(email)[0][1]=='Суперпользователь':
+							way='/admin/sud_dela'
+						elif db.find_user(email)[0][1]=='Пользователь':
+							way='/user/sud_dela'
+						elif db.find_user(email)[0][1]=='Секретарь':
+							way='/secretary'	
+						else: way='/login'
+						response = make_response(redirect(way))
+						response.set_cookie('user_id',db.find_user(email)[0][0])
+						return response
+					else:
+						return html_error_replacer('auth.html','Password false')
 				else:
-					return html_error_replacer('auth.html','Password false')
+					return html_error_replacer('auth.html','User not found or name invalid')   
 			else:
-				return html_error_replacer('auth.html','User not found or name invalid')   
+				return html_error_replacer('auth.html','User not found or name invalid')
 		else:
 			return render_template('auth.html')
 	@flask_app.route('/register' , methods = ['GET' , 'POST'])
