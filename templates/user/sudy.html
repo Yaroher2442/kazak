@@ -25,7 +25,7 @@
 {% block Body %}
 	<h3 id="headline">Суды</h3>
 	<a style="margin-bottom: 10px; margin-top: 10px;" href="/user/add_sud">Добавить новый суд</a>
-	  <form class="form-inline py-3 px-5" action="/user/sudy" method="post">	
+	  <form class="form-inline py-3 px-5" action="/user/sudy" method="post" enctype="multipart/form-data">	
 			<input class='form-control mr-2' type="search" list='client' name="client" placeholder="Клиент" style="margin-bottom: 7px; height: 37px;" size="24">
 			<datalist id='client'>
 				{% for item in serch_clients %}
@@ -59,7 +59,7 @@
 			{% for item in line %}
 			  {% if loop.index == 10 %}
 			    <td><div style="display: flex;">
-				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_sud/user/sudy/{{ item }}'">Удалить</button>
+				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='/delite_sud/user/sudy/{{ item }}'">Удалить</button>
 			    </div></td>
 			  {% else %}
 				<td>{{ item }}</td>

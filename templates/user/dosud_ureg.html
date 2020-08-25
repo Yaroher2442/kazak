@@ -25,7 +25,7 @@
 {% block Body %}
   <h3 id="headline">Досудебное урегулироваие</h3>
   <a style="margin-bottom: 10px; margin-top: 10px;" href="/user/add_dosud_ureg">Добавить нового клиента</a>
-  <form class="form-inline py-3 px-5" action="/user/dosud_ureg" method="post">	
+  <form class="form-inline py-3 px-5" action="/user/dosud_ureg" method="post" enctype="multipart/form-data">	
 	<input class='form-control mr-2' type="search" list='client' name="client" placeholder="Клиент" style="margin-bottom: 7px; height: 37px;" size="24">
 	<datalist id='client'>
       {% for item in serch_clients %}
