@@ -119,7 +119,7 @@ class Database(object):
             res=c.execute("SELECT Client From Affairs WHERE u_id=?",(u_id,))  
             results = c.fetchall()
             if results==[]:
-                return False
+                return []
             else:
                 return list(results)
         except Error as e:
@@ -262,7 +262,10 @@ class Database(object):
         try:
             conn=self.connect
             c = conn.cursor()
-            res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id and a.u_id=?".format(join_table),(u_id,))  
+            u_name=self.find_user_by_id(u_id)
+            str_name=' '.join(u_name[1:])
+            res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id=l.t_id WHERE a.u_id=? Or a.Project_Manager=? ".format(join_table)
+            	,(u_id,str_name,))  
             results = c.fetchall()
             if results==[]:
                 return False
@@ -393,9 +396,14 @@ def main():
     db=Database('123')
     db.create_connection()
     # print(db.find_user('qqq@qqq.qqq'))
-    print(db.find_user_by_id('5120a525-a49e-4673-a1dd-2a6e49304fb5'))
-    
-    print(db.get_clients())
+    # print(db.find_user_by_id('5120a525-a49e-4673-a1dd-2a6e49304fb5'))
+    # print(db.find_user_by_id())
+    # print(db.get_join_table('Litigation'))
+    print(db.get_clients_u_id('d8972270-dea8-4dbf-87e4-e82a07b3bf5b'))
+    # print(db.get_all_users())
+    # u_name=db.find_user_by_id('5120a525-a49e-4673-a1dd-2a6e49304fb5')
+    # print(u_name)
+    # print(db.get_join_table_u_id('Litigation','5120a525-a49e-4673-a1dd-2a6e49304fb5'))
     # r=db.get_join_table_search('Litigation',practice=['Корпоративное право'])
     # print(r)
     # for i in r:

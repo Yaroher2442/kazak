@@ -1017,7 +1017,7 @@ class API(object):
 							serch_clients.append(cl[0])
 								
 					return render_template("admin/sudy.html",
-						data=d_table,
+						data=d_table, 
 						role=role,
 						serch_clients=serch_clients,
 						name=name)
@@ -1143,14 +1143,13 @@ class API(object):
 						colors.append(i.pop(-1))
 					for item in d_table:
 						item.append(item.pop(1))
-						item[2]=' ;\n'.join(json.loads(item[2]))+' .'
+						item[2]=' ;\n'.join(json.loads(item[2]))+' .'						
 						item[4]=' ;\n'.join(json.loads(item[4]))+' .'
 						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 						item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
 						x_lst=[item[11].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[11]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(4)
-
+						item.pop(3)
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/sud_dela.html",
 					data=d_table,
@@ -1292,7 +1291,7 @@ class API(object):
 						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(4)
+						item.pop(3)
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/bankr_dela.html",
 					data=d_table,
@@ -1433,7 +1432,7 @@ class API(object):
 						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(4)
+						item.pop(3)
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/nesud_dela.html",
 					data=d_table,
@@ -1574,7 +1573,7 @@ class API(object):
 						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(4)
+						item.pop(3)
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/dosud_ureg.html",
 					data=d_table,
@@ -1714,7 +1713,7 @@ class API(object):
 						item[10]='download_files/'+'/'.join(item[10].split('\\')[-3:])
 						x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
 						item[12]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(4)
+						item.pop(3)
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/isp_proiz.html",
 					data=d_table,
