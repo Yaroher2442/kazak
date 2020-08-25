@@ -1010,9 +1010,12 @@ class API(object):
 						item.pop(1)
 	
 					serch_clients=[]
-					for cl in db.get_courts_clients():
-						serch_clients.append(cl[0])
-							
+					if db.get_courts_clients() ==False:
+						serch_clients=[]
+					else:
+						for cl in db.get_courts_clients():
+							serch_clients.append(cl[0])
+								
 					return render_template("admin/sudy.html",
 						data=d_table,
 						role=role,
