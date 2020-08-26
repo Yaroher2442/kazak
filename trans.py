@@ -17,9 +17,9 @@ slovar = {'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e', 'ж':'
 trans_name = ''
 def translit(name_of_file):
     trans_name = ''
-	for lit in name_of_file:
+    for lit in name_of_file:
         trans_name += slovar[lit]
-	return trans_name
+    return trans_name
 
 if __name__ == "__main__":
     print(translit('слава яйцам slava yaytsam'))
