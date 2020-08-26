@@ -4,6 +4,7 @@ import json
 def main():
 	# print(zlib.crc32('Казаков Дмитрий Вячеславович'.encode()))
 	# print(hashlib.sha224('Казаков Дмитрий Вячеславович'.encode()))
+    #test_admin@gmail.com - 1369171661
     for i in range(100):
         r=requests.get("http://127.0.0.1:5000/admin/add_user")
         print(r)

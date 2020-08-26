@@ -367,6 +367,7 @@ class API(object):
 						item[11]='\n'.join([' '.join(i) for i in x_lst])
 
 					serch_clients=db.get_clients()
+					print(db.get_urists())
 					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("admin/sud_dela.html",
 					data=d_table,
@@ -381,8 +382,7 @@ class API(object):
 					role=role,
 					name=name,
 					colors=[],
-					delite_href='',
-					lawyers=lawyers)
+					delite_href='')
 		if request.method == 'GET' :
 			return admin_sud_dela_worker('GET')
 		if request.method == 'POST':
@@ -1289,12 +1289,14 @@ class API(object):
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])						
 					serch_clients=db.get_clients_u_id(user)
+					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("user/bankr_dela.html",
 					data=d_table,
 					role=role,
 					name=name,
 					colors=colors,
-					serch_clients=serch_clients)
+					serch_clients=serch_clients,
+					lawyers=lawyers)
 				else:
 					return render_template("user/bankr_dela.html",
 					data=[],
@@ -1402,7 +1404,6 @@ class API(object):
 					d_table = db.get_join_table_u_id('Non_judicial',user)
 				else:
 					dict_=request.form.to_dict(flat=False)
-					print(dict_)
 					practice=dict_['practice']
 					lawyers=dict_['lawyers']
 					client=request.form.get('client')
@@ -1682,7 +1683,6 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Enforcement_proceedings',user)
 				else:
-					else:
 					dict_=request.form.to_dict(flat=False)
 					print(dict_)
 					practice=dict_['practice']
