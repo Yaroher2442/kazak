@@ -479,19 +479,17 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table('Bankruptcy')
 				else:
-					dict_=request.form.to_dict(flat=[])
+					dict_=request.form.to_dict(flat=False)
 					practice=dict_['practice']
+					lawyers=dict_['lawyers']
 					client=request.form.get('client')
-					if practice == [''] and client == '':
+					if practice == [''] and client == '' and lawyers == ['']:
 						d_table=db.get_join_table('Bankruptcy')
-					elif practice != [''] and client == '':
-						d_table = db.get_join_table_search('Bankruptcy',practice=practice)
-					elif practice == [''] and client != '':
-						d_table = db.get_join_table_search('Bankruptcy',client=client)
-					elif practice != [''] and client != '':
-						d_table = db.get_join_table_search('Bankruptcy',practice=practice,client=client)
+					elif practice != [''] or client != '' or lawyers !=[''] :
+						d_table = db.get_join_table_search('Bankruptcy',practice=practice,client=client,lawyers=lawyers)
 					else:
 						return redirect('/admin/bank_dela')
+
 				if d_table != []:
 					colors=[]
 					delite_hrs=[]
@@ -506,12 +504,14 @@ class API(object):
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])
 					serch_clients=db.get_clients()
+					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("admin/bankr_dela.html",
 					data=d_table,
 					role=role,
 					name=name,
 					colors=colors,
-					serch_clients=serch_clients)
+					serch_clients=serch_clients,
+					lawyers=lawyers)
 				else:
 					return render_template("admin/bankr_dela.html",
 					data=[],
@@ -615,17 +615,14 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table('Non_judicial')
 				else:
-					dict_=request.form.to_dict(flat=[])
+					dict_=request.form.to_dict(flat=False)
 					practice=dict_['practice']
+					lawyers=dict_['lawyers']
 					client=request.form.get('client')
-					if practice == [''] and client == '':
+					if practice == [''] and client == '' and lawyers == ['']:
 						d_table=db.get_join_table('Non_judicial')
-					elif practice != [''] and client == '':
-						d_table = db.get_join_table_search('Non_judicial',practice=practice)
-					elif practice == [''] and client != '':
-						d_table = db.get_join_table_search('Non_judicial',client=client)
-					elif practice != [''] and client != '':
-						d_table = db.get_join_table_search('Non_judicial',practice=practice,client=client)
+					elif practice != [''] or client != '' or lawyers !=[''] :
+						d_table = db.get_join_table_search('Non_judicial',practice=practice,client=client,lawyers=lawyers)
 					else:
 						return redirect('/admin/none_sud')
 
@@ -643,12 +640,14 @@ class API(object):
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])
 					serch_clients=db.get_clients()
+					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("admin/nesud_dela.html",
 					data=d_table,
 					role=role,
 					name=name,
 					colors=colors,
-					serch_clients=serch_clients,)
+					serch_clients=serch_clients,
+					lawyers=lawyers)
 				else:
 					return render_template("admin/nesud_dela.html",
 					data=[],
@@ -888,17 +887,14 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table('Enforcement_proceedings')
 				else:
-					dict_=request.form.to_dict(flat=[])
+					dict_=request.form.to_dict(flat=False)
 					practice=dict_['practice']
+					lawyers=dict_['lawyers']
 					client=request.form.get('client')
-					if practice == [''] and client == '':
+					if practice == [''] and client == '' and lawyers == ['']:
 						d_table=db.get_join_table('Enforcement_proceedings')
-					elif practice != [''] and client == '':
-						d_table = db.get_join_table_search('Enforcement_proceedings',practice=practice)
-					elif practice == [''] and client != '':
-						d_table = db.get_join_table_search('Enforcement_proceedings',client=client)
-					elif practice != [''] and client != '':
-						d_table = db.get_join_table_search('Enforcement_proceedings',practice=practice,client=client)
+					elif practice != [''] or client != '' or lawyers !=[''] :
+						d_table = db.get_join_table_search('Enforcement_proceedings',practice=practice,client=client,lawyers=lawyers)
 					else:
 						return redirect('/admin/isp_proiz') 
 
@@ -916,12 +912,14 @@ class API(object):
 						x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
 						item[12]='\n'.join([' '.join(i) for i in x_lst])
 					serch_clients=db.get_clients()
+					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("admin/isp_proiz.html",
 					data=d_table,
 					role=role,
 					name=name,
 					colors=colors,
-					serch_clients=serch_clients)
+					serch_clients=serch_clients,
+					lawyers=lawyers)
 				else:
 					return render_template("admin/isp_proiz.html",
 					data=[],
@@ -1124,17 +1122,15 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Litigation',user)
 				else:
-					dict_=request.form.to_dict(flat=[])
+					dict_=request.form.to_dict(flat=False)
+					print(dict_)
 					practice=dict_['practice']
+					lawyers=dict_['lawyers']
 					client=request.form.get('client')
-					if practice == [''] and client == '':
-						d_table=db.get_join_table_u_id('Litigation',user)
-					elif practice != [''] and client == '':
-						d_table = db.get_join_table_search_u_id('Litigation',user,practice=practice)
-					elif practice == [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Litigation',user,client=client)
-					elif practice != [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Litigation',user,practice=practice,client=client)
+					if practice == [''] and client == '' and lawyers == ['']:
+						d_table=db.get_join_table('Litigation')
+					elif practice != [''] or client != '' or lawyers !=[''] :
+						d_table = db.get_join_table_search_u_id('Litigation',user,practice=practice,client=client,lawyers=lawyers)
 					else:
 						return redirect('/user/sud_dela')
 
@@ -1152,12 +1148,14 @@ class API(object):
 						x_lst=[item[11].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[11]='\n'.join([' '.join(i) for i in x_lst])
 					serch_clients=db.get_clients_u_id(user)
+					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("user/sud_dela.html",
 					data=d_table,
 					role=role,
 					name=name,
 					colors=colors,
-					serch_clients=serch_clients)
+					serch_clients=serch_clients,
+					lawyers=lawyers)
 				else:
 					return render_template("user/sud_dela.html",
 					data=[],
@@ -1265,17 +1263,15 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Bankruptcy',user)
 				else:
-					dict_=request.form.to_dict(flat=[])
+					dict_=request.form.to_dict(flat=False)
+					print(dict_)
 					practice=dict_['practice']
+					lawyers=dict_['lawyers']
 					client=request.form.get('client')
-					if practice == [''] and client == '':
-						d_table=db.get_join_table_u_id('Bankruptcy',user)
-					elif practice != [''] and client == '':
-						d_table = db.get_join_table_search_u_id('Bankruptcy',user,practice=practice)
-					elif practice == [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Bankruptcy',user,client=client)
-					elif practice != [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Bankruptcy',user,practice=practice,client=client)
+					if practice == [''] and client == '' and lawyers == ['']:
+						d_table=db.get_join_table('Bankruptcy')
+					elif practice != [''] or client != '' or lawyers !=[''] :
+						d_table = db.get_join_table_search_u_id('Bankruptcy',user,practice=practice,client=client,lawyers=lawyers)
 					else:
 						return redirect('/user/bank_dela')
 
@@ -1405,17 +1401,15 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Non_judicial',user)
 				else:
-					dict_=request.form.to_dict(flat=[])
+					dict_=request.form.to_dict(flat=False)
+					print(dict_)
 					practice=dict_['practice']
+					lawyers=dict_['lawyers']
 					client=request.form.get('client')
-					if practice == [''] and client == '':
-						d_table=db.get_join_table_u_id('Non_judicial',user)
-					elif practice != [''] and client == '':
-						d_table = db.get_join_table_search_u_id('Non_judicial',user,practice=practice)
-					elif practice == [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Non_judicial',user,client=client)
-					elif practice != [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Non_judicial',user,practice=practice,client=client)
+					if practice == [''] and client == '' and lawyers == ['']:
+						d_table=db.get_join_table('Non_judicial')
+					elif practice != [''] or client != '' or lawyers !=[''] :
+						d_table = db.get_join_table_search_u_id('Non_judicial',user,practice=practice,client=client,lawyers=lawyers)
 					else:
 						return redirect('/user/none_sud')
 
@@ -1433,12 +1427,14 @@ class API(object):
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])
 					serch_clients=db.get_clients_u_id(user)
+					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("user/nesud_dela.html",
 					data=d_table,
 					role=role,
 					name=name,
 					colors=colors,
-					serch_clients=serch_clients)
+					serch_clients=serch_clients,
+					lawyers=lawyers)
 				else:
 					return render_template("user/nesud_dela.html",
 					data=[],
@@ -1545,17 +1541,15 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Pre_trial_settlement',user)
 				else:
-					dict_=request.form.to_dict(flat=[])
+					dict_=request.form.to_dict(flat=False)
+					print(dict_)
 					practice=dict_['practice']
+					lawyers=dict_['lawyers']
 					client=request.form.get('client')
-					if practice == [''] and client == '':
-						d_table=db.get_join_table_u_id('Pre_trial_settlement',user)
-					elif practice != [''] and client == '':
-						d_table = db.get_join_table_search_u_id('Pre_trial_settlement',user,practice=practice)
-					elif practice == [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Pre_trial_settlement',user,client=client)
-					elif practice != [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Pre_trial_settlement',user,practice=practice,client=client)
+					if practice == [''] and client == '' and lawyers == ['']:
+						d_table=db.get_join_table('Pre_trial_settlement')
+					elif practice != [''] or client != '' or lawyers !=[''] :
+						d_table = db.get_join_table_search_u_id('Pre_trial_settlement',user,practice=practice,client=client,lawyers=lawyers)
 					else:
 						return redirect('/user/dosud_ureg')
 
@@ -1573,12 +1567,14 @@ class API(object):
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])
 					serch_clients=db.get_clients_u_id(user)
+					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("user/dosud_ureg.html",
 					data=d_table,
 					role=role,
 					name=name,
 					colors=colors,
-					serch_clients=serch_clients)
+					serch_clients=serch_clients,
+					lawyers=lawyers)
 				else:
 					return render_template("user/dosud_ureg.html",
 					data=[],
@@ -1686,17 +1682,16 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table_u_id('Enforcement_proceedings',user)
 				else:
-					dict_=request.form.to_dict(flat=[])
+					else:
+					dict_=request.form.to_dict(flat=False)
+					print(dict_)
 					practice=dict_['practice']
+					lawyers=dict_['lawyers']
 					client=request.form.get('client')
-					if practice == [''] and client == '':
-						d_table=db.get_join_table_u_id('Enforcement_proceedings',user)
-					elif practice != [''] and client == '':
-						d_table = db.get_join_table_search_u_id('Enforcement_proceedings',user,practice=practice)
-					elif practice == [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Enforcement_proceedings',user,client=client)
-					elif practice != [''] and client != '':
-						d_table = db.get_join_table_search_u_id('Enforcement_proceedings',user,practice=practice,client=client)
+					if practice == [''] and client == '' and lawyers == ['']:
+						d_table=db.get_join_table('Enforcement_proceedings')
+					elif practice != [''] or client != '' or lawyers !=[''] :
+						d_table = db.get_join_table_search_u_id('Enforcement_proceedings',user,practice=practice,client=client,lawyers=lawyers)
 					else:
 						return redirect('/user/isp_proiz')
 				if d_table != []:
@@ -1713,12 +1708,14 @@ class API(object):
 						x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
 						item[12]='\n'.join([' '.join(i) for i in x_lst])
 					serch_clients=db.get_clients_u_id(user)
+					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("user/isp_proiz.html",
 					data=d_table,
 					role=role,
 					name=name,
 					colors=colors,
-					serch_clients=serch_clients)
+					serch_clients=serch_clients,
+					lawyers=lawyers)
 				else:
 					return render_template("user/isp_proiz.html",
 					data=[],
