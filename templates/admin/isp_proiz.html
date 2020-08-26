@@ -26,41 +26,41 @@
 {% block Body %}
 	<h3 id="headline">Исполнительное производство</h3>
 	<a style="margin-bottom: 10px; margin-top: 10px;" href="/admin/add_isp_proiz">Добавить нового клиента</a>
-	<form class="form-inline py-3 px-5" action="/admin/isp_proiz" method="post" enctype="multipart/form-data">	
-		<input class='form-control mr-2' type="search" list='client' name="client" placeholder="Клиент" style="margin-bottom: 7px; height: 37px;" size="24">
-		<datalist id='client'>
-			{% for item in serch_clients %}
-				<option value="{{ item }}">{{ item }}</option>
-			{% endfor %}
-		</datalist>
+	<form class="form-inline py-3 px-5" action="/admin/bank_dela" method="post" enctype="multipart/form-data">	
 		<select name="practice" class="multi-select dropdown mb-2" style="width: 60px" multiple novalidate>
-			<option value="">Практика</option>
-			<option value="Энергетическое право">Энергетическое право</option>
-			<option value="Банкротство">Банкротство</option>
-			<option value="Налоговое право">Налоговое право</option>
-			<option value="Административное право">Административное право</option>
-			<option value="Корпоративное право">Корпоративное право</option>
-			<option value="Уголовное право">Уголовное право</option>
-			<option value="Недвижимость, инфестиции и строительство">Недвижимость, инфестиции и строительство</option>
-			<option value="Земельное право">Земельное право</option>
-			<option value="Таможенное право">Таможенное право</option>
-			<option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
-			<option value="Семейное и наследственное право">Семейное и наследственное право</option>
-			<option value="Регистрация прав и субъектов права">Регистрация прав и субъектов права</option>
-			<option value="Трудовое право">Трудовое право</option>
-			<option value="Жилищное право">Жилищное право</option>
-			<option value="Интеллектуальное право">Интеллектуальное право</option>
-			<option value="Спортивное право">Спортивное право</option>
+		  <option value="">Практика</option>
+		  <option value="Энергетическое право">Энергетическое право</option>
+		  <option value="Банкротство">Банкротство</option>
+		  <option value="Налоговое право">Налоговое право</option>
+		  <option value="Административное право">Административное право</option>
+		  <option value="Корпоративное право">Корпоративное право</option>
+		  <option value="Уголовное право">Уголовное право</option>
+		  <option value="Недвижимость, инфестиции и строительство">Недвижимость, инфестиции и строительство</option>
+		  <option value="Земельное право">Земельное право</option>
+		  <option value="Таможенное право">Таможенное право</option>
+		  <option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
+		  <option value="Семейное и наследственное право">Семейное и наследственное право</option>
+		  <option value="Регистрация прав и субъектов права">Регистрация прав и субъектов права</option>
+		  <option value="Трудовое право">Трудовое право</option>
+		  <option value="Жилищное право">Жилищное право</option>
+		  <option value="Интеллектуальное право">Интеллектуальное право</option>
+		  <option value="Спортивное право">Спортивное право</option>
 		</select>
-		<select name="lawyers" class="multi-select dropdown mb-2" style="width: 60px; margin-left: 7px" multiple novalidate>
-			<option value="">Юристы</option>
-			{% for item in urists %}
-			  <option value="{{ item }}">{{ item }}</option>
-			{% endfor %}
-		  </select>
+		<input class='form-control mr-2' type="search" list='client' name="client" placeholder="Клиент" style="margin-bottom: 7px; height: 37px; margin-left: 7px" size="24">
+		<datalist id='client'>
+		  {% for item in serch_clients %}
+			<option value="{{ item }}">{{ item }}</option>
+		  {% endfor %}
+		</datalist>
+		<select name="lawyers" class="multi-select dropdown mb-2" style="width: 60px" multiple novalidate>
+		  <option value="">Юристы</option>
+		  {% for item in lawyers %}
+			<option value="{{ item }}">{{ item }}</option>
+		  {% endfor %}
+		</select>
 		<input type="submit" class="btn btn-success" style="margin-bottom: 7px; margin-left: 7px; height: 37px" value="Найти">
-		<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 37px" onclick="document.location='/admin/isp_proiz'">Показать всё</button>
-	</form>		
+		<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 37px" onclick="document.location='/admin/bank_dela'">Показать всё</button>
+	  </form>	
   <div class="table-responsive-vertical shadow-z-1">
 	<table id="table" class="table table-hover table-mc-light-blue">
 	  <thead>
