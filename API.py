@@ -27,14 +27,14 @@ def get_db():
          db = g._database = sqlite3.connect(DATAFILE)       
     return db
 
-flask_app = Flask(__name__)
-flask_app.secret_key = os.urandom(24)
-flask_app.config['UPLOAD_FOLDER']=os.path.join(os.getcwd(),'U_files')
-# flask_app.config['UPLOAD_FOLDER_AGREE'] = os.path.join(os.getcwd(),'U_files','agreement')
-# flask_app.config['UPLOAD_FOLDER_PAY'] = os.path.join(os.getcwd(),'U_files','payment')
+application = Flask(__name__)
+application.secret_key = os.urandom(24)
+application.config['UPLOAD_FOLDER']=os.path.join(os.getcwd(),'U_files')
+# application.config['UPLOAD_FOLDER_AGREE'] = os.path.join(os.getcwd(),'U_files','agreement')
+# application.config['UPLOAD_FOLDER_PAY'] = os.path.join(os.getcwd(),'U_files','payment')
 ALLOWED_EXTENSIONS = {'pdf','jpg','jpeg'}
 
-@flask_app.teardown_appcontext
+@application.teardown_appcontext
 def teardown_db(exception):
     db = getattr(g, '_database', None)
     if db is not None:
@@ -89,7 +89,7 @@ class API(object):
 	def __init__(self, arg):
 		super(API, self).__init__()
 		self.arg = arg
-	@flask_app.route('/',methods=['GET'])
+	@application.route('/',methods=['GET'])
 	def base():
 		user=request.cookies.get('user_id')
 		if user:
@@ -106,30 +106,30 @@ class API(object):
 			return redirect('/login')
 #settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_
 #settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_
-	@flask_app.route('/download_files/<t_id>/<type_f>/<filename>', methods=['GET', 'POST'])
+	@application.route('/download_files/<t_id>/<type_f>/<filename>', methods=['GET', 'POST'])
 	def download_files(t_id,type_f,filename):
 		if request.method == 'GET':
 			try:
-				directory=os.path.join(flask_app.config['UPLOAD_FOLDER'],t_id,type_f)
+				directory=os.path.join(application.config['UPLOAD_FOLDER'],t_id,type_f)
 				return send_from_directory(directory, filename=filename, as_attachment=True)
 			except FileNotFoundError:
 				abort(404)
 #---------------------------------------------------------------------
-	@flask_app.route('/admin/delite_element/<type>/<way>/<t_id>', methods=['GET', 'POST'])
-	@flask_app.route('/user/delite_element/<type>/<way>/<t_id>', methods=['GET', 'POST'])
+	@application.route('/admin/delite_element/<type>/<way>/<t_id>', methods=['GET', 'POST'])
+	@application.route('/user/delite_element/<type>/<way>/<t_id>', methods=['GET', 'POST'])
 	def delite_element(type,way,t_id):
 		if request.method == 'GET' :
 			get_db()
 			db=Database(g._database)
 			for i in tables_sets(mode='keys'):
 				db.delite_data(i,t_id)
-			path=os.path.join(flask_app.config['UPLOAD_FOLDER'],t_id)
+			path=os.path.join(application.config['UPLOAD_FOLDER'],t_id)
 			shutil.rmtree(path)
 			print('/'+type+'/'+way)
 			return redirect('/'+type+'/'+way)
 #---------------------------------------------------------------------
-	@flask_app.route('/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
-	@flask_app.route('/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
+	@application.route('/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
+	@application.route('/delite_sud/<type>/<way>/<c_id>', methods=['GET', 'POST'])
 	def delite_sud(type,way,c_id):
 		if request.method == 'GET' :
 			get_db()
@@ -137,8 +137,8 @@ class API(object):
 			db.delite_sud(c_id)
 			return redirect('/'+type+'/'+way)
 #---------------------------------------------------------------------
-	@flask_app.route('/admin/change_invoice_status/<type>/<way>/<t_id>', methods=['GET', 'POST'])
-	@flask_app.route('/user/change_invoice_status/<type>/<way>/<t_id>', methods=['GET', 'POST'])
+	@application.route('/admin/change_invoice_status/<type>/<way>/<t_id>', methods=['GET', 'POST'])
+	@application.route('/user/change_invoice_status/<type>/<way>/<t_id>', methods=['GET', 'POST'])
 	def change_invoice_status(type,way,t_id):
 		if request.method == 'GET' :
 			get_db()
@@ -148,8 +148,8 @@ class API(object):
 #---------------------------------------------------------------------
 #settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_
 #settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_settings_
-	@flask_app.route('/admin/restore_pass', methods=['GET', 'POST'])
-	@flask_app.route('/admin/restore_pass/<email>', methods=['GET', 'POST'])
+	@application.route('/admin/restore_pass', methods=['GET', 'POST'])
+	@application.route('/admin/restore_pass/<email>', methods=['GET', 'POST'])
 	def restore_pass(email=None):
 		if request.method == 'GET' :
 			if email != None:
@@ -166,7 +166,7 @@ class API(object):
 			return render_template('/admin/restore_pass.html', passw=ls)
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
-	@flask_app.route('/admin/admin_users', methods=['GET', 'POST'])
+	@application.route('/admin/admin_users', methods=['GET', 'POST'])
 	def admin_admin_users():
 		def user_worker(method):
 			user=request.cookies.get('user_id')
@@ -205,7 +205,7 @@ class API(object):
 			return user_worker('GET')
 		if request.method == 'POST':
 			return user_worker('POST')
-	@flask_app.route('/admin/add_user', methods=['GET', 'POST'])
+	@application.route('/admin/add_user', methods=['GET', 'POST'])
 	def admin_add_user():
 		if request.method == 'POST' :
 			get_db()
@@ -242,7 +242,7 @@ class API(object):
 				role=role,
 				name=name
 				)
-	@flask_app.route('/admin/delite_user/<type>/<way>/<_id>', methods=['GET', 'POST'])
+	@application.route('/admin/delite_user/<type>/<way>/<_id>', methods=['GET', 'POST'])
 	def delite_user(type,way,_id):
 		get_db()
 		db=Database(g._database)
@@ -250,7 +250,7 @@ class API(object):
 		return redirect('/'+type+'/'+way)
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
-	@flask_app.route('/admin/add_sud_delo', methods=['GET', 'POST'])
+	@application.route('/admin/add_sud_delo', methods=['GET', 'POST'])
 	def admin_add_sud_delo():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -262,16 +262,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_sud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -285,9 +285,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Судебное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -324,7 +324,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/admin/sud_dela', methods=['GET', 'POST'])
+	@application.route('/admin/sud_dela', methods=['GET', 'POST'])
 	def admin_sud_dela():
 		def admin_sud_dela_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -387,7 +387,7 @@ class API(object):
 			return admin_sud_dela_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
-	@flask_app.route('/admin/add_bank_dela', methods=['GET', 'POST'])
+	@application.route('/admin/add_bank_dela', methods=['GET', 'POST'])
 	def admin_add_bank_dela():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -399,16 +399,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('admin','add','add_bank_dela.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_bankr_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -422,9 +422,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Банкротное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -461,7 +461,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/admin/bank_dela', methods=['GET', 'POST'])
+	@application.route('/admin/bank_dela', methods=['GET', 'POST'])
 	def admin_bank_dela():
 		def admin_bank_dela_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -523,7 +523,7 @@ class API(object):
 			return admin_bank_dela_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
-	@flask_app.route('/admin/add_none_sud', methods=['GET', 'POST'])
+	@application.route('/admin/add_none_sud', methods=['GET', 'POST'])
 	def admin_add_none_sud():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -535,16 +535,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('admin','add','add_nesud_delo.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_nesud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -558,9 +558,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Несудебное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -597,7 +597,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/admin/none_sud', methods=['GET', 'POST'])
+	@application.route('/admin/none_sud', methods=['GET', 'POST'])
 	def admin_none_sud():
 		def admin_none_sud_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -660,7 +660,7 @@ class API(object):
 			return admin_none_sud_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
-	@flask_app.route('/admin/add_dosud_ureg', methods=['GET', 'POST'])
+	@application.route('/admin/add_dosud_ureg', methods=['GET', 'POST'])
 	def admin_add_dosud_ureg():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -672,16 +672,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('admin','add','add_dosud_ureg.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_dosud_ureg.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -695,9 +695,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Несудебное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -734,7 +734,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/admin/dosud_ureg', methods=['GET', 'POST'])
+	@application.route('/admin/dosud_ureg', methods=['GET', 'POST'])
 	def admin_dosud_ureg():
 		def admin_dosud_ureg_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -796,7 +796,7 @@ class API(object):
 			return admin_dosud_ureg_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_	
-	@flask_app.route('/admin/add_isp_proiz', methods=['GET', 'POST'])
+	@application.route('/admin/add_isp_proiz', methods=['GET', 'POST'])
 	def admin_add_isp_proiz():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -808,16 +808,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('admin','add','add_isp_proiz.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('admin','add','add_isp_proiz.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -831,9 +831,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Несудебное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -870,7 +870,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/admin/isp_proiz', methods=['GET', 'POST'])
+	@application.route('/admin/isp_proiz', methods=['GET', 'POST'])
 	def admin_isp_proiz():
 		def admin_isp_proiz_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -933,7 +933,7 @@ class API(object):
 			return admin_isp_proiz_worker('POST')
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_
 #A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_	
-	@flask_app.route('/admin/add_sud', methods=['GET', 'POST'])
+	@application.route('/admin/add_sud', methods=['GET', 'POST'])
 	def admin_add_sudy():
 		if request.method == 'POST':
 			new_c_id=str(uuid.uuid4())
@@ -969,7 +969,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/admin/sudy', methods=['GET', 'POST'])
+	@application.route('/admin/sudy', methods=['GET', 'POST'])
 	def admin_sudy():
 		def admin_sudy_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -1028,7 +1028,7 @@ class API(object):
 ##############################################################################################
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
-	@flask_app.route('/user/add_sud_delo', methods=['GET', 'POST'])
+	@application.route('/user/add_sud_delo', methods=['GET', 'POST'])
 	def user_add_sud_delo():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -1042,16 +1042,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('user','add','add_sud_delo.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_sud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -1065,9 +1065,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Судебное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -1106,7 +1106,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/user/sud_dela', methods=['GET', 'POST'])
+	@application.route('/user/sud_dela', methods=['GET', 'POST'])
 	def user_sud_dela():
 		def user_sud_dela_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -1149,7 +1149,6 @@ class API(object):
 						item[9]='download_files/'+'/'.join(item[9].split('\\')[-3:])
 						x_lst=[item[11].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[11]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(3)
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/sud_dela.html",
 					data=d_table,
@@ -1170,7 +1169,7 @@ class API(object):
 			return user_sud_dela_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
-	@flask_app.route('/user/add_bank_dela', methods=['GET', 'POST'])
+	@application.route('/user/add_bank_dela', methods=['GET', 'POST'])
 	def user_add_bank_dela():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -1184,16 +1183,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('user','add','add_bank_dela.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_bankr_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -1207,9 +1206,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Банкротное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -1248,7 +1247,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/user/bank_dela', methods=['GET', 'POST'])
+	@application.route('/user/bank_dela', methods=['GET', 'POST'])
 	def user_bank_dela():
 		def user_bank_dela_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -1290,8 +1289,7 @@ class API(object):
 						item[7]='download_files/'+'/'.join(item[7].split('\\')[-3:])
 						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
-						item[10]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(3)
+						item[10]='\n'.join([' '.join(i) for i in x_lst])						
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/bankr_dela.html",
 					data=d_table,
@@ -1312,7 +1310,7 @@ class API(object):
 			return user_bank_dela_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
-	@flask_app.route('/user/add_none_sud', methods=['GET', 'POST'])
+	@application.route('/user/add_none_sud', methods=['GET', 'POST'])
 	def user_add_none_sud():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -1326,16 +1324,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('user','add','add_nesud_delo.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_nesud_delo.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -1349,9 +1347,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Несудебное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -1390,7 +1388,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/user/none_sud', methods=['GET', 'POST'])
+	@application.route('/user/none_sud', methods=['GET', 'POST'])
 	def user_none_sud():
 		def user_none_sud_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -1432,7 +1430,6 @@ class API(object):
 						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(3)
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/nesud_dela.html",
 					data=d_table,
@@ -1453,7 +1450,7 @@ class API(object):
 			return user_none_sud_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
-	@flask_app.route('/user/add_dosud_ureg', methods=['GET', 'POST'])
+	@application.route('/user/add_dosud_ureg', methods=['GET', 'POST'])
 	def user_add_dosud_ureg():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -1467,16 +1464,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('user','add','add_dosud_ureg.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_dosud_ureg.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -1490,9 +1487,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Несудебное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -1531,7 +1528,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/user/dosud_ureg', methods=['GET', 'POST'])
+	@application.route('/user/dosud_ureg', methods=['GET', 'POST'])
 	def user_dosud_ureg():
 		def user_dosud_ureg_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -1573,7 +1570,6 @@ class API(object):
 						item[8]='download_files/'+'/'.join(item[8].split('\\')[-3:])
 						x_lst=[item[10].split(' ')[i:i+3] for i in range(0, len(item[11].split(' ')), 3)]
 						item[10]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(3)
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/dosud_ureg.html",
 					data=d_table,
@@ -1594,7 +1590,7 @@ class API(object):
 			return user_dosud_ureg_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_-
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_	
-	@flask_app.route('/user/add_isp_proiz', methods=['GET', 'POST'])
+	@application.route('/user/add_isp_proiz', methods=['GET', 'POST'])
 	def user_add_isp_proiz():
 		if request.method == 'POST':
 			# image = request.files.get('file1')
@@ -1608,16 +1604,16 @@ class API(object):
 			file_invoice = request.files["Invoice"]
 			if file_agree and file_invoice :					
 				if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
-					if new_t_id not in os.listdir(os.path.join(os.getcwd(),flask_app.config['UPLOAD_FOLDER'])):
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
-						os.mkdir(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
+					if new_t_id not in os.listdir(os.path.join(os.getcwd(),application.config['UPLOAD_FOLDER'])):
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement'))
+						os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice'))
 					else:
 						return html_error_replacer(os.path.join('user','add','add_isp_proiz.html'),'Такие файлы уже существуют')
 					file_agree_filename = secure_filename(file_agree.filename)
 					file_invoice_filename = secure_filename(file_invoice.filename)
-					file_agree.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
-					file_invoice.save(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+					file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+					file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 				else: 
 					return html_error_replacer(os.path.join('user','add','add_isp_proiz.html'),'Ошибка файлов, попробуйте ещё раз')
 
@@ -1631,9 +1627,9 @@ class API(object):
 					elif margin == 'Type':
 						list_to_Affairs.append('Несудебное дело')
 					elif margin == 'Agreement':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Agreement',file_agree_filename))
 					elif margin == 'Invoice':
-						list_to_Affairs.append(os.path.join(flask_app.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
+						list_to_Affairs.append(os.path.join(application.config['UPLOAD_FOLDER'],new_t_id,'Invoice',file_invoice_filename))
 					elif margin == 'Practice':
 						list_to_Affairs.append(json.dumps(adding_dict[margin]))
 					elif margin == 'Lawyers':
@@ -1673,7 +1669,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/user/isp_proiz', methods=['GET', 'POST'])
+	@application.route('/user/isp_proiz', methods=['GET', 'POST'])
 	def user_isp_proiz():
 		def user_isp_proiz_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -1714,7 +1710,6 @@ class API(object):
 						item[10]='download_files/'+'/'.join(item[10].split('\\')[-3:])
 						x_lst=[item[12].split(' ')[i:i+3] for i in range(0, len(item[12].split(' ')), 3)]
 						item[12]='\n'.join([' '.join(i) for i in x_lst])
-						item.pop(3)
 					serch_clients=db.get_clients_u_id(user)
 					return render_template("user/isp_proiz.html",
 					data=d_table,
@@ -1735,7 +1730,7 @@ class API(object):
 			return user_isp_proiz_worker('POST')
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_
 #U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_U_	
-	@flask_app.route('/user/add_sud', methods=['GET', 'POST'])
+	@application.route('/user/add_sud', methods=['GET', 'POST'])
 	def user_add_sudy():
 		if request.method == 'POST':
 			new_c_id=str(uuid.uuid4())
@@ -1778,7 +1773,7 @@ class API(object):
 					role=role,
 					name=name,
 					urists=ur_up)
-	@flask_app.route('/user/sudy', methods=['GET', 'POST'])
+	@application.route('/user/sudy', methods=['GET', 'POST'])
 	def user_sudy():
 		def user_sudy_worker(method):
 			if request.cookies.get('user_id') == None:
@@ -1832,7 +1827,7 @@ class API(object):
 			return user_sudy_worker('POST')
 
 #S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_
-	@flask_app.route('/secretary', methods=['GET', 'POST'])
+	@application.route('/secretary', methods=['GET', 'POST'])
 	def secretary_sudy():
 		if request.cookies.get('user_id') == None:
 			return redirect('/login')
@@ -1862,7 +1857,7 @@ class API(object):
 
 #S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_S_
 #L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_L_
-	@flask_app.route('/login' , methods=['GET' , 'POST'])
+	@application.route('/login' , methods=['GET' , 'POST'])
 	def login():
 		if request.method == 'POST':     
 			email=request.form.get('email').rstrip()
@@ -1894,7 +1889,7 @@ class API(object):
 				return html_error_replacer('auth.html','User not found or name invalid')
 		else:
 			return render_template('auth.html')
-	@flask_app.route('/register' , methods = ['GET' , 'POST'])
+	@application.route('/register' , methods = ['GET' , 'POST'])
 	def register():
 		if request.method == 'POST':
 			email=request.form.get('email')
@@ -1919,13 +1914,13 @@ class API(object):
 
 #_______________________________________________________________________________________________
 #_______________________________________________________________________________________________
-	@flask_app.errorhandler(401)
+	@application.errorhandler(401)
 	def page_not_found(e):
 	    return Response('<p>Login failed</p>')
-	@flask_app.errorhandler(404)
+	@application.errorhandler(404)
 	def not_found(e):
 	    return Response('<p>file not found</p>')
 #_______________________________________________________________________________________________
 #_______________________________________________________________________________________________
 if __name__ == '__main__':
-    flask_app.run()
+    application.run()
