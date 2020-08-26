@@ -37,10 +37,11 @@
 	<table id="table" class="table table-hover table-mc-light-blue" style='white-space: pre-wrap'>
 	  <thead>
 	  	<tr class="header-link">
+		  <th>№</th>
           <th>Клиент</th>
-          <th>Юрист</th>  
 	  	  <th>Дата</th>
-	  	  <th>Время</th>
+		  <th>Время</th>
+          <th>Юрист</th>  	
 	  	  <th>Судья</th>
 	  	  <th>Суд</th>
 	  	  <th>Инстанция</th>
@@ -51,7 +52,9 @@
 		{% for line in data %}
 		  <tr>
 			{% for item in line %}
+			  {% if loop.index != 10 %}
 				<td>{{ item }}</td>
+			  {% endif %}
 			{% endfor %}
 		  </tr>
 	  	{% endfor %}
