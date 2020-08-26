@@ -281,14 +281,21 @@ class Database(object):
         except Error as e:
             print(e)
 
-    def get_join_table_search(self,join_table,client=None,practice=None):
+    def get_join_table_search(self,join_table,client=None,practice=None,lawyers=None):
         try:
             conn=self.connect
             c = conn.cursor()
-            if client!=None:
-                res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id AND a.Client=?".format(join_table),(client,))
+            if client != '' and lawyers ==['']:
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND a.Client=?".format(join_table)
+                    ,(client,))
+            elif client == '' and lawyers !=['']:
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND Lawyers like '%{1}%' ".format(join_table,json.dumps(lawyers)))
+
+            elif client!='' and lawyers!=['']:
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND a.Client=? AND Lawyers like '%{1}%' ".format(join_table,json.dumps(lawyers))
+                    ,(client,))
             else: 
-                res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id ".format(join_table)) 
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id ".format(join_table)) 
             results = c.fetchall()
             if results==[]:
                 return []
@@ -298,7 +305,7 @@ class Database(object):
                     l_list=[results.index(i)+1]+[i[0]]+list(i[2:7])+list(i[13:])+list(i[7:12])
                     l_list.pop(3)
                     dela_list.append(l_list)
-                if practice != None:
+                if practice != ['']:
                     s_lst=[]
                     for d_ in dela_list:
                         check=0

@@ -341,18 +341,17 @@ class API(object):
 					d_table = db.get_join_table('Litigation')
 				else:
 					dict_=request.form.to_dict(flat=[])
+					print(dict_)
 					practice=dict_['practice']
+					lawyers=dict_['lawyers']
 					client=request.form.get('client')
-					if practice == [''] and client == '':
+					if practice == [''] and client == '' and lawyers == ['']:
 						d_table=db.get_join_table('Litigation')
-					elif practice != [''] and client == '':
-						d_table = db.get_join_table_search('Litigation',practice=practice)
-					elif practice == [''] and client != '':
-						d_table = db.get_join_table_search('Litigation',client=client)
-					elif practice != [''] and client != '':
-						d_table = db.get_join_table_search('Litigation',practice=practice,client=client)
+					elif practice != [''] or client != '' or lawyers !=[''] :
+						d_table = db.get_join_table_search('Litigation',practice=practice,client=client,lawyers=lawyers)
 					else:
 						return redirect('/admin/sud_dela')
+
 				if d_table != []:
 					colors=[]
 					delite_hrs=[]
