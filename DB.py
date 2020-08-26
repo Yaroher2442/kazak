@@ -97,7 +97,7 @@ class Database(object):
             if results==[]:
                 return []
             else:
-                return list(list(i) for i in results)
+                return [list(i) for i in results]
         except Error as e:
             print(e)
     def get_clients(self):
@@ -109,7 +109,7 @@ class Database(object):
             if results==[]:
                 return []
             else:
-                return [ i[0] for i in results]
+                return [i[0] for i in results]
         except Error as e:
             print(e)
     def get_clients_u_id(self,u_id):
@@ -289,10 +289,12 @@ class Database(object):
                 res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND a.Client=?".format(join_table)
                     ,(client,))
             elif client == '' and lawyers !=['']:
-                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND Lawyers like '%{1}%' ".format(join_table,json.dumps(lawyers)))
+                lawyers=json.dumps(lawyers).strip('[').strip(']')
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND Lawyers like '%{1}%' ".format(join_table,lawyers))
 
             elif client!='' and lawyers!=['']:
-                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND a.Client=? AND Lawyers like '%{1}%' ".format(join_table,json.dumps(lawyers))
+                lawyers=json.dumps(lawyers).strip('[').strip(']')
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND a.Client=? AND Lawyers like '%{1}%' ".format(join_table,lawyers)
                     ,(client,))
             else: 
                 res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id ".format(join_table)) 
@@ -329,12 +331,21 @@ class Database(object):
             u_name=self.find_user_by_id(u_id)
             str_name=' '.join(u_name[1:])
             js_str=json.dumps(str_name)
-            if client!=None:
-                res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id AND a.Client=? AND a.u_id=? Or a.Project_Manager=? or Lawyers like '%{1}%'".format(join_table,js_str)
-                    ,(client,u_id,str_name,))
+            if client != '' and lawyers ==['']:
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND (a.u_id=? Or a.Project_Manager=?) a.Client=?".format(join_table)
+                    ,(u_id,str_name,client,))
+            elif client == '' and lawyers !=['']:
+                lawyers=json.dumps(lawyers).strip('[').strip(']')
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND (a.u_id=? Or a.Project_Manager=?) Lawyers like '%{1}%' ".format(join_table,lawyers))
+
+            elif client!='' and lawyers!=['']:
+                lawyers=json.dumps(lawyers).strip('[').strip(']')
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND (a.u_id=? Or a.Project_Manager=?) a.Client=? AND Lawyers like '%{1}%' ".format(join_table,lawyers)
+                    ,(u_id,str_name,client,))
             else: 
-                res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id AND a.u_id=? Or a.Project_Manager=? or Lawyers like '%{1}%'".format(join_tableбjs_str)
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND (a.u_id=? Or a.Project_Manager=?) ".format(join_table)
                     ,(u_id,str_name,)) 
+
             results = c.fetchall()
             if results==[]:
                 return []
@@ -412,7 +423,8 @@ def main():
     # print(db.find_user('qqq@qqq.qqq'))
     # print(db.find_user_by_id('5120a525-a49e-4673-a1dd-2a6e49304fb5'))
     # print(db.find_user_by_id())
-    print(db.get_join_table_u_id('Litigation','5120a525-a49e-4673-a1dd-2a6e49304fb5'))
+    print(db.get_urists())
+    # print(db.get_join_table_u_id('Litigation','5120a525-a49e-4673-a1dd-2a6e49304fb5'))
     # print(db.get_clients_u_id('d8972270-dea8-4dbf-87e4-e82a07b3bf5b'))
     # print(db.get_all_users())
     # u_name=db.find_user_by_id('5120a525-a49e-4673-a1dd-2a6e49304fb5')
