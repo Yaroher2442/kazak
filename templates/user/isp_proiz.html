@@ -27,7 +27,7 @@
 	<a style="margin-bottom: 10px; margin-top: 10px;" href="/user/add_isp_proiz">Добавить нового клиента</a>
 	<form class="form-inline py-3 px-5" action="/admin/bank_dela" method="post" enctype="multipart/form-data">	
 		<select name="practice" class="multi-select dropdown mb-2" style="width: 60px" multiple novalidate>
-		  <option value="">Практика</option>
+		  <option value="" selected="selected">Практика</option>
 		  <option value="Энергетическое право">Энергетическое право</option>
 		  <option value="Банкротство">Банкротство</option>
 		  <option value="Налоговое право">Налоговое право</option>
@@ -52,7 +52,7 @@
 		  {% endfor %}
 		</datalist>
 		<select name="lawyers" class="multi-select dropdown mb-2" style="width: 60px" multiple novalidate>
-		  <option value="">Юристы</option>
+		  <option value="" selected="selected">Юристы</option>
 		  {% for item in lawyers %}
 			<option value="{{ item }}">{{ item }}</option>
 		  {% endfor %}
