@@ -52,9 +52,9 @@
                 <option value="Интеллектуальное право">Интеллектуальное право</option>
                 <option value="Спортивное право">Спортивное право</option>
 			</select>
-			<select name="urist" class="multi-select dropdown mb-2" style="width: 60px" multiple required>
-				<option value="">Юристы</option>
-				{% for item in urists %}
+			<select name="lawyers" class="multi-select dropdown mb-2" style="width: 60px" multiple>
+				<option value="" selected="selected">Юристы</option>
+				{% for item in lawyers %}
 				  <option value="{{ item }}">{{ item }}</option>
 				{% endfor %}
 			  </select>

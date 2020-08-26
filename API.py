@@ -340,7 +340,7 @@ class API(object):
 				if method == 'GET':
 					d_table = db.get_join_table('Litigation')
 				else:
-					dict_=request.form.to_dict(flat=[])
+					dict_=request.form.to_dict(flat=False)
 					print(dict_)
 					practice=dict_['practice']
 					lawyers=dict_['lawyers']
@@ -367,19 +367,22 @@ class API(object):
 						item[11]='\n'.join([' '.join(i) for i in x_lst])
 
 					serch_clients=db.get_clients()
+					lawyers=[' '.join(i) for i in db.get_urists()]
 					return render_template("admin/sud_dela.html",
 					data=d_table,
 					role=role,
 					name=name,
 					colors=colors,
-					serch_clients=serch_clients)
+					serch_clients=serch_clients,
+					lawyers=lawyers)
 				else:
 					return render_template("admin/sud_dela.html",
 					data=[],
 					role=role,
 					name=name,
 					colors=[],
-					delite_href='')
+					delite_href='',
+					lawyers=lawyers)
 		if request.method == 'GET' :
 			return admin_sud_dela_worker('GET')
 		if request.method == 'POST':

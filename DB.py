@@ -97,7 +97,7 @@ class Database(object):
             if results==[]:
                 return []
             else:
-                return list(list(i) for i in results)
+                return [list(i) for i in results]
         except Error as e:
             print(e)
     def get_clients(self):
@@ -109,7 +109,7 @@ class Database(object):
             if results==[]:
                 return []
             else:
-                return [ i[0] for i in results]
+                return [i[0] for i in results]
         except Error as e:
             print(e)
     def get_clients_u_id(self,u_id):
@@ -297,6 +297,7 @@ class Database(object):
             else: 
                 res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id ".format(join_table)) 
             results = c.fetchall()
+            print(json.dumps(lawyers))
             if results==[]:
                 return []
             else:
@@ -412,7 +413,8 @@ def main():
     # print(db.find_user('qqq@qqq.qqq'))
     # print(db.find_user_by_id('5120a525-a49e-4673-a1dd-2a6e49304fb5'))
     # print(db.find_user_by_id())
-    print(db.get_join_table_u_id('Litigation','5120a525-a49e-4673-a1dd-2a6e49304fb5'))
+    print(db.get_urists())
+    # print(db.get_join_table_u_id('Litigation','5120a525-a49e-4673-a1dd-2a6e49304fb5'))
     # print(db.get_clients_u_id('d8972270-dea8-4dbf-87e4-e82a07b3bf5b'))
     # print(db.get_all_users())
     # u_name=db.find_user_by_id('5120a525-a49e-4673-a1dd-2a6e49304fb5')
