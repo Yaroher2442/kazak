@@ -8,6 +8,8 @@ def main():
     for i in range(100):
         r=requests.get("http://127.0.0.1:5000/admin/add_user")
         print(r)
+
+
     # password=zlib.crc32('stolbunov.yaroslav@gmail.com'.encode())
     # print(password)
     #qqq@qqq.qqq -  
