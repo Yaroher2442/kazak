@@ -5,92 +5,100 @@
 {% endblock %}
 
 {% block Header %}
-    <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-				<div class="w-30 d-flex align-items-center">
-					<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
-					<h6 class="my-0 pr-4 font-weight-normal">{{ role }}</h6>
-					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
-				</div>
-        <nav class="my-2 nav-grid header-link">
-          <a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
-          <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
-          <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
-          <a class="btn btn-secondary" role="button" href="/admin/isp_proiz">Исполнительное производство</a>
-          <a class="p-2 text-dark" href="/admin/none_sud">Несудебные дела</a>
-          <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
-          <a class="p-2 text-dark" href="/admin/admin_users">Сотрудники</a>
-        </nav>
-    </header>
+  <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+		<div class="w-30 d-flex align-items-center">
+			<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
+			<h6 class="my-0 pr-4 font-weight-normal">{{ role }}</h6>
+			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
+		</div>
+    <nav class="my-2 nav-grid header-link">
+			<form action="/admin/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/admin/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/admin/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/admin/isp_proiz" method="GET"><button type="button" class="btn btn-dark header-btn">Исполнительное производство</button></form>
+			<form action="/admin/none_sud" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/admin/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+			<form action="/admin/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
+      <!--a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
+      <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
+      <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
+      <a class="btn btn-secondary" role="button" href="/admin/isp_proiz">Исполнительное производство</a>
+      <a class="p-2 text-dark" href="/admin/none_sud">Несудебные дела</a>
+      <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
+      <a class="p-2 text-dark" href="/admin/admin_users">Сотрудники</a-->
+		</nav>
+		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+  </header>
 {% endblock %}
 
 {% block Body %}
-    <form class="py-3 px-5" action="/admin/add_isp_proiz" method="post" enctype="multipart/form-data">
-        <h5 class='p-2' style="margin-bottom: 25px;">Добавить нового клиента</h5>
-        <div class="form-group mx-5">
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
-            <select name="Practice" class="multi-select ui fluid dropdown mb-2" multiple required>
-              <option value="">Практика</option>
-              <option value="Энергетическое право">Энергетическое право</option>
-              <option value="Банкротство">Банкротство</option>
-              <option value="Налоговое право">Налоговое право</option>
-              <option value="Административное право">Административное право</option>
-              <option value="Корпоративное право">Корпоративное право</option>
-              <option value="Уголовное право">Уголовное право</option>
-              <option value="Недвижимость, инфестиции и строительство">Недвижимость, инфестиции и строительство</option>
-              <option value="Земельное право">Земельное право</option>
-              <option value="Таможенное право">Таможенное право</option>
-              <option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
-              <option value="Семейное и наследственное право">Семейное и наследственное право</option>
-              <option value="Регистрация прав и субъектов права">Регистрация прав и субъектов права</option>
-              <option value="Трудовое право">Трудовое право</option>
-              <option value="Жилищное право">Жилищное право</option>
-              <option value="Интеллектуальное право">Интеллектуальное право</option>
-              <option value="Спортивное право">Спортивное право</option>
-            </select>
-            <select name='Project_Manager' class="multi-select ui fluid dropdown mb-2" required>
-              <option value=''>Руководитель проекта</option>
-              {% for item in urists %}
-                <option value="{{ item }}">{{ item }}</option>
-              {% endfor %}
-            </select>
-            <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" multiple required>
-              <option value=''>Юристы</option>
-              {% for item in urists %}
-                <option value="{{ item }}">{{ item }}</option>
-              {% endfor %}
-            </select>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Executive_case_number" placeholder="Номер исполнительного дела" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Amount" placeholder="Сумма" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="FSSP" placeholder="ФССП" required>
-            <input class="d-block mb-2 w-100 form-control" type="text" name="Bailiff" placeholder="Пристав" required>
-            <div class="custom-file mb-2">
-                <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
-                <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
-            </div>
-             <div class="custom-file mb-2" style="margin-bottom: 15px;">
-                <input class="custom-file-input" id='file2' type="file" name="Invoice" required >
-                <label class='custom-file-label' for="file2">Счёт (PDF)...</label>
-              </div>
-              <p style="margin-top: 10px;">Статус платежа: &nbsp; 
-                <input type="radio" name="Invoice_status" value="#008000" required> Оплачен &nbsp;
-                <input type="radio" name="Invoice_status" value="#FFFF00"> Внесена предоплата &nbsp;
-                <input type="radio" name="Invoice_status" value="#FF0000"> Не оплачен &nbsp;
-              </p>
-              <p>Откуда пришёл клиент: &nbsp;
-                <input type="radio" name="Came_from" value="Сайт" required> Сайт &nbsp;
-                <input type="radio" name="Came_from" value="По телефону"> По телефону &nbsp;
-                <input type="radio" name="Came_from" value="По рекомендации"> По рекомендации &nbsp;
-                <input type="radio" name="Came_from" value="От сотрудника"> От сотрудника &nbsp;
-                <input type="radio" name="Came_from" value="Другое"> Другое &nbsp;
-              </p>
-              <input class="d-block mb-3 w-100 form-control" type="text" name="Comment" placeholder="Комментарий" required>
-              <label style="display: none; color: red" id = "error">error_here</label>
-              <script>
-                if (document.getElementById("error").textContent != "error_here") {
-                    document.getElementById("error").style.display = "flex";
-                    }
-              </script>
-              <button class='btn btn-success' type="submit">Добавить</button>
-        </div>
-    </form>
+  <form class="py-3 px-5" action="/admin/add_isp_proiz" method="post" enctype="multipart/form-data">
+    <h5 class='p-2' style="margin-bottom: 25px;">Добавить нового клиента</h5>
+    <div class="form-group mx-5">
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
+      <select name="Practice" class="multi-select ui fluid dropdown mb-2" multiple required>
+        <option value="">Практика</option>
+        <option value="Энергетическое право">Энергетическое право</option>
+        <option value="Банкротство">Банкротство</option>
+        <option value="Налоговое право">Налоговое право</option>
+        <option value="Административное право">Административное право</option>
+        <option value="Корпоративное право">Корпоративное право</option>
+        <option value="Уголовное право">Уголовное право</option>
+        <option value="Недвижимость, инфестиции и строительство">Недвижимость, инфестиции и строительство</option>
+        <option value="Земельное право">Земельное право</option>
+        <option value="Таможенное право">Таможенное право</option>
+        <option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
+        <option value="Семейное и наследственное право">Семейное и наследственное право</option>
+        <option value="Регистрация прав и субъектов права">Регистрация прав и субъектов права</option>
+        <option value="Трудовое право">Трудовое право</option>
+        <option value="Жилищное право">Жилищное право</option>
+        <option value="Интеллектуальное право">Интеллектуальное право</option>
+        <option value="Спортивное право">Спортивное право</option>
+      </select>
+      <select name='Project_Manager' class="multi-select ui fluid dropdown mb-2" required>
+        <option value=''>Руководитель проекта</option>
+        {% for item in urists %}
+          <option value="{{ item }}">{{ item }}</option>
+        {% endfor %}
+      </select>
+      <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" multiple required>
+        <option value=''>Юристы</option>
+        {% for item in urists %}
+          <option value="{{ item }}">{{ item }}</option>
+        {% endfor %}
+      </select>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Executive_case_number" placeholder="Номер исполнительного дела" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Amount" placeholder="Сумма" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="FSSP" placeholder="ФССП" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Bailiff" placeholder="Пристав" required>
+      <div class="custom-file mb-2">
+        <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
+        <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
+      </div>
+      <div class="custom-file mb-2" style="margin-bottom: 15px;">
+        <input class="custom-file-input" id='file2' type="file" name="Invoice" required >
+        <label class='custom-file-label' for="file2">Счёт (PDF)...</label>
+      </div>
+      <p style="margin-top: 10px;">Статус платежа: &nbsp; 
+        <input type="radio" name="Invoice_status" value="#008000" required> Оплачен &nbsp;
+        <input type="radio" name="Invoice_status" value="#FFFF00"> Внесена предоплата &nbsp;
+        <input type="radio" name="Invoice_status" value="#FF0000"> Не оплачен &nbsp;
+      </p>
+      <p>Откуда пришёл клиент: &nbsp;
+        <input type="radio" name="Came_from" value="Сайт" required> Сайт &nbsp;
+        <input type="radio" name="Came_from" value="По телефону"> По телефону &nbsp;
+        <input type="radio" name="Came_from" value="По рекомендации"> По рекомендации &nbsp;
+        <input type="radio" name="Came_from" value="От сотрудника"> От сотрудника &nbsp;
+        <input type="radio" name="Came_from" value="Другое"> Другое &nbsp;
+      </p>
+      <input class="d-block mb-3 w-100 form-control" type="text" name="Comment" placeholder="Комментарий" required>
+      <label style="display: none; color: red" id = "error">error_here</label>
+      <script>
+        if (document.getElementById("error").textContent != "error_here") {
+            document.getElementById("error").style.display = "flex";
+          }
+      </script>
+      <button class='btn btn-success' type="submit">Добавить</button>
+    </div>
+  </form>
 {% endblock %}

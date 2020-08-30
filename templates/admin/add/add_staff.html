@@ -5,38 +5,46 @@
 {% endblock %}
 
 {% block Header %}
-    <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
 		<div class="w-30 d-flex align-items-center">
 			<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
 			<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
 			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 		</div>
-        <nav class="my-2 nav-grid header-link">
-          <a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
-          <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
-          <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
-          <a class="p-2 text-dark" href="/admin/isp_proiz">Исполнительное производство</a>
-          <a class="p-2 text-dark" href="/admin/none_sud">Несудебные дела</a>
-          <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
-          <a class="btn btn-secondary" role="button" href="/admin/admin_users">Сотрудники</a>
-        </nav>
-    </header>
+    <nav class="my-2 nav-grid header-link">
+			<form action="/admin/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/admin/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/admin/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/admin/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/admin/none_sud" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/admin/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+			<form action="/admin/admin_users" method="GET"><button type="button" class="btn btn-dark header-btn">Сотрудники</button></form>
+      <!--a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
+      <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
+      <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
+      <a class="p-2 text-dark" href="/admin/isp_proiz">Исполнительное производство</a>
+      <a class="p-2 text-dark" href="/admin/none_sud">Несудебные дела</a>
+      <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
+      <a class="btn btn-secondary" role="button" href="/admin/admin_users">Сотрудники</a-->
+    </nav>
+		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+	</header>
 {% endblock %}
 
 {% block Body %}
   <form class="py-3 px-5" action="/admin/add_user" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить нового сотрудника</h5>
     <div class="form-group mx-5">
-        <input class="d-block mb-2 w-100 form-control" type="text" name="surname" placeholder="Фамилия" required>
-        <input class="d-block mb-2 w-100 form-control" type="text" name="name" placeholder="Имя" required>
-        <input class="d-block mb-2 w-100 form-control" type="text" name="lastname" placeholder="Отчество" required>
-        <p>Уровень доступа: &nbsp;
-            <input type="radio" name="Access_level" value="Суперпользователь" required> Суперпользователь &nbsp;
-            <input type="radio" name="Access_level" value="Пользователь"> Пользователь &nbsp;
-            <input type="radio" name="Access_level" value="Секретарь"> Секретарь &nbsp;
-          </p>
-        <input class="d-block mb-2 w-100 form-control" type="text" name="email" placeholder="Email" required>
-      <button class='btn btn-success' type="submit">Добавить</button>
-    </div>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="surname" placeholder="Фамилия" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="name" placeholder="Имя" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="lastname" placeholder="Отчество" required>
+      <p>Уровень доступа: &nbsp;
+        <input type="radio" name="Access_level" value="Руководитель" required> Руководитель &nbsp;
+        <input type="radio" name="Access_level" value="Пользователь"> Пользователь &nbsp;
+        <input type="radio" name="Access_level" value="Секретарь"> Секретарь &nbsp;
+      </p>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="email" placeholder="Email" required>
+	    <button class='btn btn-success' type="submit">Добавить</button>
+  	</div>
   </form>
 {% endblock %}
