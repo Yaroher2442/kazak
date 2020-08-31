@@ -71,10 +71,28 @@
 				{% if type == 'Исполнительное производство' %}
 					{% for line in delo %}
 						{% for item in line %}
-							{% if loop.index == 11 and 1 and loop.index < 14 %}
-								<li><a href="{{ item }}">Соглашение.pdf</a></li>
+							{% if loop.index==11 and loop.index < 14 %}
+								<li>
+								{% if line[11]!='Нет файла' %}
+									<a href="{{ item }}">Соглашение.pdf</a>
+									<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update" placeholder="Изменить файл">
+								{% else %}
+									{{ item }}<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update" placeholder="Добавить файл">
+								{% endif %}
+									
+								</li>
 							{% elif loop.index == 12 and loop.index < 14 %}
-								<li><a href="{{ item }}" style="background-color: {{ delo[0][15] }};">Счёт.pdf</a></li>
+								<li>
+								{% if line[12]!='Нет файла' %}
+								<div class="custom-file mb-2" style="margin-bottom: 15px;">
+									<a href="{{ item }}" style="background-color: {{ delo[0][15] }};">Счёт.pdf</a>
+										<input class="custom-file-input" type="file" name="Invoice" form="update">
+        						<label class='custom-file-label' for="file1">Изменить файл</label>	
+									</div>
+								{% else %}
+									{{ item }}<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update" placeholder="Добавить файл">
+								{% endif %}
+								</li>
 							{% else %}
 								<li>{{ item }}</li>
 							{% endif %}
