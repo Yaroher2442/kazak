@@ -71,9 +71,9 @@
 				{% if type == 'Исполнительное производство' %}
 					{% for line in delo %}
 						{% for item in line %}
-							{% if loop.index == 10 and loop.index < 14 %}
+							{% if loop.index == 11 and 1 and loop.index < 14 %}
 								<li><a href="{{ item }}">Соглашение.pdf</a></li>
-							{% elif loop.index == 11 and loop.index < 14 %}
+							{% elif loop.index == 12 and loop.index < 14 %}
 								<li><a href="{{ item }}" style="background-color: {{ delo[0][15] }};">Счёт.pdf</a></li>
 							{% else %}
 								<li>{{ item }}</li>
@@ -84,10 +84,10 @@
 				{% elif type == 'Судебное дело' %}
 					{% for line in delo %}
 						{% for item in line %}
-							{% if loop.index == 9 %}
+							{% if loop.index == 8 %}
 								<li><a href="{{ item }}">Соглашение.pdf</a></li>
-							{% elif loop.index == 10 %}
-								<li><a href="{{ item }}" style="background-color: {{ line[12] }};">Счёт.pdf</a></li>
+							{% elif loop.index == 9 %}
+								<li><a href="{{ item }}" style="background-color: {{ line[11] }};">Счёт.pdf</a></li>
 							{% elif loop.index == 11 %}
 								<input class='form-control mr-2' type="text" value="{{ item }}" form="coment">
 							{% elif loop.index < 12 %}
@@ -102,7 +102,10 @@
 							{% if loop.index == 7 and loop.index < 11 %}
 								<li><a href="{{ item }}">Соглашение.pdf</a></li>
 							{% elif loop.index == 8 and loop.index < 11 %}
-								<li><a href="{{ item }}" style="background-color: {{ delo[0][12] }};">Счёт.pdf</a></li>
+								<li>
+									<a href="{{ item }}" style="background-color: {{ delo[0][12] }};">Счёт.pdf</a>
+									<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update" placeholder="Изменить">
+								</li>
 							{% else %}
 								<li>{{ item }}</li>
 							{% endif %}
@@ -117,7 +120,7 @@
 							{% elif loop.index == 9 and loop.index < 12 %}
 								<li><a href="{{ item }}" style="background-color: {{ delo[0][13] }};">Счёт.pdf</a></li>
 							{% elif loop.index == 11 %}
-								<input class='form-control mr-2' type="text" value="{{ item }}" form="coment">
+								<input class='form-control mr-2' type="text" value="{{ item }}" form="update">
 							{% else %}
 								<li>{{ item }}</li>
 							{% endif %}
@@ -129,7 +132,7 @@
 		<div class="col-12 col-md"></div>
 		<div class="col-12 col-md"></div>
 	</div>
-	<form id="coment" action="" method="POST">
+	<form id="update" action="" method="POST">
 		<button type="button" class="btn btn-success btn-sm btn-delo">Оплачено</button>
 		<button type="submit" class="btn btn-success btn-sm btn-delo">Обновить</button>
 		<button type="button" class="btn btn-danger btn-sm btn-delo">Удалить</button>
