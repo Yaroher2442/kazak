@@ -12,12 +12,12 @@
 			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 		</div>
   	<nav class="my-2 nav-grid header-link">
-			<form action="/user/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
-			<form action="/user/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
-			<form action="/user/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
-			<form action="/user/isp_proiz" method="GET"><button type="button" class="btn btn-dark header-btn">Исполнительное производство</button></form>
-			<form action="/user/none_sud" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
-			<form action="/user/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+			<form action="/user/render/sud_dela.html" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/user/render/bankr_dela.html" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/user/render/dosud_ureg.html" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/user/render/isp_proiz.html" method="GET"><button type="button" class="btn btn-dark header-btn">Исполнительное производство</button></form>
+			<form action="/user/render/nesud_dela.html" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/user/render/sudy.html" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
       <!--a class="p-2 text-dark" href="/user/sud_dela">Судебные дела</a>
       <a class="p-2 text-dark" href="/user/bank_dela">Банкротные дела</a>
       <a class="p-2 text-dark" href="/user/dosud_ureg">Досудебное урегулирование</a>
@@ -30,7 +30,7 @@
 {% endblock %}
 
 {% block Body %}
-  <form class="py-3 px-5" action="/user/add_isp_proiz" method="post" enctype="multipart/form-data">
+  <form class="py-3 px-5" action="/user/add/add_isp_proiz.html" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить нового клиента</h5>
     <div class="form-group mx-5">
       <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
@@ -63,13 +63,13 @@
     	<input class="d-block mb-2 w-100 form-control" type="text" name="Executive_case_number" placeholder="Номер исполнительного дела" required>
       <input class="d-block mb-2 w-100 form-control" type="text" name="Amount" placeholder="Сумма" required>
       <input class="d-block mb-2 w-100 form-control" type="text" name="FSSP" placeholder="ФССП" required>
-      <input class="d-block mb-2 w-100 form-control" type="text" name="Bailiff" placeholder="Пристав" required>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Bailiff" placeholder="Судебный-пристав исполнитель" required>
       <div class="custom-file mb-2">
-        <input class="custom-file-input" id='file1' type="file" name="Agreement" required >
+        <input class="custom-file-input" id='file1' type="file" name="Agreement">
         <label class='custom-file-label' for="file1">Cоглашение (PDF)...</label>
       </div>
       <div class="custom-file mb-2" style="margin-bottom: 15px;">
-        <input class="custom-file-input" id='file2' type="file" name="Invoice" required >
+        <input class="custom-file-input" id='file2' type="file" name="Invoice">
         <label class='custom-file-label' for="file2">Счёт (PDF)...</label>
       </div>
       <p style="margin-top: 10px;">Статус платежа: &nbsp; 

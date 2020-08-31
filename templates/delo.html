@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block Title %}
+	Страница дела
+{% endblock %}
+
+{% block Header %}
+  <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+		<div class="w-30 d-flex align-items-center">
+			<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
+			<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
+			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
+		</div>
+    <nav class="my-2 nav-grid header-link">
+			<form action="/user/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/user/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/user/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/user/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/user/none_sud" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/user/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+			{% if role == 'Руководитель' %}
+				<form action="/admin/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
+			{% endif %}
+    </nav>
+		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+  </header>
+{% endblock %}
+
+{% block Body %}
+	<h3 id="headline">Страница дела</h3>
+	<div class="row">
+		<div class="col-12 col-md">
+			<ul class="list-unstyled">
+				<li>Тип:</li>
+				<li>Клиент:</li>
+				{% if type != 'Банкротное дело' %}
+					<li>Практика:</li>
+				{% endif %}
+				<li>Руководитель проекта:</li>
+				<li>Юристы:</li>
+				{% if type == 'Судебное дело' %}
+					<li>Номер дела:</li>
+					<li>Суд:</li>
+					<li>Судья:</li>
+				{% elif type == 'Банкротное дело' %}
+					<li>Номер банкротного дела:</li>
+					<li>Арбитражный управляющий:</li>
+				{% elif type == 'Досудебное урегулирование' %}
+					<li>Номер дела:</li>
+					<li>Орган:</li>
+				{% elif type == 'Исполнительное производство' %}
+					<li>Номер исполнительного дела:</li>
+					<li>Сумма:</li>
+					<li>ФССП:</li>
+					<li>Пристав:</li>
+				{% elif type == 'Несудебное дело' %}
+					<li>Характер работ:</li>
+					<li>Срок:</li>
+				{% endif%}
+				<li>Соглашение:</li>
+				<li>Счёт:</li>
+				<li>Откуда пришёл клиент:</li>
+				<li>Комментарий</li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<div class="col-12 col-md">
+			<ul class="list-unstyled">
+				<li>{{ type }}</li>
+				{% if type == 'Исполнительное производство' %}
+					{% for line in delo %}
+						{% for item in line %}
+							{% if loop.index == 10 and loop.index < 14 %}
+								<li><a href="{{ item }}">Соглашение.pdf</a></li>
+							{% elif loop.index == 11 and loop.index < 14 %}
+								<li><a href="{{ item }}" style="background-color: {{ delo[0][15] }};">Счёт.pdf</a></li>
+							{% else %}
+								<li>{{ item }}</li>
+							{% endif %}
+						{% endfor %}
+					{% endfor %}
+
+				{% elif type == 'Судебное дело' %}
+					{% for line in delo %}
+						{% for item in line %}
+							{% if loop.index == 9 %}
+								<li><a href="{{ item }}">Соглашение.pdf</a></li>
+							{% elif loop.index == 10 %}
+								<li><a href="{{ item }}" style="background-color: {{ line[12] }};">Счёт.pdf</a></li>
+							{% elif loop.index == 11 %}
+								<input class='form-control mr-2' type="text" value="{{ item }}" form="coment">
+							{% elif loop.index < 12 %}
+								<li>{{ item }}</li>
+							{% endif %}
+						{% endfor %}
+					{% endfor %}
+					
+				{% elif type == 'Банкротное дело' %}
+					{% for line in delo %}
+						{% for item in line %}
+							{% if loop.index == 7 and loop.index < 11 %}
+								<li><a href="{{ item }}">Соглашение.pdf</a></li>
+							{% elif loop.index == 8 and loop.index < 11 %}
+								<li><a href="{{ item }}" style="background-color: {{ delo[0][12] }};">Счёт.pdf</a></li>
+							{% else %}
+								<li>{{ item }}</li>
+							{% endif %}
+						{% endfor %}
+					{% endfor %}
+
+				{% else %}
+					{% for line in delo %}
+						{% for item in line %}
+							{% if loop.index == 8 and loop.index < 12 %}
+								<li><a href="{{ item }}">Соглашение.pdf</a></li>
+							{% elif loop.index == 9 and loop.index < 12 %}
+								<li><a href="{{ item }}" style="background-color: {{ delo[0][13] }};">Счёт.pdf</a></li>
+							{% elif loop.index == 11 %}
+								<input class='form-control mr-2' type="text" value="{{ item }}" form="coment">
+							{% else %}
+								<li>{{ item }}</li>
+							{% endif %}
+						{% endfor %}
+					{% endfor %}	
+				{% endif %}
+			</ul>
+		</div>
+		<div class="col-12 col-md"></div>
+		<div class="col-12 col-md"></div>
+	</div>
+	<form id="coment" action="" method="POST">
+		<button type="button" class="btn btn-success btn-sm btn-delo">Оплачено</button>
+		<button type="submit" class="btn btn-success btn-sm btn-delo">Обновить</button>
+		<button type="button" class="btn btn-danger btn-sm btn-delo">Удалить</button>
+	</form>
+{% endblock %}

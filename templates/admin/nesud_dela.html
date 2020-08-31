@@ -12,13 +12,13 @@
 			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 		</div>
     <nav class="my-2 nav-grid header-link">
-			<form action="/admin/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
-			<form action="/admin/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
-			<form action="/admin/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
-			<form action="/admin/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
-			<form action="/admin/none_sud" method="GET"><button type="button" class="btn btn-dark header-btn">Несудебные дела</button></form>
-			<form action="/admin/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
-			<form action="/admin/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
+			<form action="/admin/render/sud_dela.html" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/admin/render/bankr_dela.html" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/admin/render/dosud_ureg.html" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/admin/render/isp_proiz.html" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/admin/render/nesud_dela.html" method="GET"><button type="button" class="btn btn-dark header-btn">Несудебные дела</button></form>
+			<form action="/admin/render/sudy.html" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+			<form action="/admin/render/staff.html" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
       <!--a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
       <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
       <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
@@ -33,7 +33,7 @@
 
 {% block Body %}
 	<h3 id="headline">Несудебные дела</h3>
-	<a style="margin-bottom: 10px; margin-top: 10px;" href="/admin/add_none_sud">Добавить новое несудебное дело</a>
+	<a style="margin-bottom: 10px; margin-top: 10px;" href="/admin/add/add_nesud_dela.html">Добавить новое несудебное дело</a>
 	<form class="form-inline py-3 px-5" action="/admin/none_sud" method="post" enctype="multipart/form-data">	
 		<select name="practice" class="multi-select dropdown mb-2" style="width: 60px" multiple novalidate>
 		  <option value="" selected="selected">Практика</option>
@@ -67,7 +67,7 @@
 		  {% endfor %}
 		</select>
 		<input type="submit" class="btn btn-success" style="margin-bottom: 7px; margin-left: 7px; height: 37px" value="Найти">
-		<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 37px" onclick="document.location='/admin/none_sud'">Показать всё</button>
+		<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 37px" onclick="document.location='/admin/render/nesud_dela.html'">Показать всё</button>
 	</form>
   <div class="table-responsive-vertical shadow-z-1">
 		<table id="table" class="table table-hover table-mc-light-blue">

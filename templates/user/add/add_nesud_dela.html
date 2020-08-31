@@ -9,30 +9,28 @@
 		<div class="w-30 d-flex align-items-center">
 			<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
 			<h6 class="my-0 pr-4 font-weight-normal">{{ role }}</h6>
-			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
-		</div>
+      <h6 class="my-0 font-weight-normal">{{ name }}</h6>
+    </div>
     <nav class="my-2 nav-grid header-link">
-			<form action="/admin/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
-			<form action="/admin/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
-			<form action="/admin/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
-			<form action="/admin/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
-			<form action="/admin/none_sud" method="GET"><button type="button" class="btn btn-dark header-btn">Несудебные дела</button></form>
-			<form action="/admin/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
-			<form action="/admin/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
-      <!--a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
-      <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
-      <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
-      <a class="p-2 text-dark" href="/admin/isp_proiz">Исполнительное производство</a>
-      <a class="btn btn-secondary" role="button" href="/admin/none_sud">Несудебные дела</a>
-      <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
-      <a class="p-2 text-dark" href="/admin/admin_users">Сотрудники</a-->
+      <form action="/user/render/sud_dela.html" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/user/render/bankr_dela.html" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/user/render/dosud_ureg.html" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/user/render/isp_proiz.html" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/user/render/nesud_dela.html" method="GET"><button type="button" class="btn btn-dark header-btn">Несудебные дела</button></form>
+			<form action="/user/render/sudy.html" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+      <!--a class="p-2 text-dark" href="/user/sud_dela">Судебные дела</a>
+      <a class="p-2 text-dark" href="/user/bank_dela">Банкротные дела</a>
+      <a class="p-2 text-dark" href="/user/dosud_ureg">Досудебное урегулирование</a>
+      <a class="p-2 text-dark" href="/user/isp_proiz">Исполнительное производство</a>
+      <a class="btn btn-secondary" role="button" href="/user/none_sud">Несудебные дела</a>
+      <a class="p-2 text-dark" href="/user/sudy">Суды</a-->
     </nav>
 		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
   </header>
 {% endblock %}
 
 {% block Body %}
-  <form class="py-3 px-5" action="/admin/add_none_sud" method="post" enctype="multipart/form-data">
+  <form class="py-3 px-5" action="/user/add/add_nesud_dela.html" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое несудебное дело</h5>
     <div class="form-group mx-5">
       <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
@@ -55,12 +53,7 @@
         <option value="Интеллектуальное право">Интеллектуальное право</option>
         <option value="Спортивное право">Спортивное право</option>
       </select>
-      <select name='Project_Manager' class="multi-select ui fluid dropdown mb-2" required>
-        <option value=''>Руководитель проекта</option>
-        {% for item in urists %}
-          <option value="{{ item }}">{{ item }}</option>
-        {% endfor %}
-      </select>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Project_Manager" placeholder="Руководитель проекта: {{ name }}" disabled>
       <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" multiple required>
         <option value=''>Юристы</option>
         {% for item in urists %}
