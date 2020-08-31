@@ -5,22 +5,30 @@
 {% endblock %}
 
 {% block Header %}
-    <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-				<div class="w-30 d-flex align-items-center">
-					<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
-					<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
-					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
-				</div>
-        <nav class="my-2 nav-grid header-link">
-          <a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
-          <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
-          <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
-          <a class="p-2 text-dark" href="/admin/isp_proiz">Исполнительное производство</a>
-          <a class="p-2 text-dark" href="/admin/none_sud">Несудебные дела</a>
-		  <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
-		  <a class="btn btn-secondary" role="button" href="/admin/admin_users">Сотрудники</a>
-        </nav>
-    </header>
+  <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+		<div class="w-30 d-flex align-items-center">
+			<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
+			<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
+			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
+		</div>
+    <nav class="my-2 nav-grid header-link">
+			<form action="/admin/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/admin/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/admin/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/admin/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/admin/none_sud" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/admin/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+			<form action="/admin/admin_users" method="GET"><button type="button" class="btn btn-dark header-btn">Сотрудники</button></form>
+      <!--a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
+      <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
+      <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
+      <a class="p-2 text-dark" href="/admin/isp_proiz">Исполнительное производство</a>
+      <a class="p-2 text-dark" href="/admin/none_sud">Несудебные дела</a>
+      <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
+      <a class="btn btn-secondary" role="button" href="/admin/admin_users">Сотрудники</a-->
+    </nav>
+		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+	</header>
 {% endblock %}
 
 {% block Body %}
@@ -30,47 +38,41 @@
 	<form class="form-inline py-3 px-5" action="/admin/admin_users" method="post" enctype="multipart/form-data">	
 		<input class='form-control mr-2' type="search" list='search_urists' name="search_user" placeholder="Cотрудник" style="margin-bottom: 7px; height: 37px;" size="32">
 		<datalist id='search_urists'>
-		{% for item in search_urists %}
-			<option value="{{item}}">{{ item }}</option>
-		{% endfor %}
+			{% for item in search_urists %}
+				<option value="{{item}}">{{ item }}</option>
+			{% endfor %}
 		</datalist>
 		<input type="submit" class="btn btn-success" style="margin-bottom: 7px; margin-left: 7px; height: 37px" value="Найти">
 		<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 37px" onclick="document.location='/admin/staff'">Показать всё</button>
 	</form>	
   <div class="table-responsive-vertical shadow-z-1">
-	<table id="table" class="table table-hover table-mc-light-blue" style='white-space: pre-wrap'>
-	  <thead>
-	  	<t>
-		  <th>№</th>
-	  	  <th>Сотрудник</th>
-	  	  <th>Уровень доступа</th>
-	  	  <th>E-mail</th>
-	  	  <th>Действия</th>
-	  	</tr>
-	  </thead>
-	  <tbody>
-		{% for line in data %}
-		  <tr>
-            {% set access = line[2] %}
-            {% set index = 5 %}
-            {% for item in line %}
-              {% if access == 'Суперпользователь' and loop.index == index %}
-              <td><div style="display: flex;">
-              <button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/admin/restore_pass/{{line[3]}}'">Пароль</button>
-              </div></td>
-              {% endif %}
-              {% if access != 'Суперпользователь' and loop.index == index %}
-              <td><div style="display: flex;">
-              	<button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/admin/restore_pass/{{ line[3] }}'">Пароль</button>
-                <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_user/admin/admin_users/{{ item }}'">Удалить</button>
-              </div></td>
-              {% elif loop.index!=index %}
-              	<td>{{ item }}</td>
-			  {% endif %}
-			{% endfor %}
-		  </tr>
-	  	{% endfor %}
-  </tbody>
-</table>
-</div>
+		<table id="table" class="table table-hover table-mc-light-blue" style='white-space: pre-wrap'>
+	  	<thead>
+	  		<tr>
+		  		<th>№</th>
+		  	  <th>Сотрудник</th>
+		  	  <th>Уровень доступа</th>
+	  		  <th>E-mail</th>
+	  		  <th>Действия</th>
+		  	</tr>
+		  </thead>
+	  	<tbody>
+				{% for line in data %}
+		  		<tr>
+      	  	{% set index = 5 %}
+        		{% for item in line %}
+          		{% if loop.index == index %}
+            		<td><div style="display: flex;">
+            			<button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/admin/restore_pass/{{ line[3] }}'">Пароль</button>
+            	  	<button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_user/admin/admin_users/{{ item }}'">Удалить</button>
+	          	  </div></td>
+							{% elif loop.index!=index %}
+	  	      		<td>{{ item }}</td>
+					  	{% endif %}
+						{% endfor %}
+			  	</tr>
+		  	{% endfor %}
+  		</tbody>
+		</table>
+	</div>
 {% endblock %}

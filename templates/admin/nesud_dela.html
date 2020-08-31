@@ -5,22 +5,30 @@
 {% endblock %}
 
 {% block Header %}
-    <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-				<div class="w-30 d-flex align-items-center">
-					<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
-					<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
-					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
-				</div>
-        <nav class="my-2 nav-grid header-link">
-          <a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
-          <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
-          <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
-          <a class="p-2 text-dark" href="/admin/isp_proiz">Исполнительное производство</a>
-          <a class="btn btn-secondary" role="button" href="/admin/none_sud">Несудебные дела</a>
-		  <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
-		  <a class="p-2 text-dark" href="/admin/admin_users">Сотрудники</a>
-        </nav>
-    </header>
+  <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+		<div class="w-30 d-flex align-items-center">
+			<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
+			<h6 class="my-0 pr-4 font-weight-normal">{{ role }}</h6>
+			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
+		</div>
+    <nav class="my-2 nav-grid header-link">
+			<form action="/admin/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/admin/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/admin/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/admin/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/admin/none_sud" method="GET"><button type="button" class="btn btn-dark header-btn">Несудебные дела</button></form>
+			<form action="/admin/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+			<form action="/admin/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
+      <!--a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
+      <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
+      <a class="p-2 text-dark" href="/admin/dosud_ureg">Досудебное урегулирование</a>
+      <a class="p-2 text-dark" href="/admin/isp_proiz">Исполнительное производство</a>
+      <a class="btn btn-secondary" role="button" href="/admin/none_sud">Несудебные дела</a>
+      <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
+      <a class="p-2 text-dark" href="/admin/admin_users">Сотрудники</a-->
+    </nav>
+		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+  </header>
 {% endblock %}
 
 {% block Body %}
@@ -60,46 +68,46 @@
 		</select>
 		<input type="submit" class="btn btn-success" style="margin-bottom: 7px; margin-left: 7px; height: 37px" value="Найти">
 		<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 37px" onclick="document.location='/admin/none_sud'">Показать всё</button>
-	  </form>
+	</form>
   <div class="table-responsive-vertical shadow-z-1">
-	<table id="table" class="table table-hover table-mc-light-blue">
-	  <thead>
-	  	<tr class="header-link">
-		  <th>№</th>
-	  	  <th>Клиент</th>
-	  	  <th>Практика</th>
-	  	  <th>Руководитель проекта</th>
-	  	  <th>Юристы</th>
-	  	  <th>Характер работ</th>
-	  	  <th>Срок</th>
-	  	  <th>Соглашение</th>
-	  	  <th>Счёт</th>
-	  	  <th>Откуда пришёл клиент</th>
-		  <th>Комментарий</th>
-		  <th>Действия</th>
-	  	</tr>
-	  </thead>
-	  <tbody>
-		{% for line in data %}
-		  <tr>
-			{% set index = loop.index %}
-			{% for item in line %}
-			  {% if loop.index == 8 %}
-				<td><a href="{{ item }}">Соглашение.pdf</a></td>
-			  {% elif loop.index == 9 %}
-				<td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
-			  {% elif loop.index == 12 %}
-				<td><div style="display: flex;">
-					<button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/admin/none_sud/{{ item }}'">Оплачено</button>
-					<button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/admin/none_sud/{{ item }}'">Удалить</button>
-				</div></td>
-			{% else %}
-				<td>{{ item }}</td>
-			  {% endif %}
-		{% endfor %}
-		</tr>
-	  {% endfor %}
-	  </tbody>
-	</table>
+		<table id="table" class="table table-hover table-mc-light-blue">
+	  	<thead>
+	  		<tr class="header-link">
+				  <th>№</th>
+		  	  <th>Клиент</th>
+	  		  <th>Практика</th>
+	  	  	<th>Руководитель проекта</th>
+		  	  <th>Юристы</th>
+		  	  <th>Характер работ</th>
+	  		  <th>Срок</th>
+	  		  <th>Соглашение</th>
+	  	  	<th>Счёт</th>
+		  	  <th>Откуда пришёл клиент</th>
+				  <th>Комментарий</th>
+		  		<th>Действия</th>
+		  	</tr>
+		  </thead>
+	  	<tbody>
+				{% for line in data %}
+				  <tr>
+						{% set index = loop.index %}
+						{% for item in line %}
+						  {% if loop.index == 8 %}
+								<td><a href="{{ item }}">Соглашение.pdf</a></td>
+						  {% elif loop.index == 9 %}
+								<td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
+						  {% elif loop.index == 12 %}
+								<td><div style="display: flex;">
+									<button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/admin/none_sud/{{ item }}'">Оплачено</button>
+									<button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/admin/none_sud/{{ item }}'">Удалить</button>
+								</div></td>
+							{% else %}
+								<td>{{ item }}</td>
+			  			{% endif %}
+						{% endfor %}
+					</tr>
+	  		{% endfor %}
+	  	</tbody>
+		</table>
   </div>
 {% endblock %}

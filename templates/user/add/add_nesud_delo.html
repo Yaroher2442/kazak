@@ -1,58 +1,65 @@
 {% extends 'base.html' %}
 
 {% block Title %}
-    Новое несудебное дело
+  Новое несудебное дело
 {% endblock %}
 
 {% block Header %}
-    <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-				<div class="w-30 d-flex align-items-center">
-					<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
-					<h6 class="my-0 pr-4 font-weight-normal">{{ role }}</h6>
-					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
-				</div>
-        <nav class="my-2 nav-grid header-link">
-          <a class="p-2 text-dark" href="/user/sud_dela">Судебные дела</a>
-          <a class="p-2 text-dark" href="/user/bank_dela">Банкротные дела</a>
-          <a class="p-2 text-dark" href="/user/dosud_ureg">Досудебное урегулирование</a>
-          <a class="p-2 text-dark" href="/user/isp_proiz">Исполнительное производство</a>
-          <a class="btn btn-secondary" role="button" href="/user/none_sud">Несудебные дела</a>
-          <a class="p-2 text-dark" href="/user/sudy">Суды</a>
-        </nav>
-    </header>
+  <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+		<div class="w-30 d-flex align-items-center">
+			<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
+			<h6 class="my-0 pr-4 font-weight-normal">{{ role }}</h6>
+      <h6 class="my-0 font-weight-normal">{{ name }}</h6>
+    </div>
+    <nav class="my-2 nav-grid header-link">
+      form action="/user/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/user/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/user/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/user/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/user/none_sud" method="GET"><button type="button" class="btn btn-dark header-btn">Несудебные дела</button></form>
+			<form action="/user/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+      <!--a class="p-2 text-dark" href="/user/sud_dela">Судебные дела</a>
+      <a class="p-2 text-dark" href="/user/bank_dela">Банкротные дела</a>
+      <a class="p-2 text-dark" href="/user/dosud_ureg">Досудебное урегулирование</a>
+      <a class="p-2 text-dark" href="/user/isp_proiz">Исполнительное производство</a>
+      <a class="btn btn-secondary" role="button" href="/user/none_sud">Несудебные дела</a>
+      <a class="p-2 text-dark" href="/user/sudy">Суды</a-->
+    </nav>
+		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+  </header>
 {% endblock %}
 
 {% block Body %}
   <form class="py-3 px-5" action="/user/add_none_sud" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить новое несудебное дело</h5>
     <div class="form-group mx-5">
-        <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
-        <select name="Practice" class="multi-select ui fluid dropdown mb-2" multiple required>
-          <option value="">Практика</option>
-          <option value="Энергетическое право">Энергетическое право</option>
-          <option value="Банкротство">Банкротство</option>
-          <option value="Налоговое право">Налоговое право</option>
-          <option value="Административное право">Административное право</option>
-          <option value="Корпоративное право">Корпоративное право</option>
-          <option value="Уголовное право">Уголовное право</option>
-          <option value="Недвижимость, инфестиции и строительство">Недвижимость, инфестиции и строительство</option>
-          <option value="Земельное право">Земельное право</option>
-          <option value="Таможенное право">Таможенное право</option>
-          <option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
-          <option value="Семейное и наследственное право">Семейное и наследственное право</option>
-          <option value="Регистрация прав и субъектов права">Регистрация прав и субъектов права</option>
-          <option value="Трудовое право">Трудовое право</option>
-          <option value="Жилищное право">Жилищное право</option>
-          <option value="Интеллектуальное право">Интеллектуальное право</option>
-          <option value="Спортивное право">Спортивное право</option>
-        </select>
-        <input class="d-block mb-2 w-100 form-control" type="text" name="Project_Manager" placeholder="Руководитель проекта: {{ name }}" disabled>
-        <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" multiple required>
-          <option value=''>Юристы</option>
-          {% for item in urists %}
-            <option value="{{ item }}">{{ item }}</option>
-          {% endfor %}
-        </select>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Client" placeholder="Клиент" required>
+      <select name="Practice" class="multi-select ui fluid dropdown mb-2" multiple required>
+        <option value="">Практика</option>
+        <option value="Энергетическое право">Энергетическое право</option>
+        <option value="Банкротство">Банкротство</option>
+        <option value="Налоговое право">Налоговое право</option>
+        <option value="Административное право">Административное право</option>
+        <option value="Корпоративное право">Корпоративное право</option>
+        <option value="Уголовное право">Уголовное право</option>
+        <option value="Недвижимость, инфестиции и строительство">Недвижимость, инфестиции и строительство</option>
+        <option value="Земельное право">Земельное право</option>
+        <option value="Таможенное право">Таможенное право</option>
+        <option value="Вексельное право. Ценные бумаги">Вексельное право. Ценные бумаги</option>
+        <option value="Семейное и наследственное право">Семейное и наследственное право</option>
+        <option value="Регистрация прав и субъектов права">Регистрация прав и субъектов права</option>
+        <option value="Трудовое право">Трудовое право</option>
+        <option value="Жилищное право">Жилищное право</option>
+        <option value="Интеллектуальное право">Интеллектуальное право</option>
+        <option value="Спортивное право">Спортивное право</option>
+      </select>
+      <input class="d-block mb-2 w-100 form-control" type="text" name="Project_Manager" placeholder="Руководитель проекта: {{ name }}" disabled>
+      <select name='Lawyers' class="multi-select ui fluid dropdown mb-2" multiple required>
+        <option value=''>Юристы</option>
+        {% for item in urists %}
+          <option value="{{ item }}">{{ item }}</option>
+        {% endfor %}
+      </select>
       <input class="d-block mb-2 w-100 form-control" type="text" name="Nature_of_work" placeholder="Характер работ" required>
       <input class="d-block mb-2 w-100 form-control" type="text" name="Term" placeholder="Срок"brequired>
       <div class="custom-file mb-2">
@@ -75,7 +82,7 @@
         <input type="radio" name="Came_from" value="От сотрудника"> От сотрудника &nbsp;
         <input type="radio" name="Came_from" value="Другое"> Другое &nbsp;
       </p>         
-      <input class="d-block mb-3 w-100 form-control" type="text" name="Comment" placeholder="Комментарий" required>
+      <input class="d-block mb-3 w-100 form-control" type="text" name="Comment" placeholder="Комментарий">
       <label style="display: none; color: red" id = "error">error_here</label>
       <script>
         if (document.getElementById("error").textContent != "error_here") {

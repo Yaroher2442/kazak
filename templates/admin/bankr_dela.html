@@ -27,7 +27,7 @@
   <h3 id="headline">Банкротные дела</h3>
   <a style="margin-bottom: 10px; margin-top: 10px;" href="/admin/add_bank_dela">Добавить новое банкротное дело</a>
   <form class="form-inline py-3 px-5" action="/admin/bank_dela" method="post" enctype="multipart/form-data">	
-    <select name="practice" class="multi-select dropdown mb-2" style="width: 60px" multiple novalidate>
+    <!--select name="practice" class="multi-select dropdown mb-2" style="width: 60px" multiple novalidate>
       <option value="" selected="selected">Практика</option>
       <option value="Энергетическое право">Энергетическое право</option>
       <option value="Банкротство">Банкротство</option>
@@ -45,7 +45,7 @@
       <option value="Жилищное право">Жилищное право</option>
       <option value="Интеллектуальное право">Интеллектуальное право</option>
       <option value="Спортивное право">Спортивное право</option>
-    </select>
+    </select-->
     <input class='form-control mr-2' type="search" list='client' name="client" placeholder="Клиент" style="margin-bottom: 7px; height: 37px; margin-left: 7px" size="24">
     <datalist id='client'>
       {% for item in serch_clients %}
@@ -67,7 +67,7 @@
         <tr class="header-link">
           <th>№</th>
           <th>Клиент</th>
-          <th>Практика</th>
+          <!--th>Практика</th-->
           <th>Руководитель проекта</th>
           <th>Юристы</th>
           <th>Номер банкротного дела</th>
@@ -84,11 +84,11 @@
           <tr>
             {% set index = loop.index %}
             {% for item in line %}
-              {% if loop.index == 8 %}
+              {% if loop.index == 7 %}
                 <td><a href="{{ item }}">Соглашение.pdf</a></td>
-              {% elif loop.index == 9 %}
+              {% elif loop.index == 8 %}
                 <td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
-              {% elif loop.index == 12 %}
+              {% elif loop.index == 11 %}
                 <td><div style="display: flex;">
                   <button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/admin/bank_dela/{{ item }}'">Оплачено</button>
                   <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/admin/bank_dela/{{ item }}'">Удалить</button>

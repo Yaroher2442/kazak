@@ -5,21 +5,28 @@
 {% endblock %}
 
 {% block Header %}
-    <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-				<div class="w-30 d-flex align-items-center">
-					<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
-					<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
-					<h6 class="my-0 font-weight-normal">{{ name }}</h6>
-				</div>
-        <nav class="my-2 nav-grid header-link">
-			<a class="p-2 text-dark" href="/user/sud_dela">Судебные дела</a>
+  <header class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+		<div class="w-30 d-flex align-items-center">
+			<h5 class="my-0 pr-4 font-weight-normal"><img class="mb-2" src="/static/logo.jpg" alt="" width="160"></h5>
+			<h6 class="my-0 pr-4 font-weight-normal">{{ role }} </h6>
+			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
+		</div>
+    <nav class="my-2 nav-grid header-link">
+			<form action="/user/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/user/bank_dela" method="GET"><button type="button" class="btn btn-dark header-btn">Банкротные дела</button></form>
+			<form action="/user/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/user/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/user/none_sud" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/user/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+			<!--a class="p-2 text-dark" href="/user/sud_dela">Судебные дела</a>
 			<a class="p-2 text-dark" href="/user/bank_dela">Банкротные дела</a>
 			<a class="p-2 text-dark" href="/user/dosud_ureg">Досудебное урегулирование</a>
 			<a class="p-2 text-dark" href="/user/isp_proiz">Исполнительное производство</a>
 			<a class="p-2 text-dark" href="/user/none_sud">Несудебные дела</a>
-			<a class="btn btn-secondary" role="button" href="/user/sudy">Суды</a>
-        </nav>
-    </header>
+			<a class="btn btn-secondary" role="button" href="/user/sudy">Суды</a-->
+    </nav>
+		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+  </header>
 {% endblock %}
 
 {% block Body %}
@@ -37,37 +44,37 @@
 			<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 37px" onclick="document.location='/user/sudy'">Показать всё</button>
 		</form>	
   <div class="table-responsive-vertical shadow-z-1">
-	<table id="table" class="table table-hover table-mc-light-blue" style='white-space: pre-wrap'>
-	  <thead>
-	  	<tr class="header-link">
-		  <th>№</th>
-	  	  <th>Клиент</th>
-	  	  <th>Дата</th>
-	  	  <th>Время</th>
-	  	  <th>Юрист(ы)</th>
-	  	  <th>Судья</th>
-	  	  <th>Суд</th>
-	  	  <th>Инстанция</th>
-	  	  <th>Суть дела</th>
-	  	  <th>Действия</th>
-	  	</tr>
-	  </thead>
-	  <tbody>
-		{% for line in data %}
-		  <tr>
-			{% set index = loop.index %}
-			{% for item in line %}
-			  {% if loop.index == 10 %}
-			    <td><div style="display: flex;">
-				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='/delite_sud/user/sudy/{{ item }}'">Удалить</button>
-			    </div></td>
-			  {% else %}
-				<td>{{ item }}</td>
-			  {% endif %}
-			{% endfor %}
-		  </tr>
-	  	{% endfor %}
-  </tbody>
-</table>
-</div>
+		<table id="table" class="table table-hover table-mc-light-blue" style='white-space: pre-wrap'>
+	  	<thead>
+	  		<tr class="header-link">
+		  		<th>№</th>
+		  	  <th>Клиент</th>
+		  	  <th>Дата</th>
+	  		  <th>Время</th>
+	  		  <th>Юрист(ы)</th>
+	  	  	<th>Судья</th>
+		  	  <th>Суд</th>
+		  	  <th>Инстанция</th>
+	  		  <th>Суть дела</th>
+	  		  <th>Действия</th>
+	  		</tr>
+	  	</thead>
+	  	<tbody>
+				{% for line in data %}
+				  <tr>
+						{% set index = loop.index %}
+						{% for item in line %}
+						  {% if loop.index == 10 %}
+			  			  <td><div style="display: flex;">
+				  				<button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='/delite_sud/user/sudy/{{ item }}'">Удалить</button>
+			    			</div></td>
+				  		{% else %}
+								<td>{{ item }}</td>
+				  		{% endif %}
+						{% endfor %}
+		  		</tr>
+		  	{% endfor %}
+  		</tbody>
+		</table>
+	</div>
 {% endblock %}
