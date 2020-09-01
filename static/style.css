@@ -34,5 +34,12 @@
 }
 
 .btn-delo {
-	width: 73px !important;
+	width: 100px;
+	margin-right: 10px !important;
+	margin-bottom: 10px !important;
 }
+
+.mytbl {
+	width: 700px !important;
+}
+

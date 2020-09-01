@@ -12,129 +12,437 @@
 			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 		</div>
     <nav class="my-2 nav-grid header-link">
-			<form action="/user/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
-			<form action="/user/bank_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
-			<form action="/user/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
-			<form action="/user/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
-			<form action="/user/none_sud" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
-			<form action="/user/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+			<form action="/user/render/sud_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/user/render/bankr_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/user/render/dosud_ureg" method="GET"><button type="submit" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/user/render/isp_proiz" method="GET"><button type="submit" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/user/render/nesud_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/user/render/sudy" method="GET"><button type="submit" class="btn btn-light header-btn">Суды</button></form>
 			{% if role == 'Руководитель' %}
-				<form action="/admin/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
+				<form action="/admin/render/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
 			{% endif %}
     </nav>
-		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+		<form action="#" method="GET"><button type="submit" class="btn btn-outline-danger">Выйти из системы</button></form>
   </header>
 {% endblock %}
 
 {% block Body %}
 	<h3 id="headline">Страница дела</h3>
-	<div class="row">
-		<div class="col-12 col-md">
-			<ul class="list-unstyled">
-				<li>Тип:</li>
-				<li>Клиент:</li>
-				{% if type != 'Банкротное дело' %}
-					<li>Практика:</li>
-				{% endif %}
-				<li>Руководитель проекта:</li>
-				<li>Юристы:</li>
-				{% if type == 'Судебное дело' %}
-					<li>Номер дела:</li>
-					<li>Суд:</li>
-					<li>Судья:</li>
-				{% elif type == 'Банкротное дело' %}
-					<li>Номер банкротного дела:</li>
-					<li>Арбитражный управляющий:</li>
-				{% elif type == 'Досудебное урегулирование' %}
-					<li>Номер дела:</li>
-					<li>Орган:</li>
-				{% elif type == 'Исполнительное производство' %}
-					<li>Номер исполнительного дела:</li>
-					<li>Сумма:</li>
-					<li>ФССП:</li>
-					<li>Пристав:</li>
-				{% elif type == 'Несудебное дело' %}
-					<li>Характер работ:</li>
-					<li>Срок:</li>
-				{% endif%}
-				<li>Соглашение:</li>
-				<li>Счёт:</li>
-				<li>Откуда пришёл клиент:</li>
-				<li>Комментарий</li>
-				<li></li>
-				<li></li>
-			</ul>
-		</div>
-		<div class="col-12 col-md">
-			<ul class="list-unstyled">
-				<li>{{ type }}</li>
-				{% if type == 'Исполнительное производство' %}
-					{% for line in delo %}
-						{% for item in line %}
-							{% if loop.index == 11 and 1 and loop.index < 14 %}
-								<li><a href="{{ item }}">Соглашение.pdf</a></li>
-							{% elif loop.index == 12 and loop.index < 14 %}
-								<li><a href="{{ item }}" style="background-color: {{ delo[0][15] }};">Счёт.pdf</a></li>
-							{% else %}
-								<li>{{ item }}</li>
-							{% endif %}
-						{% endfor %}
-					{% endfor %}
+	<!--div class="table-responsive-vertical shadow-z-1"-->
+		<table class="table table-bordered mytbl" >
+			<tbody>
+
+				{% if type == 'Банкротное дело' %}
+				<tr>
+					<th>Тип:</th>
+					<td>{{ type }}</td>
+				</tr>
+				<tr>
+					<th>Клиент:</th>
+					<td>{{ delo[0][0] }}</td>
+				</tr>
+				<tr>
+					<th>Руководитель проекта:</th>
+					<td>{{ delo[0][1] }}</td>
+				</tr>
+				<tr>
+					<th>Юристы:</th>
+					<td>{{ delo[0][2] }}</td>
+				</tr>
+				<tr>
+					<th>Номер банкротного дела:</th>
+					<td>{{ delo[0][3] }}</td>
+				</tr>
+				<tr>
+					<th>Арбитражный управляющий:</th>
+					<td>{{ delo[0][4] }}</td>
+				</tr>
+				<tr>
+					<th>Соглашение:</th>
+					<td>
+						{% if delo[0][5]!='Нет файла' %}
+							<a href="{{ delo[0][5] }}">Соглашение.pdf</a>
+							<div class="custom-file mb-2" >
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+										
+						{% else %}
+							{{ delo[0][5] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>	
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Счёт:</th>
+					<td>
+						{% if delo[0][6]!='Нет файла' %}
+							<a href="{{ delo[0][6] }}" style="background-color: {{ delo[0][9] }};">Счёт.pdf</a>
+							<div class="custom-file mb-2">
+								<input class="custom-file-input" type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+						{% else %}
+							{{ delo[0][6] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>	
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Откуда пришёл клиент:</th>
+					<td>{{ delo[0][7] }}</td>
+				</tr>
+				<tr>
+					<th>Комментарий:</th>
+					<td>{{ delo[0][8] }}</td>
+				</tr>
+
 
 				{% elif type == 'Судебное дело' %}
-					{% for line in delo %}
-						{% for item in line %}
-							{% if loop.index == 8 %}
-								<li><a href="{{ item }}">Соглашение.pdf</a></li>
-							{% elif loop.index == 9 %}
-								<li><a href="{{ item }}" style="background-color: {{ line[11] }};">Счёт.pdf</a></li>
-							{% elif loop.index == 11 %}
-								<input class='form-control mr-2' type="text" value="{{ item }}" form="coment">
-							{% elif loop.index < 12 %}
-								<li>{{ item }}</li>
-							{% endif %}
-						{% endfor %}
-					{% endfor %}
-					
-				{% elif type == 'Банкротное дело' %}
-					{% for line in delo %}
-						{% for item in line %}
-							{% if loop.index == 7 and loop.index < 11 %}
-								<li><a href="{{ item }}">Соглашение.pdf</a></li>
-							{% elif loop.index == 8 and loop.index < 11 %}
-								<li>
-									<a href="{{ item }}" style="background-color: {{ delo[0][12] }};">Счёт.pdf</a>
-									<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update" placeholder="Изменить">
-								</li>
-							{% else %}
-								<li>{{ item }}</li>
-							{% endif %}
-						{% endfor %}
-					{% endfor %}
+				<tr>
+					<th>Тип:</th>
+					<td>{{ type }}</td>
+				</tr>
+				<tr>
+					<th>Клиент:</th>
+					<td>{{ delo[0][0] }}</td>
+				</tr>
+				<tr>
+					<th>Практика:</th>
+					<td>{{ delo[0][1] }}</td>
+				</tr>
+				<tr>
+					<th>Руководитель проекта:</th>
+					<td>{{ delo[0][2] }}</td>
+				</tr>
+				<tr>
+					<th>Юристы:</th>
+					<td>{{ delo[0][3] }}</td>
+				</tr>
+				<tr>
+					<th>Номер дела:</th>
+					<td>{{ delo[0][4] }}</td>
+				</tr>
+				<tr>
+					<th>Суд:</th>
+					<td>{{ delo[0][5] }}</td>
+				</tr>
+				<tr>
+					<th>Судья:</th>
+					<td>{{ delo[0][6] }}</td>
+				</tr>
+				<tr>
+					<th>Соглашение:</th>
+					<td>
+						{% if delo[0][7]!='Нет файла' %}
+							<a href="{{ delo[0][7] }}">Соглашение.pdf</a>
+							<div class="custom-file mb-2" >
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+										
+						{% else %}
+							{{ delo[0][7] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>	
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Счёт:</th>
+					<td>
+						{% if delo[0][8]!='Нет файла' %}
+							<a href="{{ delo[0][8] }}" style="background-color: {{ delo[0][11] }};">Счёт.pdf</a>
+							<div class="custom-file mb-2">
+								<input class="custom-file-input" type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+						{% else %}
+							{{ delo[0][8] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Откуда пришёл клиент:</th>
+					<td>{{ delo[0][9] }}</td>
+				</tr>
+				<tr>
+					<th>Комментарий:</th>
+					<td>{{ delo[0][10] }}</td>
+				</tr>
 
-				{% else %}
-					{% for line in delo %}
-						{% for item in line %}
-							{% if loop.index == 8 and loop.index < 12 %}
-								<li><a href="{{ item }}">Соглашение.pdf</a></li>
-							{% elif loop.index == 9 and loop.index < 12 %}
-								<li><a href="{{ item }}" style="background-color: {{ delo[0][13] }};">Счёт.pdf</a></li>
-							{% elif loop.index == 11 %}
-								<input class='form-control mr-2' type="text" value="{{ item }}" form="update">
-							{% else %}
-								<li>{{ item }}</li>
-							{% endif %}
-						{% endfor %}
-					{% endfor %}	
-				{% endif %}
-			</ul>
-		</div>
-		<div class="col-12 col-md"></div>
-		<div class="col-12 col-md"></div>
-	</div>
+
+				{% elif type == 'Досудебное урегулирование' %}
+				<tr>
+					<th>Тип:</th>
+					<td>{{ type }}</td>
+				</tr>
+				<tr>
+					<th>Клиент:</th>
+					<td>{{ delo[0][0] }}</td>
+				</tr>
+				<tr>
+					<th>Практика:</th>
+					<td>{{ delo[0][1] }}</td>
+				</tr>
+				<tr>
+					<th>Руководитель проекта:</th>
+					<td>{{ delo[0][2] }}</td>
+				</tr>
+				<tr>
+					<th>Юристы:</th>
+					<td>{{ delo[0][3] }}</td>
+				</tr>
+				<tr>
+					<th>Номер дела:</th>
+					<td>{{ delo[0][4] }}</td>
+				</tr>
+				<tr>
+					<th>Орган:</th>
+					<td>{{ delo[0][5] }}</td>
+				</tr>
+				<tr>
+					<th>Соглашение:</th>
+					<td>
+						{% if delo[0][6]!='Нет файла' %}
+							<a href="{{ delo[0][6] }}">Соглашение.pdf</a>
+							<div class="custom-file mb-2" >
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+										
+						{% else %}
+							{{ delo[0][6] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>	
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Счёт:</th>
+					<td>
+						{% if delo[0][7]!='Нет файла' %}
+							<a href="{{ delo[0][7] }}" style="background-color: {{ delo[0][10] }};">Счёт.pdf</a>
+							<div class="custom-file mb-2">
+								<input class="custom-file-input" type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+						{% else %}
+							{{ delo[0][7] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Откуда пришёл клиент:</th>
+					<td>{{ delo[0][8] }}</td>
+				</tr>
+				<tr>
+					<th>Комментарий:</th>
+					<td>{{ delo[0][9] }}</td>
+				</tr>
+
+				
+				{% elif type == 'Исполнительное производство' %}
+				<tr>
+					<th>Тип:</th>
+					<td>{{ type }}</td>
+				</tr>
+				<tr>
+					<th>Клиент:</th>
+					<td>{{ delo[0][0] }}</td>
+				</tr>
+				<tr>
+					<th>Практика:</th>
+					<td>{{ delo[0][1] }}</td>
+				</tr>
+				<tr>
+					<th>Руководитель проекта:</th>
+					<td>{{ delo[0][2] }}</td>
+				</tr>
+				<tr>
+					<th>Юристы:</th>
+					<td>{{ delo[0][3] }}</td>
+				</tr>
+				<tr>
+					<th>Номер исполнительного дела:</th>
+					<td>{{ delo[0][4] }}</td>
+				</tr>
+				<tr>
+					<th>Сумма:</th>
+					<td>{{ delo[0][5] }}</td>
+				</tr>
+				<tr>
+					<th>ФССП:</th>
+					<td>{{ delo[0][6] }}</td>
+				</tr>
+				<tr>
+					<th>Судебный-пристав исполнитель:</th>
+					<td>{{ delo[0][7] }}</td>
+				</tr>
+				<tr>
+					<th>Соглашение:</th>
+					<td>
+						{% if delo[0][8]!='Нет файла' %}
+							<a href="{{ delo[0][8] }}">Соглашение.pdf</a>
+							<div class="custom-file mb-2" >
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+										
+						{% else %}
+							{{ delo[0][8] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>	
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Счёт:</th>
+					<td>
+						{% if delo[0][9]!='Нет файла' %}
+							<a href="{{ delo[0][9] }}" style="background-color: {{ delo[0][12] }};">Счёт.pdf</a>
+							<div class="custom-file mb-2">
+								<input class="custom-file-input" type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+						{% else %}
+							{{ delo[0][9] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Откуда пришёл клиент:</th>
+					<td>{{ delo[0][10] }}</td>
+				</tr>
+				<tr>
+					<th>Комментарий:</th>
+					<td>{{ delo[0][11] }}</td>
+				</tr>
+				
+			{% elif type == 'Несудебное дело' %}
+				<tr>
+					<th>Тип:</th>
+					<td>{{ type }}</td>
+				</tr>
+				<tr>
+					<th>Клиент:</th>
+					<td>{{ delo[0][0] }}</td>
+				</tr>
+				<tr>
+					<th>Практика:</th>
+					<td>{{ delo[0][1] }}</td>
+				</tr>
+				<tr>
+					<th>Руководитель проекта:</th>
+					<td>{{ delo[0][2] }}</td>
+				</tr>
+				<tr>
+					<th>Юристы:</th>
+					<td>{{ delo[0][3] }}</td>
+				</tr>
+				<tr>
+					<th>Характер работ:</th>
+					<td>{{ delo[0][4] }}</td>
+				</tr>
+				<tr>
+					<th>Срок:</th>
+					<td>{{ delo[0][5] }}</td>
+				</tr>
+				<tr>
+					<th>Соглашение:</th>
+					<td>
+						{% if delo[0][6]!='Нет файла' %}
+							<a href="{{ delo[0][6] }}">Соглашение.pdf</a>
+							<div class="custom-file mb-2" >
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+										
+						{% else %}
+							{{ delo[0][6] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>	
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Счёт:</th>
+					<td>
+						{% if delo[0][7]!='Нет файла' %}
+							<a href="{{ delo[0][7] }}" style="background-color: {{ delo[0][10] }};">Счёт.pdf</a>
+							<div class="custom-file mb-2">
+								<input class="custom-file-input" type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Изменить файл</label>
+							</div>
+						{% else %}
+							{{ delo[0][7] }}
+							<div>
+								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
+								<label class='custom-file-label' for="file1">Добавить файл</label>
+							</div>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Откуда пришёл клиент:</th>
+					<td>{{ delo[0][8] }}</td>
+				</tr>
+				<tr>
+					<th>Комментарий:</th>
+					<td>{{ delo[0][9] }}</td>
+				</tr>
+			{% endif %}
+			</tbody>
+		</table>
+		
 	<form id="update" action="" method="POST">
-		<button type="button" class="btn btn-success btn-sm btn-delo">Оплачено</button>
-		<button type="submit" class="btn btn-success btn-sm btn-delo">Обновить</button>
-		<button type="button" class="btn btn-danger btn-sm btn-delo">Удалить</button>
+		<button type="submit" class="btn btn-success btn-delo" style="width: 213px;">Обновить</button>
 	</form>
+	{% if type == 'Несудебное дело' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/none_sud/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/none_sud/{{ item }}'">Удалить</button></form>
+		
+	{% elif type == 'Исполнительное производство' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/isp_proiz/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/isp_proiz/{{ item }}'">Удалить</button></form>
+
+	{% elif type == 'Досудебное урегулирование' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/dosud_ureg/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/dosud_ureg/{{ item }}'">Удалить</button></form>
+
+	{% elif type == 'Судебное дело' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/sud_dela/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/sud_dela/{{ item }}'">Удалить</button></form>
+
+	{% elif type == 'Банкротное дело' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/bank_dela/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/bank_dela/{{ item }}'">Удалить</button></form>
+
+	{% endif %}
 {% endblock %}

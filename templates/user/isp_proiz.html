@@ -12,12 +12,12 @@
 			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 		</div>
     <nav class="my-2 nav-grid header-link">
-      <form action="/user/render/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
-			<form action="/user/render/bankr_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
-			<form action="/user/render/dosud_ureg" method="GET"><button type="button" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
-			<form action="/user/render/isp_proiz" method="GET"><button type="button" class="btn btn-dark header-btn">Исполнительное производство</button></form>
-			<form action="/user/render/nesud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
-			<form action="/user/render/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
+      <form action="/user/render/sud_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/user/render/bankr_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/user/render/dosud_ureg" method="GET"><button type="submit" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/user/render/isp_proiz" method="GET"><button type="submit" class="btn btn-dark header-btn">Исполнительное производство</button></form>
+			<form action="/user/render/nesud_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/user/render/sudy" method="GET"><button type="submit" class="btn btn-light header-btn">Суды</button></form>
       <!--a class="p-2 text-dark" href="/user/sud_dela">Судебные дела</a>
 			<a class="p-2 text-dark" href="/user/bank_dela">Банкротные дела</a>
 			<a class="p-2 text-dark" href="/user/dosud_ureg">Досудебное урегулирование</a>
@@ -25,7 +25,7 @@
 			<a class="p-2 text-dark" href="/user/none_sud">Несудебные дела</a>
 			<a class="p-2 text-dark" href="/user/sudy">Суды</a-->
     </nav>
-		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+		<form action="#" method="GET"><button type="submit" class="btn btn-outline-danger">Выйти из системы</button></form>
   </header>
 {% endblock %}
 
@@ -98,8 +98,9 @@
 				        <td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
 			        {% elif loop.index == 14 %}
 			          <td><div style="display: flex;">
-				          <button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/user/isp_proiz/{{ item }}'">Оплачено</button>
-				          <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/user/isp_proiz/{{ item }}'">Удалить</button>
+				          <button class="btn btn-success btn-sm" style="display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/user/isp_proiz/{{ item }}'">Оплачено</button>
+				          <button class="btn btn-danger btn-sm" style="display: flex; height: 28px; width: 73px; margin-right: 7px;" onclick="document.location='delite_element/user/isp_proiz/{{ item }}'">Удалить</button>
+						  <button class="btn btn-success btn-sm" style="display: flex; height: 28px; width: 73px;" onclick="document.location='/delo/isp_proiz/{{ item }}'">Изменить</button>
 			            </div></td>
 			        {% else %}
 				        <td>{{ item }}</td>

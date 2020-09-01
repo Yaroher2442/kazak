@@ -120,7 +120,7 @@ def settings_by_template(template_name,field):
         else: continue
 def acssec_translate(acsess):
     d_trans={
-    'Суперпользователь':'admin',
+    'Руководитель':'admin',
     'Пользователь':'user',
     'Секретарь':'secretary'
     }
@@ -173,7 +173,8 @@ def base():
         get_db()
         db=Database(g._database)
         f_u=db.find_user_by_id(user)
-        if f_u[0] == 'Суперпользователь':
+        print(f_u)
+        if f_u[0] == 'Руководитель':
             return redirect('/admin/render/sud_dela')
         elif f_u[0]== 'Пользователь':
             return redirect('/user/render/sud_dela')
@@ -316,6 +317,7 @@ def add(template_name):
         get_db()
         db=Database(g._database)
         user_info=db.find_user_by_id(user)
+        print(user_info)
         role=user_info[0]
         name=' '.join(user_info[1:])
         urists=db.get_urists()
@@ -422,7 +424,10 @@ def delo(template_name,t_id):
     delo_deata = db.get_join_table_by_t_id(table_name,t_id)
 
     print(delo_deata)
-    return render_template('/delo.html')
+    return render_template(
+        '/delo.html'
+        
+        )
 #sudy_____________________________________________________________________
 @application.route('/admin/add/add_sudy', methods=['GET', 'POST'])
 def admin_add_sudy():
@@ -694,7 +699,7 @@ def login():
                     password, salt = hashed_password.split(':')
                     return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
                 if check_password(hash_pass,password):
-                    if db.find_user(email)[0][1]=='Суперпользователь':
+                    if db.find_user(email)[0][1]=='Руководитель':
                         way='/admin/render/sud_dela'
                     elif db.find_user(email)[0][1]=='Пользователь':
                         way='/user/render/sud_dela'

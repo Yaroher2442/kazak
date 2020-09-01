@@ -12,13 +12,13 @@
   	  <h6 class="my-0 font-weight-normal">{{ name }}</h6>
 	  </div>
     <nav class="my-2 nav-grid header-link">
-      <form action="/admin/render/sud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Судебные дела</button></form>
-			<form action="/admin/render/bankr_dela" method="GET"><button type="button" class="btn btn-light header-btn">Банкротные дела</button></form>
-			<form action="/admin/render/dosud_ureg" method="GET"><button type="button" class="btn btn-dark header-btn">Досудебное урегулирование</button></form>
-			<form action="/admin/render/isp_proiz" method="GET"><button type="button" class="btn btn-light header-btn">Исполнительное производство</button></form>
-			<form action="/admin/render/nesud_dela" method="GET"><button type="button" class="btn btn-light header-btn">Несудебные дела</button></form>
-			<form action="/admin/render/sudy" method="GET"><button type="button" class="btn btn-light header-btn">Суды</button></form>
-      <form action="/admin/render/staff" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
+      <form action="/admin/render/sud_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/admin/render/bankr_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/admin/render/dosud_ureg" method="GET"><button type="submit" class="btn btn-dark header-btn">Досудебное урегулирование</button></form>
+			<form action="/admin/render/isp_proiz" method="GET"><button type="submit" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/admin/render/nesud_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/admin/render/sudy" method="GET"><button type="submit" class="btn btn-light header-btn">Суды</button></form>
+      <form action="/admin/render/staff" method="GET"><button type="submit" class="btn btn-light header-btn">Сотрудники</button></form>
       <!--a class="p-2 text-dark" href="/admin/sud_dela">Судебные дела</a>
       <a class="p-2 text-dark" href="/admin/bank_dela">Банкротные дела</a>
       <a class="btn btn-secondary" role="button" href="/admin/dosud_ureg">Досудебное урегулирование</a>
@@ -27,7 +27,7 @@
       <a class="p-2 text-dark" href="/admin/sudy">Суды</a>
 			<a class="p-2 text-dark" href="/admin/admin_users">Сотрудники</a-->
 		</nav>
-		<form action="#" method="GET"><button type="button" class="btn btn-outline-danger">Выйти из системы</button></form>
+		<form action="#" method="GET"><button type="submit" class="btn btn-outline-danger">Выйти из системы</button></form>
   </header>
 {% endblock %}
 
@@ -98,8 +98,9 @@
 				        <td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
 			        {% elif loop.index == 12 %}
       			    <td><div style="display: flex;">
-			            <button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/admin/dosud_ureg/{{ item }}'">Оплачено</button>
-        				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='delite_element/admin/dosud_ureg/{{ item }}'">Удалить</button>
+			            <button class="btn btn-success btn-sm" style="display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/admin/dosud_ureg/{{ item }}'">Оплачено</button>
+        				  <button class="btn btn-danger btn-sm" style="display: flex; height: 28px; width: 73px; margin-right: 7px;" onclick="document.location='delite_element/admin/dosud_ureg/{{ item }}'">Удалить</button>
+                  <button class="btn btn-success btn-sm" style="display: flex; height: 28px; width: 73px;" onclick="document.location='/delo/dosud_ureg/{{ item }}'">Изменить</button>
 			          </div></td>
       			  {% else %}
 			        	<td>{{ item }}</td>
