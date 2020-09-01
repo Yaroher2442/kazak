@@ -110,13 +110,8 @@
 			  	{% endif %}
 			  {% elif loop.index == 13 %}
 			    <td><div style="display: flex;">
-<<<<<<< HEAD
-			      <button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/admin/sud_dela/{{ item }}'">Оплачено</button>
-				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='submitdelite_element/admin/sud_dela/{{ item }}'">Удалить</button>
-=======
 			      <button class="btn btn-success btn-sm" style="background-color: green;display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/change_invoice_status/admin/sud_dela/{{ item }}'">Оплачено</button>
 				  <button class="btn btn-danger btn-sm" style="color: black; display: flex; height: 28px; width: 73px;" onclick="document.location='/delite_element/admin/sud_dela/{{ item }}'">Удалить</button>
->>>>>>> master
 			    </div></td>
 			  {% else %}
 				<td>{{ item }}</td>
