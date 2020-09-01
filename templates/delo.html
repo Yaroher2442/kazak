@@ -12,14 +12,14 @@
 			<h6 class="my-0 font-weight-normal">{{ name }}</h6>
 		</div>
     <nav class="my-2 nav-grid header-link">
-			<form action="/user/sud_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Судебные дела</button></form>
-			<form action="/user/bank_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Банкротные дела</button></form>
-			<form action="/user/dosud_ureg" method="GET"><button type="submit" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
-			<form action="/user/isp_proiz" method="GET"><button type="submit" class="btn btn-light header-btn">Исполнительное производство</button></form>
-			<form action="/user/none_sud" method="GET"><button type="submit" class="btn btn-light header-btn">Несудебные дела</button></form>
-			<form action="/user/sudy" method="GET"><button type="submit" class="btn btn-light header-btn">Суды</button></form>
+			<form action="/user/render/sud_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Судебные дела</button></form>
+			<form action="/user/render/bankr_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Банкротные дела</button></form>
+			<form action="/user/render/dosud_ureg" method="GET"><button type="submit" class="btn btn-light header-btn">Досудебное урегулирование</button></form>
+			<form action="/user/render/isp_proiz" method="GET"><button type="submit" class="btn btn-light header-btn">Исполнительное производство</button></form>
+			<form action="/user/render/nesud_dela" method="GET"><button type="submit" class="btn btn-light header-btn">Несудебные дела</button></form>
+			<form action="/user/render/sudy" method="GET"><button type="submit" class="btn btn-light header-btn">Суды</button></form>
 			{% if role == 'Руководитель' %}
-				<form action="/admin/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
+				<form action="/admin/render/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
 			{% endif %}
     </nav>
 		<form action="#" method="GET"><button type="submit" class="btn btn-outline-danger">Выйти из системы</button></form>
@@ -422,8 +422,27 @@
 		</table>
 		
 	<form id="update" action="" method="POST">
-		<button type="submit" class="btn btn-success btn-sm btn-delo">Обновить</button>
+		<button type="submit" class="btn btn-success btn-delo" style="width: 213px;">Обновить</button>
 	</form>
-	<form action=""><button type="button" class="btn btn-success btn-sm btn-delo">Оплачено</button></form>
-	<form action=""><button type="button" class="btn btn-danger btn-sm btn-delo">Удалить</button></form>
+	{% if type == 'Несудебное дело' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/none_sud/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/none_sud/{{ item }}'">Удалить</button></form>
+		
+	{% elif type == 'Исполнительное производство' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/isp_proiz/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/isp_proiz/{{ item }}'">Удалить</button></form>
+
+	{% elif type == 'Досудебное урегулирование' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/dosud_ureg/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/dosud_ureg/{{ item }}'">Удалить</button></form>
+
+	{% elif type == 'Судебное дело' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/sud_dela/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/sud_dela/{{ item }}'">Удалить</button></form>
+
+	{% elif type == 'Банкротное дело' %}
+		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/bank_dela/{{ item }}'">Оплачено</button></form>
+		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/bank_dela/{{ item }}'">Удалить</button></form>
+
+	{% endif %}
 {% endblock %}
