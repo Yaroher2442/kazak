@@ -421,12 +421,12 @@ def delo(template_name,t_id):
     get_db()
     db=Database(g._database)
     table_name=settings_by_template(template_name,'table_name')
-    delo_deata = db.get_join_table_by_t_id(table_name,t_id)
-
-    print(delo_deata)
-    return render_template(
-        '/delo.html'
-        
+    delo_data = db.get_delo(table_name,t_id)
+    
+    print(delo_data)
+    return render_template('delo.html',
+        type='Судебное дело',
+        delo=delo_data     
         )
 #sudy_____________________________________________________________________
 @application.route('/admin/add/add_sudy', methods=['GET', 'POST'])

@@ -281,6 +281,21 @@ class Database(object):
         except Error as e:
             print(e)
 
+
+    def get_delo(self,table_name,t_id):
+        try:
+            conn=self.connect
+            c = conn.cursor()
+            res=c.execute("SELECT * FROM Affairs as a JOIN {} as l ON a.t_id = l.t_id WHERE a.t_id=?".format(table_name),(t_id,)) 
+            results=c.fetchall()
+            conn.commit()
+            if results==[]:
+                return []
+            else:
+                return list(list(i) for i in results)
+        except Error as e:
+            print(e)
+
     def get_join_table_search(self,join_table,client=None,practice=None,lawyers=None):
         try:
             conn=self.connect
