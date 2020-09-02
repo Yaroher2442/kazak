@@ -424,6 +424,39 @@ def render(template_name):
             delite_href='')
 
 #one_delo________________________________________________________________
+def file_updater(t_id,file_agree=None,file_invoice=None):
+    if file_agree and file_invoice:
+        if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
+            os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id))
+            os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement'))
+            os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice'))
+            file_agree_filename = secure_filename(file_agree.filename)
+            file_invoice_filename = secure_filename(file_invoice.filename)
+            file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',file_agree_filename))
+            file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',file_invoice_filename))
+            return True
+        else:
+            return False
+    elif file_agree and not file_invoice:
+        if  allowed_file(file_agree.filename):
+            os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id))
+            os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement'))
+            file_agree_filename = secure_filename(file_agree.filename)
+            file_agree.save(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',file_agree_filename))
+            return True
+        else:
+            return False
+    elif file_invoice and not file_agree:
+        if allowed_file(file_invoice.filename):
+            os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id))
+            os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice'))
+            file_invoice_filename = secure_filename(file_invoice.filename)
+            file_invoice.save(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',file_invoice_filename))
+            return True
+        else:
+            return False
+    else: return False
+
 @application.route('/delo/<template_name>/<t_id>', methods=['GET', 'POST'])
 def delo(template_name,t_id):
     get_db()
@@ -460,6 +493,17 @@ def delo(template_name,t_id):
 @application.route('/update_dello/<t_id>', methods=['GET', 'POST'])
 def update_dello(t_id):
     update_form=request.form.to_dict(flat=False)
+    file_agree = request.files["Agreement"]
+    file_invoice = request.files["Invoice"]
+    comment=update_form['Comment']
+    if file_agree or file_invoice  or (file_agree and file_invoice) :
+        saving_status=file_saving(new_t_id,file_agree,file_invoice)
+        if saving_status == False:
+            flash('Файлы содержат ошибку, попробуйте ещё раз')
+            return redirect(f'/delo/{template_name}/{t_id}')
+    else:
+        file_saving(new_t_id,file_agree=None,file_invoice=None)
+
 #sudy_____________________________________________________________________
 @application.route('/admin/add_sudy', methods=['GET', 'POST'])
 def admin_add_sudy():
@@ -637,7 +681,6 @@ def user_sudy():
                 role=role,
                 serch_clients=serch_clients,
                 name=name)
-
 #user_______________________________________________________________________
 @application.route('/admin/render/staff', methods=['GET', 'POST'])
 def admin_users():
