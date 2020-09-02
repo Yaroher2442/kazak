@@ -96,8 +96,8 @@
                 <td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
               {% elif loop.index == 11 %}
                 <td><div style="display: flex;">
-                  <button class="btn btn-success btn-sm" style="display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='change_invoice_status/user/bank_dela/{{ item }}'">Оплачено</button>
-                  <button class="btn btn-danger btn-sm" style="display: flex; height: 28px; width: 73px; margin-right: 7px;" onclick="document.location='delite_element/user/bank_dela/{{ item }}'">Удалить</button>
+                  <button class="btn btn-success btn-sm" style="display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/change_invoice_status/user/bank_dela/{{ item }}'">Оплачено</button>
+                  <button class="btn btn-danger btn-sm" style="display: flex; height: 28px; width: 73px; margin-right: 7px;" onclick="document.location='/delite_element/user/bank_dela/{{ item }}'">Удалить</button>
                   <button class="btn btn-success btn-sm" style="display: flex; height: 28px; width: 73px;" onclick="document.location='/delo/bankr_dela/{{ item }}'">Изменить</button>
                 </div></td>
               {% else %}

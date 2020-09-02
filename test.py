@@ -302,6 +302,8 @@ def add(template_name):
 
         table_name=settings_by_template(template_name.lstrip('add_'),'table_name')
         list_to_table=[]
+        print(template_name.lstrip('add_'))
+        print(table_name)
         for margin in tables_sets(table_name=table_name, mode='fields'):
             if margin == 't_id':
                 list_to_table.append(new_t_id)
