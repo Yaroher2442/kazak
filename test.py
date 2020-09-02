@@ -491,8 +491,9 @@ def delo(template_name,t_id):
 @application.route('/update_dello/<template_name>/<t_id>', methods=['GET', 'POST'])
 def update_dello(template_name,t_id):
     if request.method=='POST':
-        file_agree = request.file["Agreement"]
-        file_invoice = request.file["Invoice"]
+        print(request.files)
+        file_agree = request.files["Agreement"]
+        file_invoice = request.files["Invoice"]
         Comment=request.form.get('Comment')
         if file_agree or file_invoice  or (file_agree and file_invoice) :
             saving_status=file_updater(t_id,file_agree,file_invoice)
@@ -500,7 +501,8 @@ def update_dello(template_name,t_id):
                 flash('Файлы содержат ошибку, попробуйте ещё раз')
                 return redirect(f'/delo/{template_name}/{t_id}')
         else:
-            file_updater(t_id,file_agree=None,file_invoice=None)
+            flash('Файлы содержат ошибку, попробуйте ещё раз')
+            return redirect(f'/delo/{template_name}/{t_id}')
         print(Comment)
         return 'ok'
 
