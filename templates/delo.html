@@ -101,7 +101,7 @@
 				<tr>
 					<th>Комментарий:</th>
 					<td>
-						<input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][8] }}" required>
+						<input class="d-block mb-2 w-100 form-control" type="text" name="Comment" form="update" value="{{ delo[0][8] }}" required>
 					</td>
 				</tr>
 
@@ -182,7 +182,7 @@
 				</tr>
 				<tr>
 					<th>Комментарий:</th>
-					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][10] }}" required></td>
+					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" form="update" value="{{ delo[0][10] }}" required></td>
 				</tr>
 
 
@@ -258,7 +258,7 @@
 				</tr>
 				<tr>
 					<th>Комментарий:</th>
-					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][9] }}" required></td>
+					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" value="{{ delo[0][9] }}" form="update" required></td>
 				</tr>
 
 				
@@ -342,7 +342,7 @@
 				</tr>
 				<tr>
 					<th>Комментарий:</th>
-					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][11] }}" required></td>
+					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" form="update" value="{{ delo[0][11] }}" required></td>
 				</tr>
 				
 			{% elif type == 'Несудебное дело' %}
@@ -417,13 +417,13 @@
 				</tr>
 				<tr>
 					<th>Комментарий:</th>
-					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][9] }}" required></td>
+					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" form="update" value="{{ delo[0][9] }}" required></td>
 				</tr>
 			{% endif %}
 			</tbody>
 		</table>
 		
-	<form id="update" action="/update_delo/{{t_id}}" method="POST" enctype="multipart/form-data">
+	<form id="update" action="#" method="POST">
 		<button type="submit" class="btn btn-success btn-delo" style="width: 213px;">Обновить</button>
 	</form>
 	{% if type == 'Несудебное дело' %}
