@@ -145,7 +145,6 @@ def delite_element(type,way,t_id):
             db.delite_data(i,t_id)
         path=os.path.join(application.config['UPLOAD_FOLDER'],t_id)
         shutil.rmtree(path)
-        print('/'+type+'/'+way)
         return redirect('/'+type+'/'+'render'+'/'+way)
 #---------------------------------------------------------------------
 @application.route('/change_invoice_status/<type>/<way>/<t_id>', methods=['GET', 'POST'])
@@ -173,7 +172,6 @@ def base():
         get_db()
         db=Database(g._database)
         f_u=db.find_user_by_id(user)
-        print(f_u)
         if f_u[0] == 'Руководитель':
             return redirect('/admin/render/sud_dela')
         elif f_u[0]== 'Пользователь':
@@ -248,6 +246,7 @@ def file_saving(new_t_id,file_agree=None,file_invoice=None):
 @application.route('/admin/add/<template_name>', methods=['GET', 'POST'])
 @application.route('/user/add/<template_name>', methods=['GET', 'POST'])
 def add(template_name):
+    print(template_name)
     if request.cookies.get('user_id') == None:
         return redirect('/login')
     if request.method == 'POST':
@@ -317,7 +316,6 @@ def add(template_name):
         get_db()
         db=Database(g._database)
         user_info=db.find_user_by_id(user)
-        print(user_info)
         role=user_info[0]
         name=' '.join(user_info[1:])
         urists=db.get_urists()
@@ -429,13 +427,13 @@ def delo(template_name,t_id):
         delo=delo_data     
         )
 #sudy_____________________________________________________________________
-@application.route('/admin/add/add_sudy', methods=['GET', 'POST'])
+@application.route('/admin/add_sudy', methods=['GET', 'POST'])
 def admin_add_sudy():
     if request.method == 'POST':
         new_c_id=str(uuid.uuid4())
         get_db()
         db=Database(g._database)
-        adding_dict=request.form.to_dict(flat=[])
+        adding_dict=request.form.to_dict(flat=False)
         list_to_Courts=[]
         for margin in tables_sets(table_name='Sud', mode='fields'):
             if margin == 'c_id':
@@ -520,8 +518,8 @@ def delite_sud(type,way,c_id):
         get_db()
         db=Database(g._database)
         db.delite_sud(c_id)
-        return redirect('/'+type+'/'+'render'+'/'+way)
-@application.route('/user/add/add_sud', methods=['GET', 'POST'])
+        return redirect('/'+type+'/'+way)
+@application.route('/user/add_sudy', methods=['GET', 'POST'])
 def user_add_sudy():
     if request.method == 'POST':
         new_c_id=str(uuid.uuid4())
@@ -529,9 +527,7 @@ def user_add_sudy():
         db=Database(g._database)
         user=request.cookies.get('user_id')
         user_info=db.find_user_by_id(user)
-        adding_dict=request.form.to_dict(flat=[])
-        print(adding_dict)
-        print(tables_sets(table_name='Sud', mode='fields'))
+        adding_dict=request.form.to_dict(flat=False)
         list_to_Courts=[]
         for margin in tables_sets(table_name='Sud', mode='fields'):
             if margin == 'c_id':
@@ -557,7 +553,7 @@ def user_add_sudy():
             urists=db.get_urists()
             ur_up=[' '.join(i) for i in urists]
             clients=db.get_clients_u_id(user)
-            return render_template('user/add/add_sud.html',
+            return render_template('user/add/add_sudy.html',
                 clients=clients,
                 role=role,
                 name=name,
@@ -573,7 +569,7 @@ def user_sudy():
         user_info=db.find_user_by_id(user)
         role=user_info[0]
         name=' '.join(user_info[1:])
-        if method == 'GET':
+        if request.method == 'GET':
             d_table = db.get_courts_u_id(u_id=user)
         else:
             client=request.form.get('client')
@@ -648,7 +644,6 @@ def admin_add_user():
     if request.method == 'POST' :
         get_db()
         db=Database(g._database)
-        pprint(request.form.to_dict(flat=[]))
         email=request.form.get('email')
         password=request.form.get('password')
         name=request.form.get('name')
@@ -661,7 +656,7 @@ def admin_add_user():
         u_id,hash_p=hash_password(password)
         new_U=(str(u_id),Access_level,email,str(hash_p),name,surname,lastname)
         db.insert_User(new_U)
-        return redirect('/admin/add/staff')
+        return redirect('/admin/render/staff')
     elif request.method == 'GET' :
         user=request.cookies.get('user_id')
         get_db()
@@ -677,12 +672,12 @@ def admin_add_user():
             role=role,
             name=name
             )
-@application.route('/delite_user/<type>/<way>/<_id>', methods=['GET', 'POST'])
-def delite_user(type,way,_id):
+@application.route('/delite_user/<type_>/<way>/<_id>', methods=['GET', 'POST'])
+def delite_user(type_,way,_id):
     get_db()
     db=Database(g._database)
     db.delite_user(_id)
-    return redirect('/'+type+'/'+'render'+'/'+way)
+    return redirect('/'+type_+'/'+'render'+'/'+way)
 
 #login________________________________________________________________
 @application.route('/login' , methods=['GET' , 'POST'])

@@ -1,4 +1,4 @@
-submit{% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block Title %}
  	Новый суд
@@ -30,7 +30,7 @@ submit{% extends 'base.html' %}
 {% endblock %}
 
 {% block Body %}
-  <form class="py-3 px-5" action="/user/add/add_sudy" method="post" enctype="multipart/form-data">
+  <form class="py-3 px-5" action="/user/add_sudy" method="post" enctype="multipart/form-data">
     <h5 class='p-2' style="margin-bottom: 25px;">Добавить новый суд</h5>
     <div class="form-group mx-5">
       <select name="client" class="multi-select ui fluid dropdown mb-2" required>
