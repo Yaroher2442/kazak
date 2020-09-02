@@ -79,6 +79,7 @@ def settings_by_template(template_name,field):
             'table_name':'Litigation',
             'start_from':8,
             'delo_count':4,
+            'Type': 'Судебное дело'
             }
         },
         {
@@ -88,6 +89,7 @@ def settings_by_template(template_name,field):
             'table_name':'Bankruptcy',
             'start_from':7,
             'delo_count':3,
+            'Type': 'Банкротное дело'
             }
         },
         {
@@ -97,6 +99,7 @@ def settings_by_template(template_name,field):
             'table_name':'Non_judicial',
             'start_from':7,
             'delo_count':3,
+            'Type': 'Несудебное дело'
             }
         },
         {
@@ -106,6 +109,7 @@ def settings_by_template(template_name,field):
             'table_name':'Pre_trial_settlement',
             'start_from':7,
             'delo_count':3,
+            'Type': 'Досудебное урегулирование'
             }
         },
         {
@@ -115,6 +119,7 @@ def settings_by_template(template_name,field):
             'table_name':'Enforcement_proceedings',
             'start_from':9,
             'delo_count':5,
+            'Type': 'Исполнительное производство'
             }
         },
 
@@ -436,14 +441,25 @@ def delo(template_name,t_id):
     j_table=delo_data[0][-t_count+1:]
 
     files_t=delo_data[0][7:9]
-
+    for f in files_t:
+        if f!='Нет файла':
+            print(f)
+            files_t[files_t.index(f)]='/download_files/'+'/'.join(f.split('\\')[-3:])
+            print(f)
+        else:
+            continue
     in_table=delo_data[0][9:11]
 
     rez_table=af_table+j_table+files_t+in_table
+    Type=settings_by_template(template_name,'Type')
     return render_template('delo.html',
-        type='Судебное дело',
-        delo=[rez_table]  
+        type=Type,
+        delo=[rez_table],
+        t_id=t_id
         )
+@application.route('/update_dello/<t_id>', methods=['GET', 'POST'])
+def update_dello(t_id):
+    update_form=request.form.to_dict(flat=False)
 #sudy_____________________________________________________________________
 @application.route('/admin/add_sudy', methods=['GET', 'POST'])
 def admin_add_sudy():
