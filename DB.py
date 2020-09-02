@@ -295,6 +295,8 @@ class Database(object):
                 return list(list(i) for i in results)
         except Error as e:
             print(e)
+    def update_delo(self,file_agree=None,file_invoice=None):
+        pass
 
     def get_join_table_search(self,join_table,client=None,practice=None,lawyers=None):
         try:
