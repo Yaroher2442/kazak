@@ -341,7 +341,7 @@ class Database(object):
                     return dela_list
         except Error as e:
             print(e)
-    def get_join_table_search_u_id(self,join_table,u_id,practice=None,client=None):
+    def get_join_table_search_u_id(self,join_table,u_id,practice=None,client=None,lawyers=None):
         try:
             conn=self.connect
             c = conn.cursor()
