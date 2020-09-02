@@ -78,6 +78,7 @@ def settings_by_template(template_name,field):
             {
             'table_name':'Litigation',
             'start_from':8,
+            'delo_count':4,
             }
         },
         {
@@ -86,6 +87,7 @@ def settings_by_template(template_name,field):
             {
             'table_name':'Bankruptcy',
             'start_from':7,
+            'delo_count':3,
             }
         },
         {
@@ -94,6 +96,7 @@ def settings_by_template(template_name,field):
             {
             'table_name':'Non_judicial',
             'start_from':7,
+            'delo_count':3,
             }
         },
         {
@@ -102,6 +105,7 @@ def settings_by_template(template_name,field):
             {
             'table_name':'Pre_trial_settlement',
             'start_from':7,
+            'delo_count':3,
             }
         },
         {
@@ -109,7 +113,8 @@ def settings_by_template(template_name,field):
         'data_set':
             {
             'table_name':'Enforcement_proceedings',
-            'start_from':9
+            'start_from':9,
+            'delo_count':5,
             }
         },
 
@@ -420,11 +425,24 @@ def delo(template_name,t_id):
     db=Database(g._database)
     table_name=settings_by_template(template_name,'table_name')
     delo_data = db.get_delo(table_name,t_id)
-    
-    print(delo_data)
+    rez_table=[]
+
+    af_table=delo_data[0][2:7]
+    af_table.pop(1)
+    af_table[1]=' ,'.join(json.loads(af_table[1]))
+    af_table[3]=' ,'.join(json.loads(af_table[3]))
+
+    t_count=settings_by_template(template_name,'delo_count')
+    j_table=delo_data[0][-t_count+1:]
+
+    files_t=delo_data[0][7:9]
+
+    in_table=delo_data[0][9:11]
+
+    rez_table=af_table+j_table+files_t+in_table
     return render_template('delo.html',
         type='Судебное дело',
-        delo=delo_data     
+        delo=[rez_table]  
         )
 #sudy_____________________________________________________________________
 @application.route('/admin/add_sudy', methods=['GET', 'POST'])
