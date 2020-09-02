@@ -22,7 +22,7 @@
 				<form action="/admin/render/admin_users" method="GET"><button type="button" class="btn btn-light header-btn">Сотрудники</button></form>
 			{% endif %}
     </nav>
-		<form action="#" method="GET"><button type="submit" class="btn btn-outline-danger">Выйти из системы</button></form>
+		<form action="/logout" method="GET"><button type="submit" class="btn btn-outline-danger">Выйти из системы</button></form>
   </header>
 {% endblock %}
 
@@ -63,14 +63,14 @@
 						{% if delo[0][5]!='Нет файла' %}
 							<a href="{{ delo[0][5] }}">Соглашение.pdf</a>
 							<div class="custom-file mb-2" >
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='file1' type="file" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Изменить файл</label>
 							</div>
 										
 						{% else %}
 							{{ delo[0][5] }}
 							<div>
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='file1' type="file" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Добавить файл</label>	
 							</div>
 						{% endif %}
@@ -82,14 +82,14 @@
 						{% if delo[0][6]!='Нет файла' %}
 							<a href="{{ delo[0][6] }}" style="background-color: {{ delo[0][9] }};">Счёт.pdf</a>
 							<div class="custom-file mb-2">
-								<input class="custom-file-input" type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Изменить файл</label>
+								<input class="custom-file-input" type="file2" name="Invoice" form="update">
+								<label class='custom-file-label' for="file2">Изменить файл</label>
 							</div>
 						{% else %}
 							{{ delo[0][6] }}
 							<div>
 								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Добавить файл</label>	
+								<label class='custom-file-label' for="file2">Добавить файл</label>	
 							</div>
 						{% endif %}
 					</td>
@@ -100,7 +100,9 @@
 				</tr>
 				<tr>
 					<th>Комментарий:</th>
-					<td>{{ delo[0][8] }}</td>
+					<td>
+						<input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][8] }}" required>
+					</td>
 				</tr>
 
 
@@ -143,14 +145,14 @@
 						{% if delo[0][7]!='Нет файла' %}
 							<a href="{{ delo[0][7] }}">Соглашение.pdf</a>
 							<div class="custom-file mb-2" >
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='' type="file1" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Изменить файл</label>
 							</div>
 										
 						{% else %}
 							{{ delo[0][7] }}
 							<div>
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='file1' type="file" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Добавить файл</label>	
 							</div>
 						{% endif %}
@@ -162,14 +164,14 @@
 						{% if delo[0][8]!='Нет файла' %}
 							<a href="{{ delo[0][8] }}" style="background-color: {{ delo[0][11] }};">Счёт.pdf</a>
 							<div class="custom-file mb-2">
-								<input class="custom-file-input" type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Изменить файл</label>
+								<input class="custom-file-input" type="file2" name="Invoice" form="update">
+								<label class='custom-file-label' for="file2">Изменить файл</label>
 							</div>
 						{% else %}
 							{{ delo[0][8] }}
 							<div>
 								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Добавить файл</label>
+								<label class='custom-file-label' for="file2">Добавить файл</label>
 							</div>
 						{% endif %}
 					</td>
@@ -180,7 +182,7 @@
 				</tr>
 				<tr>
 					<th>Комментарий:</th>
-					<td>{{ delo[0][10] }}</td>
+					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][10] }}" required></td>
 				</tr>
 
 
@@ -219,14 +221,14 @@
 						{% if delo[0][6]!='Нет файла' %}
 							<a href="{{ delo[0][6] }}">Соглашение.pdf</a>
 							<div class="custom-file mb-2" >
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='file1' type="file" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Изменить файл</label>
 							</div>
 										
 						{% else %}
 							{{ delo[0][6] }}
 							<div>
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='file1' type="file" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Добавить файл</label>	
 							</div>
 						{% endif %}
@@ -238,14 +240,14 @@
 						{% if delo[0][7]!='Нет файла' %}
 							<a href="{{ delo[0][7] }}" style="background-color: {{ delo[0][10] }};">Счёт.pdf</a>
 							<div class="custom-file mb-2">
-								<input class="custom-file-input" type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Изменить файл</label>
+								<input class="custom-file-input" type="file2" name="Invoice" form="update">
+								<label class='custom-file-label' for="file2">Изменить файл</label>
 							</div>
 						{% else %}
 							{{ delo[0][7] }}
 							<div>
 								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Добавить файл</label>
+								<label class='custom-file-label' for="file2">Добавить файл</label>
 							</div>
 						{% endif %}
 					</td>
@@ -256,7 +258,7 @@
 				</tr>
 				<tr>
 					<th>Комментарий:</th>
-					<td>{{ delo[0][9] }}</td>
+					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][9] }}" required></td>
 				</tr>
 
 				
@@ -303,14 +305,14 @@
 						{% if delo[0][8]!='Нет файла' %}
 							<a href="{{ delo[0][8] }}">Соглашение.pdf</a>
 							<div class="custom-file mb-2" >
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='file1' type="file" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Изменить файл</label>
 							</div>
 										
 						{% else %}
 							{{ delo[0][8] }}
 							<div>
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='file1' type="file" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Добавить файл</label>	
 							</div>
 						{% endif %}
@@ -322,14 +324,14 @@
 						{% if delo[0][9]!='Нет файла' %}
 							<a href="{{ delo[0][9] }}" style="background-color: {{ delo[0][12] }};">Счёт.pdf</a>
 							<div class="custom-file mb-2">
-								<input class="custom-file-input" type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Изменить файл</label>
+								<input class="custom-file-input" type="file2" name="Invoice" form="update">
+								<label class='custom-file-label' for="file2">Изменить файл</label>
 							</div>
 						{% else %}
 							{{ delo[0][9] }}
 							<div>
 								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Добавить файл</label>
+								<label class='custom-file-label' for="file2">Добавить файл</label>
 							</div>
 						{% endif %}
 					</td>
@@ -340,7 +342,7 @@
 				</tr>
 				<tr>
 					<th>Комментарий:</th>
-					<td>{{ delo[0][11] }}</td>
+					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][11] }}" required></td>
 				</tr>
 				
 			{% elif type == 'Несудебное дело' %}
@@ -378,14 +380,14 @@
 						{% if delo[0][6]!='Нет файла' %}
 							<a href="{{ delo[0][6] }}">Соглашение.pdf</a>
 							<div class="custom-file mb-2" >
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='file1' type="file" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Изменить файл</label>
 							</div>
 										
 						{% else %}
 							{{ delo[0][6] }}
 							<div>
-								<input class="custom-file-input" id='file2' type="file" name="Agreement" form="update">
+								<input class="custom-file-input" id='file1' type="file" name="Agreement" form="update">
 								<label class='custom-file-label' for="file1">Добавить файл</label>	
 							</div>
 						{% endif %}
@@ -397,14 +399,14 @@
 						{% if delo[0][7]!='Нет файла' %}
 							<a href="{{ delo[0][7] }}" style="background-color: {{ delo[0][10] }};">Счёт.pdf</a>
 							<div class="custom-file mb-2">
-								<input class="custom-file-input" type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Изменить файл</label>
+								<input class="custom-file-input" type="file2" name="Invoice" form="update">
+								<label class='custom-file-label' for="file2">Изменить файл</label>
 							</div>
 						{% else %}
 							{{ delo[0][7] }}
 							<div>
 								<input class="custom-file-input" id='file2' type="file" name="Invoice" form="update">
-								<label class='custom-file-label' for="file1">Добавить файл</label>
+								<label class='custom-file-label' for="file2">Добавить файл</label>
 							</div>
 						{% endif %}
 					</td>
@@ -415,13 +417,13 @@
 				</tr>
 				<tr>
 					<th>Комментарий:</th>
-					<td>{{ delo[0][9] }}</td>
+					<td><input class="d-block mb-2 w-100 form-control" type="text" name="Comment" placeholder="{{ delo[0][9] }}" required></td>
 				</tr>
 			{% endif %}
 			</tbody>
 		</table>
 		
-	<form id="update" action="" method="POST">
+	<form id="update" action="#" method="POST">
 		<button type="submit" class="btn btn-success btn-delo" style="width: 213px;">Обновить</button>
 	</form>
 	{% if type == 'Несудебное дело' %}
