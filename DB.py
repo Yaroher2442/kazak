@@ -295,8 +295,22 @@ class Database(object):
                 return list(list(i) for i in results)
         except Error as e:
             print(e)
-    def update_delo(self,file_agree=None,file_invoice=None):
-        pass
+    def update_delo(self,t_id,comment=None,file_agree=None,file_invoice=None):
+        try:
+            conn=self.connect
+            c = conn.cursor()
+            if comment!=None:
+                res=c.execute("""UPDATE Affairs SET Comment = ? WHERE t_id = ?""", (comment,t_id,))
+                conn.commit()
+            if file_agree!=None:
+                res=c.execute("""UPDATE Affairs SET Agreement = ? WHERE t_id = ?""", (file_agree,t_id,))
+                conn.commit()
+            if file_invoice!=None:
+                res=c.execute("""UPDATE Affairs SET Invoice = ? WHERE t_id = ?""", (file_invoice,t_id,))
+                conn.commit()
+        except Error as e:
+            print(e)
+
 
     def get_join_table_search(self,join_table,client=None,practice=None,lawyers=None):
         try:
