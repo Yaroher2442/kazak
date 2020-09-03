@@ -65,8 +65,8 @@
       {% endfor %}
     </select>
     <input type="submit" class="btn btn-success" style="margin-bottom: 7px; margin-left: 7px; height: 38px" value="Найти">
+		<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 38px" onclick="document.location='/user/render/dosud_ureg'">Показать всё</button>
   </form>	
-	<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 38px" onclick="document.location='/user/render/dosud_ureg'">Показать всё</button>
   <div class="table-responsive-vertical shadow-z-1">
 		<table id="table" class="table table-hover table-mc-light-blue">
 	  	<thead>
@@ -95,8 +95,8 @@
 									<td>{{ item }}</td>
 								{% else %}
 									<td><a href="{{ item }}">Соглашение.pdf</a></td>
-								{% endif %}	
-				  		{% elif loop.index == 9 %}
+								{% endif %}			  			
+							{% elif loop.index == 9 %}
 								{% if item == "Нет файла" %}
 									<td>{{item}}</td>
 								{% else %}
