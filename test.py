@@ -273,6 +273,7 @@ def add(template_name):
             file_saving(new_t_id,file_agree=None,file_invoice=None)
 
         adding_dict=request.form.to_dict(flat=False)
+        print(adding_dict)
         list_to_Affairs=[]
         for margin in tables_sets(table_name='Affairs', mode='fields'):
             if margin == 't_id':
