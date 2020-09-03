@@ -399,11 +399,11 @@ def render(template_name):
                 if item[start_from]=='Нет файла':
                     item[start_from]=='Нет файла'
                 else:
-                    item[start_from]='download_files/'+'/'.join(item[start_from].split('\\')[-3:])
+                    item[start_from]='/download_files/'+'/'.join(item[start_from].split('\\')[-3:])
                 if item[start_from+1]=='Нет файла':
                     item[start_from]=='Нет файла'
                 else:
-                    item[start_from+1]='download_files/'+'/'.join(item[start_from+1].split('\\')[-3:])
+                    item[start_from+1]='/download_files/'+'/'.join(item[start_from+1].split('\\')[-3:])
                 x_lst=[item[start_from+3].split(' ')[i:i+3] for i in range(0, len(item[start_from+3].split(' ')), 3)]
                 item[start_from+3]='\n'.join([' '.join(i) for i in x_lst])
             serch_clients=db.get_clients()
