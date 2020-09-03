@@ -609,7 +609,7 @@ def delite_sud(type,way,c_id):
         get_db()
         db=Database(g._database)
         db.delite_sud(c_id)
-        return redirect('/'+type+'/render/'+way)
+        return redirect('/'+type+'/'+way)
 @application.route('/user/add_sudy', methods=['GET', 'POST'])
 def user_add_sudy():
     if request.method == 'POST':
