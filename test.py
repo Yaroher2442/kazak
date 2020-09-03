@@ -399,11 +399,11 @@ def render(template_name):
                 if item[start_from]=='Нет файла':
                     item[start_from]=='Нет файла'
                 else:
-                    item[start_from]='download_files/'+'/'.join(item[start_from].split('\\')[-3:])
+                    item[start_from]='/download_files/'+'/'.join(item[start_from].split('\\')[-3:])
                 if item[start_from+1]=='Нет файла':
                     item[start_from]=='Нет файла'
                 else:
-                    item[start_from+1]='download_files/'+'/'.join(item[start_from+1].split('\\')[-3:])
+                    item[start_from+1]='/download_files/'+'/'.join(item[start_from+1].split('\\')[-3:])
                 x_lst=[item[start_from+3].split(' ')[i:i+3] for i in range(0, len(item[start_from+3].split(' ')), 3)]
                 item[start_from+3]='\n'.join([' '.join(i) for i in x_lst])
             serch_clients=db.get_clients()
@@ -425,8 +425,9 @@ def render(template_name):
 
 #one_delo________________________________________________________________
 def file_updater(t_id,file_agree=None,file_invoice=None):
-    if file_agree and file_invoice:
+    if t_id not in os.listdir(application.config['UPLOAD_FOLDER']):
         os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id))
+    if file_agree and file_invoice:
         if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
             os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement'))
             os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice'))
@@ -474,9 +475,7 @@ def delo(template_name,t_id):
     files_t=delo_data[0][7:9]
     for f in files_t:
         if f!='Нет файла':
-            print(f)
             files_t[files_t.index(f)]='/download_files/'+'/'.join(f.split('\\')[-3:])
-            print(f)
         else:
             continue
     in_table=delo_data[0][9:11]
@@ -492,28 +491,32 @@ def delo(template_name,t_id):
 @application.route('/update_dello/<template_name>/<t_id>', methods=['GET', 'POST'])
 def update_dello(template_name,t_id):
     if request.method=='POST':
-        print(request)
         get_db()
         db=Database(g._database)
+        Comment=request.form.get('Comment')
+        print(Comment)
+        if Comment!= None:
+            db.update_dello(t_id,comment=Comment)
         if request.files!='':
             file_agree = request.files["Agreement"]
             file_invoice = request.files["Invoice"]
             if file_agree or file_invoice  or (file_agree and file_invoice) :
                 saving_status=file_updater(t_id,file_agree,file_invoice)
                 if file_agree and not file_invoice :
-                    db.update_dello(file_agree=file_agree)
+                    agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
+                    db.update_dello(t_id,file_agree=agree_file_way)
                 elif file_invoice and not file_agree:
-                    db.update_dello(file_invoice=file_invoice)
+                    invoice_file=agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
+                    db.update_dello(t_id,file_invoice=invoice_file)
                 elif file_agree and file_invoice :
-                    db.update_dello(file_agree=file_agree,file_invoice=file_invoice)
+                    agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
+                    invoice_file=agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
+                    db.update_dello(t_id,file_agree=agree_file_way,file_invoice=invoice_file)
                 if saving_status == False:
                     return redirect(f'/delo/{template_name}/{t_id}')
             else:
                 return redirect(f'/delo/{template_name}/{t_id}')
 
-        Comment=request.form.get('Comment')
-        if Comment!= None:
-            db.update_delo(comment=Comment)
         return redirect(f'/delo/{template_name}/{t_id}')
 
 
