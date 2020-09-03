@@ -428,7 +428,6 @@ def file_updater(t_id,file_agree=None,file_invoice=None):
     if t_id not in os.listdir(application.config['UPLOAD_FOLDER']):
         os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id))
     if file_agree and file_invoice:
-        os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id))
         if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
             os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement'))
             os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice'))
@@ -504,11 +503,15 @@ def update_dello(template_name,t_id):
             if file_agree or file_invoice  or (file_agree and file_invoice) :
                 saving_status=file_updater(t_id,file_agree,file_invoice)
                 if file_agree and not file_invoice :
-                    db.update_dello(t_id,file_agree=file_agree)
+                    agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
+                    db.update_dello(t_id,file_agree=agree_file_way)
                 elif file_invoice and not file_agree:
-                    db.update_dello(t_id,file_invoice=file_invoice)
+                    invoice_file=agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
+                    db.update_dello(t_id,file_invoice=invoice_file)
                 elif file_agree and file_invoice :
-                    db.update_dello(t_id,file_agree=file_agree,file_invoice=file_invoice)
+                    agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
+                    invoice_file=agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
+                    db.update_dello(t_id,file_agree=agree_file_way,file_invoice=invoice_file)
                 if saving_status == False:
                     return redirect(f'/delo/{template_name}/{t_id}')
             else:
