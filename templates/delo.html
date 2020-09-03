@@ -425,25 +425,46 @@
 		<form id="update" action="/update_dello/{{template_name}}/{{t_id}}" method="POST" enctype="multipart/form-data">
 			<button type="submit" class="btn btn-success btn-delo" style="width: 213px;">Обновить</button>
 		</form>
-	{% if type == 'Несудебное дело' %}
-		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/none_sud/{{ item }}'">Оплачено</button></form>
-		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/none_sud/{{ item }}'">Удалить</button></form>
-		
-	{% elif type == 'Исполнительное производство' %}
-		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/isp_proiz/{{ item }}'">Оплачено</button></form>
-		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/isp_proiz/{{ item }}'">Удалить</button></form>
+	{% if role == 'Руководитель' %}
+		{% if type == 'Несудебное дело' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/nesud_dela/{{ t_id }}'">Оплачено</button></form>
+			<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/nesud_dela/{{ t_id }}'">Удалить</button></form>
+			
+		{% elif type == 'Исполнительное производство' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/isp_proiz/{{ t_id }}'">Оплачено</button></form>
+			<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/isp_proiz/{{ t_id }}'">Удалить</button></form>
 
-	{% elif type == 'Досудебное урегулирование' %}
-		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/dosud_ureg/{{ item }}'">Оплачено</button></form>
-		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/dosud_ureg/{{ item }}'">Удалить</button></form>
+		{% elif type == 'Досудебное урегулирование' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/dosud_ureg/{{ t_id }}'">Оплачено</button></form>
+			<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/dosud_ureg/{{ t_id }}'">Удалить</button></form>
 
-	{% elif type == 'Судебное дело' %}
-		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/sud_dela/{{ item }}'">Оплачено</button></form>
-		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/sud_dela/{{ item }}'">Удалить</button></form>
+		{% elif type == 'Судебное дело' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/sud_dela/{{ t_id }}'">Оплачено</button></form>
+			<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/sud_dela/{{ t_id }}'">Удалить</button></form>
 
-	{% elif type == 'Банкротное дело' %}
-		<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/bank_dela/{{ item }}'">Оплачено</button></form>
-		<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/bank_dela/{{ item }}'">Удалить</button></form>
+		{% elif type == 'Банкротное дело' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/admin/bankr_dela/{{ t_id }}'">Оплачено</button></form>
+			<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/admin/bankr_dela/{{ t_id }}'">Удалить</button></form>
+		{% endif %}
+	{% else %}
+		{% if type == 'Несудебное дело' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/user/nesud_dela/{{ t_id }}'">Оплачено</button></form>
+			<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/user/nesud_dela/{{ t_id }}'">Удалить</button></form>
+			
+		{% elif type == 'Исполнительное производство' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/user/isp_proiz/{{ t_id }}'">Оплачено</button></form>
+			<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/user/isp_proiz/{{ t_id }}'">Удалить</button></form>
 
-	{% endif %}
+		{% elif type == 'Досудебное урегулирование' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/user/dosud_ureg/{{ t_id }}'">Оплачено</button></form>
+			<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/user/dosud_ureg/{{ t_id }}'">Удалить</button></form>
+
+		{% elif type == 'Судебное дело' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/user/sud_dela/{{ t_id }}'">Оплачено</button></form>
+			<button class="btn btn-danger btn-delo" onclick="document.location='/delite_element/user/sud_dela/{{ t_id }}'">Удалить</button></form>
+
+		{% elif type == 'Банкротное дело' %}
+			<button class="btn btn-success btn-delo" onclick="document.location='/change_invoice_status/user/bankr_dela/{{ t_id }}'">Удалить</button></form>
+		{% endif %}	
+	{% endif %}	
 {% endblock %}
