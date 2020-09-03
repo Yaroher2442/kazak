@@ -425,6 +425,8 @@ def render(template_name):
 
 #one_delo________________________________________________________________
 def file_updater(t_id,file_agree=None,file_invoice=None):
+    if t_id not in os.listdir(application.config['UPLOAD_FOLDER']):
+        os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id))
     if file_agree and file_invoice:
         os.mkdir(os.path.join(application.config['UPLOAD_FOLDER'],t_id))
         if  allowed_file(file_agree.filename) and allowed_file(file_invoice.filename):
@@ -474,9 +476,7 @@ def delo(template_name,t_id):
     files_t=delo_data[0][7:9]
     for f in files_t:
         if f!='Нет файла':
-            print(f)
             files_t[files_t.index(f)]='/download_files/'+'/'.join(f.split('\\')[-3:])
-            print(f)
         else:
             continue
     in_table=delo_data[0][9:11]
@@ -497,18 +497,18 @@ def update_dello(template_name,t_id):
         Comment=request.form.get('Comment')
         print(Comment)
         if Comment!= None:
-            db.update_delo(t_id,comment=Comment)
+            db.update_dello(t_id,comment=Comment)
         if request.files!='':
             file_agree = request.files["Agreement"]
             file_invoice = request.files["Invoice"]
             if file_agree or file_invoice  or (file_agree and file_invoice) :
                 saving_status=file_updater(t_id,file_agree,file_invoice)
                 if file_agree and not file_invoice :
-                    db.update_dello(file_agree=file_agree)
+                    db.update_dello(t_id,file_agree=file_agree)
                 elif file_invoice and not file_agree:
-                    db.update_dello(file_invoice=file_invoice)
+                    db.update_dello(t_id,file_invoice=file_invoice)
                 elif file_agree and file_invoice :
-                    db.update_dello(file_agree=file_agree,file_invoice=file_invoice)
+                    db.update_dello(t_id,file_agree=file_agree,file_invoice=file_invoice)
                 if saving_status == False:
                     return redirect(f'/delo/{template_name}/{t_id}')
             else:
