@@ -505,27 +505,42 @@ def update_dello(template_name,t_id):
         if Comment!= None:
             db.update_dello(t_id,comment=Comment,file_agree=None,file_invoice=None)
         print(request.files)
-        if request.files!=[]:
+        if request.files!=[] :
             if 'Agreement' in request.files and 'Invoice' not in request.files:
                 file_agree=request.files['Agreement']
                 agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
                 db.update_dello(t_id,file_agree=agree_file_way)
-                saving_status=file_updater(t_id,file_agree)
-                print(saving_status)
+                saving_status=file_updater(t_id,file_agree=file_agree,file_invoice=None)
+                print(saving_status,'1')
+                
             elif 'Invoice' in request.files and 'Agreement' not in request.files:
                 file_invoice=request.files['Invoice']
                 invoice_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
                 db.update_dello(t_id,file_invoice=invoice_file_way)
-                saving_status=file_updater(t_id,file_invoice)
-                print(saving_status)
+                saving_status=file_updater(t_id,file_invoice=file_invoice,file_agree=None)
+                print(saving_status,'2')
+
             elif 'Agreement' and 'Invoice' in request.files:
                 file_agree=request.files['Agreement']
                 file_invoice=request.files['Invoice']
-                agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
-                invoice_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
-                db.update_dello(t_id,file_agree=agree_file_way,file_invoice=invoice_file_way)
-                saving_status=file_updater(t_id,file_agree,file_invoice)
-                print(saving_status)
+                if file_agree.filename != '' and file_invoice.filename != '':
+                    agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
+                    invoice_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
+                    db.update_dello(t_id,file_agree=agree_file_way,file_invoice=invoice_file_way)
+                    saving_status=file_updater(t_id,file_agree=file_agree,file_invoice=file_invoice)
+                    print(saving_status,'3')
+
+                elif file_agree.filename != '' and file_invoice.filename == '':
+                    agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
+                    db.update_dello(t_id,file_agree=agree_file_way)
+                    saving_status=file_updater(t_id,file_agree=file_agree,file_invoice=None)
+                    print(saving_status,'4')
+
+                elif file_agree.filename == '' and file_invoice.filename != '':
+                    invoice_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
+                    db.update_dello(t_id,file_invoice=invoice_file_way)
+                    saving_status=file_updater(t_id,file_invoice=file_invoice,file_agree=None)
+                    print(saving_status,'5')
         return redirect(f'/delo/{template_name}/{t_id}')
 
 
