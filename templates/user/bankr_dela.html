@@ -92,9 +92,17 @@
             {% set index = loop.index %}
             {% for item in line %}
               {% if loop.index == 8 and loop.index != 3 %}
-                <td><a href="/{{ item }}">Соглашение.pdf</a></td>
+                {% if item == 'Нет файла' %}
+                  <td>{{ item }}</td>
+                {% else %}
+                  <td><a href="{{ item }}">Соглашение.pdf</a></td>
+                {% endif %}		
               {% elif loop.index == 9 and loop.index != 3%}
-                <td><a href="/{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
+                {% if item == "Нет файла" %}
+                  <td>{{item}}</td>
+                {% else %}
+                  <td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
+                {% endif %}	
               {% elif loop.index == 12 and loop.index != 3 %}
                 <td><div style="display: flex;">
                   <button class="btn btn-success btn-sm" style="display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/change_invoice_status/user/bank_dela/{{ item }}'">Оплачено</button>
