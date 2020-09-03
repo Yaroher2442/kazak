@@ -460,6 +460,11 @@ def file_updater(t_id,file_agree=None,file_invoice=None):
 def delo(template_name,t_id):
     get_db()
     db=Database(g._database)
+    user=request.cookies.get('user_id')
+    user_info=db.find_user_by_id(user)
+    role=user_info[0]
+    name=' '.join(user_info[1:])
+
     table_name=settings_by_template(template_name,'table_name')
     delo_data = db.get_delo(table_name,t_id)
     rez_table=[]
@@ -484,6 +489,8 @@ def delo(template_name,t_id):
     Type=settings_by_template(template_name,'Type')
     return render_template('delo.html',
         type=Type,
+        role=role,
+        name=name,
         delo=[rez_table],
         t_id=t_id,
         template_name=template_name
@@ -494,29 +501,30 @@ def update_dello(template_name,t_id):
         get_db()
         db=Database(g._database)
         Comment=request.form.get('Comment')
-        print(Comment)
         if Comment!= None:
-            db.update_dello(t_id,comment=Comment)
-        if request.files!='':
-            file_agree = request.files["Agreement"]
-            file_invoice = request.files["Invoice"]
-            if file_agree or file_invoice  or (file_agree and file_invoice) :
+            db.update_dello(t_id,comment=Comment,file_agree=None,file_invoice=None)
+        print(request.files)
+        if request.files!=[]:
+            if 'Agreement' in request.files and 'Invoice' not in request.files:
+                file_agree=request.files['Agreement']
+                agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
+                db.update_dello(t_id,file_agree=agree_file_way)
+                saving_status=file_updater(t_id,file_agree)
+                print(saving_status)
+            elif 'Invoice' in request.files and 'Agreement' not in request.files:
+                file_invoice=request.files['Invoice']
+                invoice_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
+                db.update_dello(t_id,file_invoice=invoice_file_way)
+                saving_status=file_updater(t_id,file_invoice)
+                print(saving_status)
+            elif 'Agreement' and 'Invoice' in request.files:
+                file_agree=request.files['Agreement']
+                file_invoice=request.files['Invoice']
+                agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
+                invoice_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
+                db.update_dello(t_id,file_agree=agree_file_way,file_invoice=invoice_file_way)
                 saving_status=file_updater(t_id,file_agree,file_invoice)
-                if file_agree and not file_invoice :
-                    agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
-                    db.update_dello(t_id,file_agree=agree_file_way)
-                elif file_invoice and not file_agree:
-                    invoice_file=agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
-                    db.update_dello(t_id,file_invoice=invoice_file)
-                elif file_agree and file_invoice :
-                    agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Agreement',secure_filename(file_agree.filename))
-                    invoice_file=agree_file_way=os.path.join(application.config['UPLOAD_FOLDER'],t_id,'Invoice',secure_filename(file_invoice.filename))
-                    db.update_dello(t_id,file_agree=agree_file_way,file_invoice=invoice_file)
-                if saving_status == False:
-                    return redirect(f'/delo/{template_name}/{t_id}')
-            else:
-                return redirect(f'/delo/{template_name}/{t_id}')
-
+                print(saving_status)
         return redirect(f'/delo/{template_name}/{t_id}')
 
 
