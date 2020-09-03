@@ -65,8 +65,8 @@
       {% endfor %}
     </select>
     <input type="submit" class="btn btn-success" style="margin-bottom: 7px; margin-left: 7px; height: 38px" value="Найти">
+    <button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 38px" onclick="document.location='/user/render/dosud_ureg'">Показать всё</button>
   </form>	
-	<button class="btn btn-success btn-sm" style="margin-bottom: 7px; margin-left: 7px; height: 38px" onclick="document.location='/user/render/dosud_ureg'">Показать всё</button>
   <div class="table-responsive-vertical shadow-z-1">
 		<table id="table" class="table table-hover table-mc-light-blue">
 	  	<thead>
@@ -91,17 +91,9 @@
 						{% set index = loop.index %}
 						{% for item in line %}
 				  		{% if loop.index == 8 %}
-								{% if item == 'Нет файла' %}
-									<td>{{ item }}</td>
-								{% else %}
-									<td><a href="{{ item }}">Соглашение.pdf</a></td>
-								{% endif %}	
+								<td><a href="{{ item }}">Соглашение.pdf</a></td>
 				  		{% elif loop.index == 9 %}
-								{% if item == "Нет файла" %}
-									<td>{{item}}</td>
-								{% else %}
-									<td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
-								{% endif %}	
+								<td><a href="{{ item }}" style="background-color: {{ colors[index-1] }};">Счёт.pdf</a></td>
 			  			{% elif loop.index == 12 %}
 			    			<td><div style="display: flex;">
 			      			<button class="btn btn-success btn-sm" style="display: flex; margin-right: 7px; height: 28px;  width: 73px" onclick="document.location='/change_invoice_status/user/dosud_ureg/{{ item }}'">Оплачено</button>
