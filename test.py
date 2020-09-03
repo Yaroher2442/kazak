@@ -492,9 +492,12 @@ def delo(template_name,t_id):
 @application.route('/update_dello/<template_name>/<t_id>', methods=['GET', 'POST'])
 def update_dello(template_name,t_id):
     if request.method=='POST':
-        print(request)
         get_db()
         db=Database(g._database)
+        Comment=request.form.get('Comment')
+        print(Comment)
+        if Comment!= None:
+            db.update_delo(t_id,comment=Comment)
         if request.files!='':
             file_agree = request.files["Agreement"]
             file_invoice = request.files["Invoice"]
@@ -511,9 +514,6 @@ def update_dello(template_name,t_id):
             else:
                 return redirect(f'/delo/{template_name}/{t_id}')
 
-        Comment=request.form.get('Comment')
-        if Comment!= None:
-            db.update_delo(comment=Comment)
         return redirect(f'/delo/{template_name}/{t_id}')
 
 
