@@ -295,7 +295,7 @@ class Database(object):
                 return list(list(i) for i in results)
         except Error as e:
             print(e)
-    def update_delo(self,t_id,comment=None,file_agree=None,file_invoice=None):
+    def update_dello(self,t_id,comment=None,file_agree=None,file_invoice=None):
         try:
             conn=self.connect
             c = conn.cursor()

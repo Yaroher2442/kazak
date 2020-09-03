@@ -97,9 +97,9 @@
 			{% set index = loop.index %}
 			{% for item in line %}
 			  {% if loop.index == 9 %}
-				{% if item == "Нет файла" %}
-			  	<td>{{item}}</td>
-			  	{% else %}
+				{% if item == 'Нет файла' %}
+			  	<td>{{ item }}</td>
+				{% else %}
 			  	<td><a href="{{ item }}">Соглашение.pdf</a></td>
 			  	{% endif %}
 			  {% elif loop.index == 10 %}
