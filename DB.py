@@ -276,7 +276,6 @@ class Database(object):
                     l_list=[results.index(i)+1]+[i[0]]+list(i[2:7])+list(i[13:])+list(i[7:12])
                     l_list.pop(3)
                     dela_list.append(l_list)
-                    print(i)
                 return dela_list
         except Error as e:
             print(e)
@@ -362,19 +361,21 @@ class Database(object):
             u_name=self.find_user_by_id(u_id)
             str_name=' '.join(u_name[1:])
             js_str=json.dumps(str_name)
+            print(str_name)
             if client != '' and lawyers ==['']:
-                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND (a.u_id=? Or a.Project_Manager=?) a.Client=?".format(join_table)
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id WHERE (a.u_id=? Or a.Project_Manager=?) AND a.Client=?".format(join_table)
                     ,(u_id,str_name,client,))
             elif client == '' and lawyers !=['']:
-                lawyers=json.dumps(lawyers).strip('[').strip(']')
-                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND (a.u_id=? Or a.Project_Manager=?) Lawyers like '%{1}%' ".format(join_table,lawyers))
+                lawyers=json.dumps(lawyers).strip('["').strip('"]')
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id WHERE (a.u_id=? Or a.Project_Manager=?) AND Lawyers like '%{1}%' ".format(join_table,lawyers)
+                    ,(u_id,str_name,))
 
             elif client!='' and lawyers!=['']:
                 lawyers=json.dumps(lawyers).strip('[').strip(']')
-                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND (a.u_id=? Or a.Project_Manager=?) a.Client=? AND Lawyers like '%{1}%' ".format(join_table,lawyers)
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id WHERE (a.u_id=? Or a.Project_Manager=?) AND a.Client=? AND Lawyers like '%{1}%' ".format(join_table,lawyers)
                     ,(u_id,str_name,client,))
             else: 
-                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id AND (a.u_id=? Or a.Project_Manager=?) ".format(join_table)
+                res=c.execute("SELECT * FROM Affairs as a JOIN {0} as l ON a.t_id = l.t_id WHERE (a.u_id=? Or a.Project_Manager=?) ".format(join_table)
                     ,(u_id,str_name,)) 
 
             results = c.fetchall()
@@ -386,7 +387,7 @@ class Database(object):
                     l_list=[results.index(i)+1]+[i[0]]+list(i[2:7])+list(i[13:])+list(i[7:12])
                     l_list.pop(3)
                     dela_list.append(l_list)
-                if practice != None:
+                if practice != ['']:
                     s_lst=[]
                     for d_ in dela_list:
                         check=0
